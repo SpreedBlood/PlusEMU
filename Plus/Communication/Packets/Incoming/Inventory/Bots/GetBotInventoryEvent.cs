@@ -11,10 +11,10 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Bots
         public int Header => ClientPacketHeader.GetBotInventoryMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session.GetHabbo().GetInventoryComponent() == null)
+            if (session.Habbo.GetInventoryComponent() == null)
                 return;
 
-            ICollection<Bot> bots = session.GetHabbo().GetInventoryComponent().GetBots();
+            ICollection<Bot> bots = session.Habbo.GetInventoryComponent().GetBots();
             session.SendPacket(new BotInventoryComposer(bots));
         }
     }

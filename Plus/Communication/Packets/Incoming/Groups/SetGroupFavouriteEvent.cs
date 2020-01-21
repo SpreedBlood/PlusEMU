@@ -22,27 +22,27 @@ namespace Plus.Communication.Packets.Incoming.Groups
             if (!PlusEnvironment.GetGame().GetGroupManager().TryGetGroup(groupId, out Group group))
                 return;
 
-            session.GetHabbo().GetStats().FavouriteGroupId = group.Id;
+            session.Habbo.GetStats().FavouriteGroupId = group.Id;
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("UPDATE `user_stats` SET `groupid` = @groupId WHERE `id` = @userId LIMIT 1");
-                dbClient.AddParameter("groupId", session.GetHabbo().GetStats().FavouriteGroupId);
-                dbClient.AddParameter("userId", session.GetHabbo().Id);
+                dbClient.AddParameter("groupId", session.Habbo.GetStats().FavouriteGroupId);
+                dbClient.AddParameter("userId", session.Habbo.Id);
                 dbClient.RunQuery();
             }
 
-            if (session.GetHabbo().InRoom && session.GetHabbo().CurrentRoom != null)
+            if (session.Habbo.InRoom && session.Habbo.CurrentRoom != null)
             {
-                session.GetHabbo().CurrentRoom.SendPacket(new RefreshFavouriteGroupComposer(session.GetHabbo().Id));
-                session.GetHabbo().CurrentRoom.SendPacket(new HabboGroupBadgesComposer(group));
+                session.Habbo.CurrentRoom.SendPacket(new RefreshFavouriteGroupComposer(session.Habbo.Id));
+                session.Habbo.CurrentRoom.SendPacket(new HabboGroupBadgesComposer(group));
 
-                RoomUser user = session.GetHabbo().CurrentRoom.GetRoomUserManager()
-                    .GetRoomUserByHabbo(session.GetHabbo().Id);
+                RoomUser user = session.Habbo.CurrentRoom.GetRoomUserManager()
+                    .GetRoomUserByHabbo(session.Habbo.Id);
                 if (user != null)
-                    session.GetHabbo().CurrentRoom.SendPacket(new UpdateFavouriteGroupComposer(group, user.VirtualId));
+                    session.Habbo.CurrentRoom.SendPacket(new UpdateFavouriteGroupComposer(group, user.VirtualId));
             }
             else
-                session.SendPacket(new RefreshFavouriteGroupComposer(session.GetHabbo().Id));
+                session.SendPacket(new RefreshFavouriteGroupComposer(session.Habbo.Id));
         }
     }
 }

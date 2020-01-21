@@ -12,12 +12,12 @@ namespace Plus.Communication.Packets.Incoming.Navigator
         {
             int id = packet.PopInt();
 
-            session.GetHabbo().FavoriteRooms.Remove(id);
+            session.Habbo.FavoriteRooms.Remove(id);
             session.SendPacket(new UpdateFavouriteRoomComposer(id, false));
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.RunQuery("DELETE FROM user_favorites WHERE user_id = " + session.GetHabbo().Id + " AND room_id = " + id + " LIMIT 1");
+                dbClient.RunQuery("DELETE FROM user_favorites WHERE user_id = " + session.Habbo.Id + " AND room_id = " + id + " LIMIT 1");
             }
         }
     }

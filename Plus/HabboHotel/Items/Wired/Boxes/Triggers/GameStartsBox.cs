@@ -66,10 +66,10 @@ namespace Plus.HabboHotel.Items.Wired.Boxes.Triggers
                 {
                     foreach (RoomUser User in Instance.GetRoomUserManager().GetRoomUsers().ToList())
                     {
-                        if (User == null || User.GetClient() == null || User.GetClient().GetHabbo() == null)
+                        if (User == null || User.GetClient() == null || User.GetClient().Habbo == null)
                             continue;
 
-                        Effect.Execute(User.GetClient().GetHabbo());
+                        Effect.Execute(User.GetClient().Habbo);
                     }
 
                     Instance.GetWired().OnEvent(Effect.Item);

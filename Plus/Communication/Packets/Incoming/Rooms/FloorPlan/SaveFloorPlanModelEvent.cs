@@ -15,11 +15,11 @@ namespace Plus.Communication.Packets.Incoming.Rooms.FloorPlan
         public int Header => ClientPacketHeader.SaveFloorPlanModelMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
-            if (room == null || session.GetHabbo().CurrentRoomId != room.Id || !room.CheckRights(session, true))
+            Room room = session.Habbo.CurrentRoom;
+            if (room == null || session.Habbo.CurrentRoomId != room.Id || !room.CheckRights(session, true))
                 return;
 
             char[] validLetters =

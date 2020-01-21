@@ -16,10 +16,10 @@ namespace Plus.Communication.Packets.Incoming.Moderation
         public int Header => ClientPacketHeader.GetModeratorRoomChatlogMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null)
+            if (session == null || session.Habbo == null)
                 return;
 
-            if (!session.GetHabbo().GetPermissions().HasRight("mod_tool"))
+            if (!session.Habbo.GetPermissions().HasRight("mod_tool"))
                 return;
 
             packet.PopInt(); //junk

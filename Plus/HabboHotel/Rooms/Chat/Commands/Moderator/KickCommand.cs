@@ -34,26 +34,26 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
                 return;
             }
 
-            if (TargetClient.GetHabbo() == null)
+            if (TargetClient.Habbo == null)
             {
                 Session.SendWhisper("An error occoured whilst finding that user, maybe they're not online.");
                 return;
             }
 
-            if (TargetClient.GetHabbo().Username == Session.GetHabbo().Username)
+            if (TargetClient.Habbo.Username == Session.Habbo.Username)
             {
                 Session.SendWhisper("Get a life.");
                 return;
             }
 
-            if (!TargetClient.GetHabbo().InRoom)
+            if (!TargetClient.Habbo.InRoom)
             {
                 Session.SendWhisper("That user currently isn't in a room.");
                 return;
             }
 
             Room TargetRoom;
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(TargetClient.GetHabbo().CurrentRoomId, out TargetRoom))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(TargetClient.Habbo.CurrentRoomId, out TargetRoom))
                 return;
 
             if (Params.Length > 2)

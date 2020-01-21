@@ -13,10 +13,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.FloorPlan
         public int Header => ClientPacketHeader.FloorPlanEditorRoomPropertiesMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 

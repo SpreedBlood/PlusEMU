@@ -10,7 +10,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
         public int Header => ClientPacketHeader.CloseTicketMesageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || !session.GetHabbo().GetPermissions().HasRight("mod_tool"))
+            if (session == null || session.Habbo == null || !session.Habbo.GetPermissions().HasRight("mod_tool"))
                 return;
 
             int result = packet.PopInt(); // 1 = useless, 2 = abusive, 3 = resolved
@@ -20,7 +20,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
             if (!PlusEnvironment.GetGame().GetModerationManager().TryGetTicket(ticketId, out ModerationTicket ticket))
                 return;
 
-            if (ticket.Moderator.Id != session.GetHabbo().Id)
+            if (ticket.Moderator.Id != session.Habbo.Id)
                 return;
 
             GameClient client = PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(ticket.Sender.Id);
@@ -38,7 +38,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
             }
 
             ticket.Answered = true;
-            PlusEnvironment.GetGame().GetClientManager().SendPacket(new ModeratorSupportTicketComposer(session.GetHabbo().Id, ticket), "mod_tool");
+            PlusEnvironment.GetGame().GetClientManager().SendPacket(new ModeratorSupportTicketComposer(session.Habbo.Id, ticket), "mod_tool");
         }
     }
 }

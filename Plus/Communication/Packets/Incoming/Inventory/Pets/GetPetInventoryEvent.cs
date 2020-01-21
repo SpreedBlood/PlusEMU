@@ -11,10 +11,10 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Pets
         public int Header => ClientPacketHeader.GetPetInventoryMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session.GetHabbo().GetInventoryComponent() == null)
+            if (session.Habbo.GetInventoryComponent() == null)
                 return;
 
-            ICollection<Pet> pets = session.GetHabbo().GetInventoryComponent().GetPets();
+            ICollection<Pet> pets = session.Habbo.GetInventoryComponent().GetPets();
             session.SendPacket(new PetInventoryComposer(pets));
         }
     }

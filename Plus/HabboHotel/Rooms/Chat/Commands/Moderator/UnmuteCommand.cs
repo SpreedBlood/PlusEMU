@@ -30,7 +30,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
             }
 
             GameClient TargetClient = PlusEnvironment.GetGame().GetClientManager().GetClientByUsername(Params[1]);
-            if (TargetClient == null || TargetClient.GetHabbo() == null)
+            if (TargetClient == null || TargetClient.Habbo == null)
             {
                 Session.SendWhisper("An error occoured whilst finding that user, maybe they're not online.");
                 return;
@@ -38,12 +38,12 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.RunQuery("UPDATE `users` SET `time_muted` = '0' WHERE `id` = '" + TargetClient.GetHabbo().Id + "' LIMIT 1");
+                dbClient.RunQuery("UPDATE `users` SET `time_muted` = '0' WHERE `id` = '" + TargetClient.Habbo.Id + "' LIMIT 1");
             }
 
-            TargetClient.GetHabbo().TimeMuted = 0;
-            TargetClient.SendNotification("You have been un-muted by " + Session.GetHabbo().Username + "!");
-            Session.SendWhisper("You have successfully un-muted " + TargetClient.GetHabbo().Username + "!");
+            TargetClient.Habbo.TimeMuted = 0;
+            TargetClient.SendNotification("You have been un-muted by " + Session.Habbo.Username + "!");
+            Session.SendWhisper("You have successfully un-muted " + TargetClient.Habbo.Username + "!");
         }
     }
 }

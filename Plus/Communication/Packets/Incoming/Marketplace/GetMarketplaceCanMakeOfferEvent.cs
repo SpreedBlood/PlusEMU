@@ -8,7 +8,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
         public int Header => ClientPacketHeader.GetMarketplaceCanMakeOfferMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            int errorCode = session.GetHabbo().TradingLockExpiry > 0 ? 6 : 1;
+            int errorCode = session.Habbo.TradingLockExpiry > 0 ? 6 : 1;
 
             session.SendPacket(new MarketplaceCanMakeOfferResultComposer(errorCode));
         }

@@ -22,19 +22,19 @@ namespace Plus.Communication.Rcon.Commands.User
                 return false;
 
             GameClient client = PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(userId);
-            if (client == null || client.GetHabbo() == null)
+            if (client == null || client.Habbo == null)
                 return false;
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `rank` FROM `users` WHERE `id` = @userId LIMIT 1");
                 dbClient.AddParameter("userId", userId);
-                client.GetHabbo().Rank = dbClient.GetInteger();
+                client.Habbo.Rank = dbClient.GetInteger();
             }
 
-            client.GetHabbo().GetPermissions().Init(client.GetHabbo());
+            client.Habbo.GetPermissions().Init(client.Habbo);
 
-            if (client.GetHabbo().GetPermissions().HasRight("mod_tickets"))
+            if (client.Habbo.GetPermissions().HasRight("mod_tickets"))
             {
                 client.SendPacket(new ModeratorInitComposer(
                   PlusEnvironment.GetGame().GetModerationManager().UserMessagePresets,

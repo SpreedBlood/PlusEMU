@@ -12,10 +12,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
         public int Header => ClientPacketHeader.RemoveRightsMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
             if (!room.CheckRights(session, true))

@@ -14,7 +14,7 @@ namespace Plus.Communication.Packets.Incoming.Messenger
         public int Header => ClientPacketHeader.HabboSearchMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || session.GetHabbo().GetMessenger() == null)
+            if (session == null || session.Habbo == null || session.Habbo.GetMessenger() == null)
                 return;
 
             string query = StringCharFilter.Escape(packet.PopString().Replace("%", ""));
@@ -27,7 +27,7 @@ namespace Plus.Communication.Packets.Incoming.Messenger
             List<SearchResult> results = SearchResultFactory.GetSearchResult(query);
             foreach (SearchResult result in results.ToList())
             {
-                if (session.GetHabbo().GetMessenger().FriendshipExists(result.UserId))
+                if (session.Habbo.GetMessenger().FriendshipExists(result.UserId))
                     friends.Add(result);
                 else
                     othersUsers.Add(result);

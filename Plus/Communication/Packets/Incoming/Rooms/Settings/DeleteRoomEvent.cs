@@ -14,7 +14,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
         public int Header => ClientPacketHeader.DeleteRoomMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null)
+            if (session == null || session.Habbo == null)
                 return;
 
             int roomId = packet.PopInt();
@@ -24,7 +24,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
             if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(roomId, out Room room))
                 return;
 
-            if (room.OwnerId != session.GetHabbo().Id && !session.GetHabbo().GetPermissions().HasRight("room_delete_any"))
+            if (room.OwnerId != session.Habbo.Id && !session.Habbo.GetPermissions().HasRight("room_delete_any"))
                 return;
 
             List<Item> itemsToRemove = new List<Item>();
@@ -49,11 +49,11 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
             foreach (Item item in itemsToRemove)
             {
                 GameClient targetClient = PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(item.UserID);
-                if (targetClient != null && targetClient.GetHabbo() != null)//Again, do we have an active client?
+                if (targetClient != null && targetClient.Habbo != null)//Again, do we have an active client?
                 {
                     room.GetRoomItemHandler().RemoveFurniture(targetClient, item.Id);
-                    targetClient.GetHabbo().GetInventoryComponent().AddNewItem(item.Id, item.BaseItem, item.ExtraData, item.GroupId, true, true, item.LimitedNo, item.LimitedTot);
-                    targetClient.GetHabbo().GetInventoryComponent().UpdateItems(false);
+                    targetClient.Habbo.GetInventoryComponent().AddNewItem(item.Id, item.BaseItem, item.ExtraData, item.GroupId, true, true, item.LimitedNo, item.LimitedTot);
+                    targetClient.Habbo.GetInventoryComponent().UpdateItems(false);
                 }
                 else//No, query time.
                 {

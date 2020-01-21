@@ -69,7 +69,7 @@ namespace Plus.Communication.Packets.Outgoing.Navigator
             WriteInteger(data.WhoCanKick);
             WriteInteger(data.WhoCanBan);
 
-            WriteBoolean(session.GetHabbo().GetPermissions().HasRight("mod_tool") || data.OwnerName == session.GetHabbo().Username);
+            WriteBoolean(session.Habbo.GetPermissions().HasRight("mod_tool") || data.OwnerName == session.Habbo.Username);
             WriteInteger(data.ChatMode);
             WriteInteger(data.ChatSize);
             WriteInteger(data.ChatSpeed);

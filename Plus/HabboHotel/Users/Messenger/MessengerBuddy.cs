@@ -35,8 +35,8 @@ namespace Plus.HabboHotel.Users.Messenger
         {
             get
             {
-                return (client != null && client.GetHabbo() != null && client.GetHabbo().GetMessenger() != null &&
-                        !client.GetHabbo().GetMessenger().AppearOffline);
+                return (client != null && client.Habbo != null && client.Habbo.GetMessenger() != null &&
+                        !client.Habbo.GetMessenger().AppearOffline);
             }
         }
 
@@ -73,24 +73,24 @@ namespace Plus.HabboHotel.Users.Messenger
         public void UpdateUser(GameClient client)
         {
             this.client = client;
-            if (client != null && client.GetHabbo() != null)
-                currentRoom = client.GetHabbo().CurrentRoom;
+            if (client != null && client.Habbo != null)
+                currentRoom = client.Habbo.CurrentRoom;
         }
 
         public void Serialize(ServerPacket Message, GameClient Session)
         {
             Relationship Relationship = null;
 
-            if (Session != null && Session.GetHabbo() != null && Session.GetHabbo().Relationships != null)
-                Relationship = Session.GetHabbo().Relationships.FirstOrDefault(x => x.Value.UserId == Convert.ToInt32(UserId)).Value;
+            if (Session != null && Session.Habbo != null && Session.Habbo.Relationships != null)
+                Relationship = Session.Habbo.Relationships.FirstOrDefault(x => x.Value.UserId == Convert.ToInt32(UserId)).Value;
 
             int y = Relationship == null ? 0 : Relationship.Type;
 
             Message.WriteInteger(UserId);
             Message.WriteString(mUsername);
             Message.WriteInteger(1);
-            Message.WriteBoolean(!mAppearOffline || Session.GetHabbo().GetPermissions().HasRight("mod_tool") ? IsOnline : false);
-            Message.WriteBoolean(!mHideInroom || Session.GetHabbo().GetPermissions().HasRight("mod_tool") ? InRoom : false);
+            Message.WriteBoolean(!mAppearOffline || Session.Habbo.GetPermissions().HasRight("mod_tool") ? IsOnline : false);
+            Message.WriteBoolean(!mHideInroom || Session.Habbo.GetPermissions().HasRight("mod_tool") ? InRoom : false);
             Message.WriteString(IsOnline ? mLook : "");
             Message.WriteInteger(0); // categoryid
             Message.WriteString(mMotto);

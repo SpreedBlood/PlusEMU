@@ -8,8 +8,8 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Purse
         public int Header => ClientPacketHeader.GetCreditsInfoMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            session.SendPacket(new CreditBalanceComposer(session.GetHabbo().Credits));
-            session.SendPacket(new ActivityPointsComposer(session.GetHabbo().Duckets, session.GetHabbo().Diamonds, session.GetHabbo().GOTWPoints));
+            session.SendPacket(new CreditBalanceComposer(session.Habbo.Credits));
+            session.SendPacket(new ActivityPointsComposer(session.Habbo.Duckets, session.Habbo.Diamonds, session.Habbo.GOTWPoints));
         }
     }
 }

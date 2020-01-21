@@ -24,19 +24,19 @@ namespace Plus.Communication.Packets.Incoming.Groups
 
             int groupCost = Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("catalog.group.purchase.cost"));
 
-            if (session.GetHabbo().Credits < groupCost)
+            if (session.Habbo.Credits < groupCost)
             {
-                session.SendPacket(new BroadcastMessageAlertComposer("A group costs " + groupCost + " credits! You only have " + session.GetHabbo().Credits + "!"));
+                session.SendPacket(new BroadcastMessageAlertComposer("A group costs " + groupCost + " credits! You only have " + session.Habbo.Credits + "!"));
                 return;
             }
 
-            session.GetHabbo().Credits -= groupCost;
-            session.SendPacket(new CreditBalanceComposer(session.GetHabbo().Credits));
+            session.Habbo.Credits -= groupCost;
+            session.SendPacket(new CreditBalanceComposer(session.Habbo.Credits));
 
             if (!RoomFactory.TryGetData(roomId, out RoomData room))
                 return;
 
-            if (room == null || room.OwnerId != session.GetHabbo().Id || room.Group != null)
+            if (room == null || room.OwnerId != session.Habbo.Id || room.Group != null)
                 return;
 
             string badge = string.Empty;
@@ -46,7 +46,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
                 badge += BadgePartUtility.WorkBadgeParts(i == 0, packet.PopInt().ToString(), packet.PopInt().ToString(), packet.PopInt().ToString());
             }
 
-            if (!PlusEnvironment.GetGame().GetGroupManager().TryCreateGroup(session.GetHabbo(), name, description, roomId, badge, mainColour, secondaryColour, out Group group))
+            if (!PlusEnvironment.GetGame().GetGroupManager().TryCreateGroup(session.Habbo, name, description, roomId, badge, mainColour, secondaryColour, out Group group))
             {
                 session.SendNotification("An error occured whilst trying to create this group.\n\nTry again. If you get this message more than once, report it at the link below.\r\rhttp://boonboards.com");
                 return;
@@ -56,7 +56,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
 
             room.Group = group;
 
-            if (session.GetHabbo().CurrentRoomId != room.Id)
+            if (session.Habbo.CurrentRoomId != room.Id)
                 session.SendPacket(new RoomForwardComposer(room.Id));
 
             session.SendPacket(new NewGroupInfoComposer(roomId, group.Id));

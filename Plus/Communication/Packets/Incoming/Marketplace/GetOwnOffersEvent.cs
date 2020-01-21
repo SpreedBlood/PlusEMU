@@ -8,7 +8,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
         public int Header => ClientPacketHeader.GetOwnOffersMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            session.SendPacket(new MarketPlaceOwnOffersComposer(session.GetHabbo().Id));
+            session.SendPacket(new MarketPlaceOwnOffersComposer(session.Habbo.Id));
         }
     }
 }

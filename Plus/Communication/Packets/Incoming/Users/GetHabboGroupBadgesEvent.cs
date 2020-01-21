@@ -12,32 +12,32 @@ namespace Plus.Communication.Packets.Incoming.Users
         public int Header => ClientPacketHeader.GetHabboGroupBadgesMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || !session.GetHabbo().InRoom)
+            if (session == null || session.Habbo == null || !session.Habbo.InRoom)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
             Dictionary<int, string> badges = new Dictionary<int, string>();
             foreach (RoomUser user in room.GetRoomUserManager().GetRoomUsers().ToList())
             {
-                if (user.IsBot || user.IsPet || user.GetClient() == null || user.GetClient().GetHabbo() == null)
+                if (user.IsBot || user.IsPet || user.GetClient() == null || user.GetClient().Habbo == null)
                     continue;
 
-                if (user.GetClient().GetHabbo().GetStats().FavouriteGroupId == 0 || badges.ContainsKey(user.GetClient().GetHabbo().GetStats().FavouriteGroupId))
+                if (user.GetClient().Habbo.GetStats().FavouriteGroupId == 0 || badges.ContainsKey(user.GetClient().Habbo.GetStats().FavouriteGroupId))
                     continue;
 
-                if (!PlusEnvironment.GetGame().GetGroupManager().TryGetGroup(user.GetClient().GetHabbo().GetStats().FavouriteGroupId, out Group group))
+                if (!PlusEnvironment.GetGame().GetGroupManager().TryGetGroup(user.GetClient().Habbo.GetStats().FavouriteGroupId, out Group group))
                     continue;
 
                 if (!badges.ContainsKey(group.Id))
                     badges.Add(group.Id, group.Badge);
             }
 
-            if (session.GetHabbo().GetStats().FavouriteGroupId > 0)
+            if (session.Habbo.GetStats().FavouriteGroupId > 0)
             {
-                if (PlusEnvironment.GetGame().GetGroupManager().TryGetGroup(session.GetHabbo().GetStats().FavouriteGroupId, out Group group))
+                if (PlusEnvironment.GetGame().GetGroupManager().TryGetGroup(session.Habbo.GetStats().FavouriteGroupId, out Group group))
                 {
                     if (!badges.ContainsKey(group.Id))
                         badges.Add(group.Id, group.Badge);

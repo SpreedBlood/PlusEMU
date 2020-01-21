@@ -12,13 +12,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
         public int Header => ClientPacketHeader.GiveRoomScoreMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
-            if (session.GetHabbo().RatedRooms.Contains(room.RoomId) || room.CheckRights(session, true))
+            if (session.Habbo.RatedRooms.Contains(room.RoomId) || room.CheckRights(session, true))
                 return;
 
             int rating = packet.PopInt();
@@ -39,8 +39,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
                 dbClient.RunQuery("UPDATE rooms SET score = '" + room.Score + "' WHERE id = '" + room.RoomId + "' LIMIT 1");
             }
 
-            session.GetHabbo().RatedRooms.Add(room.RoomId);
-            session.SendPacket(new RoomRatingComposer(room.Score, !(session.GetHabbo().RatedRooms.Contains(room.RoomId) || room.CheckRights(session, true))));
+            session.Habbo.RatedRooms.Add(room.RoomId);
+            session.SendPacket(new RoomRatingComposer(room.Score, !(session.Habbo.RatedRooms.Contains(room.RoomId) || room.CheckRights(session, true))));
         }
     }
 }

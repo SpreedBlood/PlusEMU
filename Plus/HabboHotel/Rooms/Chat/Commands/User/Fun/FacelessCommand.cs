@@ -24,12 +24,12 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
         public void Execute(GameClients.GameClient Session, Room Room, string[] Params)
         {
 
-            RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
+            RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.Habbo.Id);
             if (User == null || User.GetClient() == null)
                 return;
 
             string[] headParts;
-            string[] figureParts = Session.GetHabbo().Look.Split('.');
+            string[] figureParts = Session.Habbo.Look.Split('.');
             foreach (string Part in figureParts)
             {
                 if (Part.StartsWith("hd"))
@@ -40,20 +40,20 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
                     else
                         return;
 
-                    Session.GetHabbo().Look = Session.GetHabbo().Look.Replace(Part, "hd-" + headParts[1] + "-" + headParts[2]);
+                    Session.Habbo.Look = Session.Habbo.Look.Replace(Part, "hd-" + headParts[1] + "-" + headParts[2]);
                     break;
                 }
             }
 
-            Session.GetHabbo().Look = PlusEnvironment.GetFigureManager().ProcessFigure(Session.GetHabbo().Look, Session.GetHabbo().Gender, Session.GetHabbo().GetClothing().GetClothingParts, true);
+            Session.Habbo.Look = PlusEnvironment.GetFigureManager().ProcessFigure(Session.Habbo.Look, Session.Habbo.Gender, Session.Habbo.GetClothing().GetClothingParts, true);
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.RunQuery("UPDATE `users` SET `look` = '" + Session.GetHabbo().Look + "' WHERE `id` = '" + Session.GetHabbo().Id + "' LIMIT 1");
+                dbClient.RunQuery("UPDATE `users` SET `look` = '" + Session.Habbo.Look + "' WHERE `id` = '" + Session.Habbo.Id + "' LIMIT 1");
             }
 
             Session.SendPacket(new UserChangeComposer(User, true));
-            Session.GetHabbo().CurrentRoom.SendPacket(new UserChangeComposer(User, false));
+            Session.Habbo.CurrentRoom.SendPacket(new UserChangeComposer(User, false));
             return;
         }
     }

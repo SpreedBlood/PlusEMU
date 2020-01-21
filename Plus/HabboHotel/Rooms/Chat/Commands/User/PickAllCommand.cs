@@ -37,7 +37,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
             {
                 dbClient.SetQuery("UPDATE `items` SET `room_id` = '0' WHERE `room_id` = @RoomId AND `user_id` = @UserId");
                 dbClient.AddParameter("RoomId", Room.Id);
-                dbClient.AddParameter("UserId", Session.GetHabbo().Id);
+                dbClient.AddParameter("UserId", Session.Habbo.Id);
                 dbClient.RunQuery();
             }
 

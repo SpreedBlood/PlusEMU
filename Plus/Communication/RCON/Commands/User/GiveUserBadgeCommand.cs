@@ -23,7 +23,7 @@ namespace Plus.Communication.Rcon.Commands.User
                 return false;
 
             GameClient client = PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(userId);
-            if (client == null || client.GetHabbo() == null)
+            if (client == null || client.Habbo == null)
                 return false;
 
             // Validate the badge
@@ -32,9 +32,9 @@ namespace Plus.Communication.Rcon.Commands.User
 
             string badge = Convert.ToString(parameters[1]);
 
-            if (!client.GetHabbo().GetBadgeComponent().HasBadge(badge))
+            if (!client.Habbo.GetBadgeComponent().HasBadge(badge))
             {
-                client.GetHabbo().GetBadgeComponent().GiveBadge(badge, true, client);
+                client.Habbo.GetBadgeComponent().GiveBadge(badge, true, client);
                 client.SendPacket(new BroadcastMessageAlertComposer("You have been given a new badge!"));
             }
             return true;

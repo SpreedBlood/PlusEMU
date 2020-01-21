@@ -40,7 +40,7 @@ namespace Plus.HabboHotel.Rooms.AI.Types
 
         public override void OnUserSay(RoomUser User, string Message)
         {
-            if (User == null || User.GetClient() == null || User.GetClient().GetHabbo() == null)
+            if (User == null || User.GetClient() == null || User.GetClient().Habbo == null)
                 return;
 
             if (Gamemap.TileDistance(GetRoomUser().X, GetRoomUser().Y, User.X, User.Y) > 8)
@@ -53,15 +53,15 @@ namespace Plus.HabboHotel.Rooms.AI.Types
             switch (Response.ResponseType.ToLower())
             {
                 case "say":
-                    GetRoomUser().Chat(Response.ResponseText.Replace("{username}", User.GetClient().GetHabbo().Username));
+                    GetRoomUser().Chat(Response.ResponseText.Replace("{username}", User.GetClient().Habbo.Username));
                     break;
 
                 case "shout":
-                    GetRoomUser().Chat(Response.ResponseText.Replace("{username}", User.GetClient().GetHabbo().Username));
+                    GetRoomUser().Chat(Response.ResponseText.Replace("{username}", User.GetClient().Habbo.Username));
                     break;
 
                 case "whisper":
-                    User.GetClient().SendPacket(new WhisperComposer(GetRoomUser().VirtualId, Response.ResponseText.Replace("{username}", User.GetClient().GetHabbo().Username), 0, 0));
+                    User.GetClient().SendPacket(new WhisperComposer(GetRoomUser().VirtualId, Response.ResponseText.Replace("{username}", User.GetClient().Habbo.Username), 0, 0));
                     break;
             }
 
@@ -73,7 +73,7 @@ namespace Plus.HabboHotel.Rooms.AI.Types
 
         public override void OnUserShout(RoomUser User, string Message)
         {
-            if (User == null || User.GetClient() == null || User.GetClient().GetHabbo() == null)
+            if (User == null || User.GetClient() == null || User.GetClient().Habbo == null)
                 return;
 
             if (Gamemap.TileDistance(GetRoomUser().X, GetRoomUser().Y, User.X, User.Y) > 8)
@@ -86,15 +86,15 @@ namespace Plus.HabboHotel.Rooms.AI.Types
             switch (Response.ResponseType.ToLower())
             {
                 case "say":
-                    GetRoomUser().Chat(Response.ResponseText.Replace("{username}", User.GetClient().GetHabbo().Username));
+                    GetRoomUser().Chat(Response.ResponseText.Replace("{username}", User.GetClient().Habbo.Username));
                     break;
 
                 case "shout":
-                    GetRoomUser().Chat(Response.ResponseText.Replace("{username}", User.GetClient().GetHabbo().Username));
+                    GetRoomUser().Chat(Response.ResponseText.Replace("{username}", User.GetClient().Habbo.Username));
                     break;
 
                 case "whisper":
-                    User.GetClient().SendPacket(new WhisperComposer(GetRoomUser().VirtualId, Response.ResponseText.Replace("{username}", User.GetClient().GetHabbo().Username), 0, 0));
+                    User.GetClient().SendPacket(new WhisperComposer(GetRoomUser().VirtualId, Response.ResponseText.Replace("{username}", User.GetClient().Habbo.Username), 0, 0));
                     break;
             }
 

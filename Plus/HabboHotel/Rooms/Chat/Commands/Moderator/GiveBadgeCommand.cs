@@ -30,10 +30,10 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
             GameClient TargetClient = PlusEnvironment.GetGame().GetClientManager().GetClientByUsername(Params[1]);
             if (TargetClient != null)
             {
-                if (!TargetClient.GetHabbo().GetBadgeComponent().HasBadge(Params[2]))
+                if (!TargetClient.Habbo.GetBadgeComponent().HasBadge(Params[2]))
                 {
-                    TargetClient.GetHabbo().GetBadgeComponent().GiveBadge(Params[2], true, TargetClient);
-                    if (TargetClient.GetHabbo().Id != Session.GetHabbo().Id)
+                    TargetClient.Habbo.GetBadgeComponent().GiveBadge(Params[2], true, TargetClient);
+                    if (TargetClient.Habbo.Id != Session.Habbo.Id)
                         TargetClient.SendNotification("You have just been given a badge!");
                     else
                         Session.SendWhisper("You have successfully given yourself the badge " + Params[2] + "!");

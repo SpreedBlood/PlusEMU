@@ -53,10 +53,10 @@ namespace Plus.HabboHotel.Items.Wired.Boxes.Triggers
             {
                 foreach (RoomUser Avatar in Avatars.ToList())
                 {
-                    if (Avatar == null || Avatar.GetClient() == null || Avatar.GetClient().GetHabbo() == null)
+                    if (Avatar == null || Avatar.GetClient() == null || Avatar.GetClient().Habbo == null)
                         continue;
 
-                    if (!Condition.Execute(Avatar.GetClient().GetHabbo()))
+                    if (!Condition.Execute(Avatar.GetClient().Habbo))
                         continue;
 
                     Success = true;

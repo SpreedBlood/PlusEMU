@@ -51,12 +51,12 @@ namespace Plus.HabboHotel.Rooms.AI.Types
 
         public override void OnUserEnterRoom(RoomUser User)
         {
-            if (User.GetClient() != null && User.GetClient().GetHabbo() != null)
+            if (User.GetClient() != null && User.GetClient().Habbo != null)
             {
                 RoomUser Pet = GetRoomUser();
                 if (Pet != null)
                 {
-                    if (User.GetClient().GetHabbo().Username == Pet.PetData.OwnerName)
+                    if (User.GetClient().Habbo.Username == Pet.PetData.OwnerName)
                     {
                         string[] Speech = PlusEnvironment.GetGame().GetChatManager().GetPetLocale().GetValue("welcome.speech.pet" + Pet.PetData.Type);
                         string rSpeech = Speech[RandomNumber.GenerateRandom(0, Speech.Length - 1)];
@@ -183,7 +183,7 @@ namespace Plus.HabboHotel.Rooms.AI.Types
             //if (!Pet.Statusses.ContainsKey("gst thr"))
             //    Pet.Statusses.Add("gst thr", TextHandling.GetString(Pet.Z));
 
-            if ((Message.ToLower().StartsWith(Pet.PetData.Name.ToLower() + " ") && User.GetClient().GetHabbo().Username.ToLower() == Pet.PetData.OwnerName.ToLower()) || (Message.ToLower().StartsWith(Pet.PetData.Name.ToLower() + " ") && PlusEnvironment.GetGame().GetChatManager().GetPetCommands().TryInvoke(Message.Substring(Pet.PetData.Name.ToLower().Length + 1)) == 8))
+            if ((Message.ToLower().StartsWith(Pet.PetData.Name.ToLower() + " ") && User.GetClient().Habbo.Username.ToLower() == Pet.PetData.OwnerName.ToLower()) || (Message.ToLower().StartsWith(Pet.PetData.Name.ToLower() + " ") && PlusEnvironment.GetGame().GetChatManager().GetPetCommands().TryInvoke(Message.Substring(Pet.PetData.Name.ToLower().Length + 1)) == 8))
             {
                 string Command = Message.Substring(Pet.PetData.Name.ToLower().Length + 1);
 

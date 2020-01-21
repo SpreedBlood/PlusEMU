@@ -17,10 +17,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
         public int Header => ClientPacketHeader.PlaceBotMessageEvent;
         public void Parse(HabboHotel.GameClients.GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
             if (!room.CheckRights(session, true))
@@ -36,7 +36,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
                 return;
             }
 
-            if (!session.GetHabbo().GetInventoryComponent().TryGetBot(botId, out Bot bot))
+            if (!session.Habbo.GetInventoryComponent().TryGetBot(botId, out Bot bot))
                 return;
 
             int botCount = 0;
@@ -48,7 +48,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
                 botCount += 1;
             }
 
-            if (botCount >= 5 && !session.GetHabbo().GetPermissions().HasRight("bot_place_any_override"))
+            if (botCount >= 5 && !session.Habbo.GetPermissions().HasRight("bot_place_any_override"))
             {
                 session.SendNotification("Sorry; 5 bots per room only!");
                 return;
@@ -85,18 +85,18 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
                 }
             }
 
-            RoomUser botUser = room.GetRoomUserManager().DeployBot(new RoomBot(bot.Id, session.GetHabbo().CurrentRoomId, Convert.ToString(getData["ai_type"]), Convert.ToString(getData["walk_mode"]), bot.Name, "", bot.Figure, x, y, 0, 4, 0, 0, 0, 0, ref botSpeechList, "", 0, bot.OwnerId, PlusEnvironment.EnumToBool(getData["automatic_chat"].ToString()), Convert.ToInt32(getData["speaking_interval"]), PlusEnvironment.EnumToBool(getData["mix_sentences"].ToString()), Convert.ToInt32(getData["chat_bubble"])), null);
+            RoomUser botUser = room.GetRoomUserManager().DeployBot(new RoomBot(bot.Id, session.Habbo.CurrentRoomId, Convert.ToString(getData["ai_type"]), Convert.ToString(getData["walk_mode"]), bot.Name, "", bot.Figure, x, y, 0, 4, 0, 0, 0, 0, ref botSpeechList, "", 0, bot.OwnerId, PlusEnvironment.EnumToBool(getData["automatic_chat"].ToString()), Convert.ToInt32(getData["speaking_interval"]), PlusEnvironment.EnumToBool(getData["mix_sentences"].ToString()), Convert.ToInt32(getData["chat_bubble"])), null);
             botUser.Chat("Hello!");
 
             room.GetGameMap().UpdateUserMovement(new System.Drawing.Point(x, y), new System.Drawing.Point(x, y), botUser);
 
 
-            if (!session.GetHabbo().GetInventoryComponent().TryRemoveBot(botId, out Bot toRemove))
+            if (!session.Habbo.GetInventoryComponent().TryRemoveBot(botId, out Bot toRemove))
             {
                 Console.WriteLine("Error whilst removing Bot: " + toRemove.Id);
                 return;
             }
-            session.SendPacket(new BotInventoryComposer(session.GetHabbo().GetInventoryComponent().GetBots()));
+            session.SendPacket(new BotInventoryComposer(session.Habbo.GetInventoryComponent().GetBots()));
         }
     }
 }

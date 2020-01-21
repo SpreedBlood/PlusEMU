@@ -192,7 +192,7 @@ namespace Plus.HabboHotel.Navigator
 
                 case NavigatorCategoryType.MyRooms:
                     {
-                        ICollection<RoomData> rooms = RoomFactory.GetRoomsDataByOwnerSortByName(session.GetHabbo().Id).OrderByDescending(x => x.UsersNow).ToList();
+                        ICollection<RoomData> rooms = RoomFactory.GetRoomsDataByOwnerSortByName(session.Habbo.Id).OrderByDescending(x => x.UsersNow).ToList();
 
                         packet.WriteInteger(rooms.Count);
                         foreach (RoomData Data in rooms.ToList())
@@ -213,7 +213,7 @@ namespace Plus.HabboHotel.Navigator
                     {
                         List<RoomData> MyGroups = new List<RoomData>();
 
-                        foreach (Group Group in PlusEnvironment.GetGame().GetGroupManager().GetGroupsForUser(session.GetHabbo().Id).ToList())
+                        foreach (Group Group in PlusEnvironment.GetGame().GetGroupManager().GetGroupsForUser(session.Habbo.Id).ToList())
                         {
                             if (Group == null)
                                 continue;
@@ -243,12 +243,12 @@ namespace Plus.HabboHotel.Navigator
                     {
                         List<int> RoomIds = new List<int>();
 
-                        if (session == null || session.GetHabbo() == null || session.GetHabbo().GetMessenger() == null || session.GetHabbo().GetMessenger().GetFriends() == null)
+                        if (session == null || session.Habbo == null || session.Habbo.GetMessenger() == null || session.Habbo.GetMessenger().GetFriends() == null)
                             return;
 
-                        foreach (MessengerBuddy buddy in session.GetHabbo().GetMessenger().GetFriends().Where(p => p.InRoom))
+                        foreach (MessengerBuddy buddy in session.Habbo.GetMessenger().GetFriends().Where(p => p.InRoom))
                         {
-                            if (buddy == null || !buddy.InRoom || buddy.UserId == session.GetHabbo().Id)
+                            if (buddy == null || !buddy.InRoom || buddy.UserId == session.Habbo.Id)
                                 continue;
 
                             if (!RoomIds.Contains(buddy.CurrentRoom.Id))
@@ -277,7 +277,7 @@ namespace Plus.HabboHotel.Navigator
                             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                             {
                                 dbClient.SetQuery("SELECT `room_id` FROM `room_rights` WHERE `user_id` = @UserId LIMIT @FetchLimit");
-                                dbClient.AddParameter("UserId", session.GetHabbo().Id);
+                                dbClient.AddParameter("UserId", session.Habbo.Id);
                                 dbClient.AddParameter("FetchLimit", limit);
                                 GetRights = dbClient.GetTable();
 

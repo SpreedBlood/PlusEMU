@@ -60,8 +60,8 @@ namespace Plus.HabboHotel.Items.Wired.Boxes.Effects
                     User.Team = ToJoin;
                     Team.AddUser(User);
 
-                    if (User.GetClient().GetHabbo().Effects().CurrentEffect != Convert.ToInt32(ToJoin + 39))
-                        User.GetClient().GetHabbo().Effects().ApplyEffect(Convert.ToInt32(ToJoin + 39));
+                    if (User.GetClient().Habbo.Effects().CurrentEffect != Convert.ToInt32(ToJoin + 39))
+                        User.GetClient().Habbo.Effects().ApplyEffect(Convert.ToInt32(ToJoin + 39));
                 }
             }
             return true;

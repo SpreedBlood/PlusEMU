@@ -19,20 +19,20 @@ namespace Plus.Communication.Packets.Incoming.Users
         public int Header => ClientPacketHeader.RespectUserMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null)
+            if (session == null || session.Habbo == null)
                 return;
 
-            if (!session.GetHabbo().InRoom || session.GetHabbo().GetStats().DailyRespectPoints <= 0)
+            if (!session.Habbo.InRoom || session.Habbo.GetStats().DailyRespectPoints <= 0)
                 return;
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
             RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(packet.PopInt());
-            if (user == null || user.GetClient() == null || user.GetClient().GetHabbo().Id == session.GetHabbo().Id || user.IsBot)
+            if (user == null || user.GetClient() == null || user.GetClient().Habbo.Id == session.Habbo.Id || user.IsBot)
                 return;
 
-            RoomUser thisUser = room.GetRoomUserManager().GetRoomUserByHabbo(session.GetHabbo().Id);
+            RoomUser thisUser = room.GetRoomUserManager().GetRoomUserByHabbo(session.Habbo.Id);
             if (thisUser == null)
                 return;
 
@@ -40,12 +40,12 @@ namespace Plus.Communication.Packets.Incoming.Users
             _achievementManager.ProgressAchievement(session, "ACH_RespectGiven", 1);
             _achievementManager.ProgressAchievement(user.GetClient(), "ACH_RespectEarned", 1);
 
-            session.GetHabbo().GetStats().DailyRespectPoints -= 1;
-            session.GetHabbo().GetStats().RespectGiven += 1;
-            user.GetClient().GetHabbo().GetStats().Respect += 1;
+            session.Habbo.GetStats().DailyRespectPoints -= 1;
+            session.Habbo.GetStats().RespectGiven += 1;
+            user.GetClient().Habbo.GetStats().Respect += 1;
 
             if (room.RespectNotificationsEnabled)
-                room.SendPacket(new RespectNotificationComposer(user.GetClient().GetHabbo().Id, user.GetClient().GetHabbo().GetStats().Respect));
+                room.SendPacket(new RespectNotificationComposer(user.GetClient().Habbo.Id, user.GetClient().Habbo.GetStats().Respect));
             room.SendPacket(new ActionComposer(thisUser.VirtualId, 7));
         }
     }

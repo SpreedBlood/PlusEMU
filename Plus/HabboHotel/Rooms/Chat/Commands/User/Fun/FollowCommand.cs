@@ -34,31 +34,31 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
                 return;
             }
 
-            if (TargetClient.GetHabbo().CurrentRoom == Session.GetHabbo().CurrentRoom)
+            if (TargetClient.Habbo.CurrentRoom == Session.Habbo.CurrentRoom)
             {
-                Session.SendWhisper("Hey you, open your eyes! " + TargetClient.GetHabbo().Username + " is in this room!");
+                Session.SendWhisper("Hey you, open your eyes! " + TargetClient.Habbo.Username + " is in this room!");
                 return;
             }
 
-            if (TargetClient.GetHabbo().Username == Session.GetHabbo().Username)
+            if (TargetClient.Habbo.Username == Session.Habbo.Username)
             {
                 Session.SendWhisper("Sadooooooooo!");
                 return;
             }
 
-            if (!TargetClient.GetHabbo().InRoom)
+            if (!TargetClient.Habbo.InRoom)
             {
                 Session.SendWhisper("That user currently isn't in a room!");
                 return;
             }
 
-            if (TargetClient.GetHabbo().CurrentRoom.Access != RoomAccess.Open && !Session.GetHabbo().GetPermissions().HasRight("mod_tool"))
+            if (TargetClient.Habbo.CurrentRoom.Access != RoomAccess.Open && !Session.Habbo.GetPermissions().HasRight("mod_tool"))
             {
                 Session.SendWhisper("Oops, the room that user is either locked, passworded or invisible. You cannot follow!");
                 return;
             }
 
-            Session.GetHabbo().PrepareRoom(TargetClient.GetHabbo().CurrentRoom.RoomId, "");
+            Session.Habbo.PrepareRoom(TargetClient.Habbo.CurrentRoom.RoomId, "");
         }
     }
 }

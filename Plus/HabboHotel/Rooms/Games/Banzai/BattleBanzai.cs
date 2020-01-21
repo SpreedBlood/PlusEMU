@@ -350,10 +350,10 @@ namespace Plus.HabboHotel.Rooms.Games.Banzai
 
             _room.GetRoomItemHandler().SetFloorItem(mover, item, newX, newY, item.Rotation, false, false, false, false);
 
-            if (mover == null || mover.GetHabbo() == null)
+            if (mover == null || mover.Habbo == null)
                 return;
 
-            RoomUser user = mover.GetHabbo().CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(mover.GetHabbo().Id);
+            RoomUser user = mover.Habbo.CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(mover.Habbo.Id);
             if (banzaiStarted)
             {
                 HandleBanzaiTiles(new Point(newX, newY), team, user);

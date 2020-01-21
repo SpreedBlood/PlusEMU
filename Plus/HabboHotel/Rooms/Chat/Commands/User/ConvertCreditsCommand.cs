@@ -33,7 +33,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
                 DataTable Table = null;
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                 {
-                    dbClient.SetQuery("SELECT `id` FROM `items` WHERE `user_id` = '" + Session.GetHabbo().Id + "' AND (`room_id`=  '0' OR `room_id` = '')");
+                    dbClient.SetQuery("SELECT `id` FROM `items` WHERE `user_id` = '" + Session.Habbo.Id + "' AND (`room_id`=  '0' OR `room_id` = '')");
                     Table = dbClient.GetTable();
                 }
 
@@ -48,7 +48,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
                     {
                         foreach (DataRow Row in Table.Rows)
                         {
-                            Item Item = Session.GetHabbo().GetInventoryComponent().GetItem(Convert.ToInt32(Row[0]));
+                            Item Item = Session.Habbo.GetInventoryComponent().GetItem(Convert.ToInt32(Row[0]));
                             if (Item == null || Item.RoomId > 0 || Item.Data.InteractionType != InteractionType.EXCHANGE)
                                 continue;
 
@@ -56,14 +56,14 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
 
                             dbClient.RunQuery("DELETE FROM `items` WHERE `id` = '" + Item.Id + "' LIMIT 1");
 
-                            Session.GetHabbo().GetInventoryComponent().RemoveItem(Item.Id);
+                            Session.Habbo.GetInventoryComponent().RemoveItem(Item.Id);
 
                             TotalValue += Value;
 
                             if (Value > 0)
                             {
-                                Session.GetHabbo().Credits += Value;
-                                Session.SendPacket(new CreditBalanceComposer(Session.GetHabbo().Credits));
+                                Session.Habbo.Credits += Value;
+                                Session.SendPacket(new CreditBalanceComposer(Session.Habbo.Credits));
                             }
                         }
                     }

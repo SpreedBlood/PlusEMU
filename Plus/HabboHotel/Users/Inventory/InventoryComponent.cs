@@ -209,7 +209,7 @@ namespace Plus.HabboHotel.Users.Inventory
             if (GetClient() == null)
                 return;
 
-            if (GetClient().GetHabbo() == null || GetClient().GetHabbo().GetInventoryComponent() == null)
+            if (GetClient().Habbo == null || GetClient().Habbo.GetInventoryComponent() == null)
                 GetClient().Disconnect();
 
             if (_floorItems.ContainsKey(id))

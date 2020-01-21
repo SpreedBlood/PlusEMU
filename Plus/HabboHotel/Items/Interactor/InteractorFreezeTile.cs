@@ -16,17 +16,17 @@ namespace Plus.HabboHotel.Items.Interactor
 
         public void OnTrigger(GameClient Session, Item Item, int Request, bool HasRights)
         {
-            if (Session == null || !Session.GetHabbo().InRoom || Item == null || Item.InteractingUser > 0)
+            if (Session == null || !Session.Habbo.InRoom || Item == null || Item.InteractingUser > 0)
                 return;
 
-            RoomUser User = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
+            RoomUser User = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Session.Habbo.Id);
             if (User == null)
                 return;
 
             if (User.Team != Team.None)
             {
                 User.FreezeInteracting = true;
-                Item.InteractingUser = Session.GetHabbo().Id;
+                Item.InteractingUser = Session.Habbo.Id;
 
                 if (Item.Data.InteractionType == InteractionType.FREEZE_TILE_BLOCK)
                 {

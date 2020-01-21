@@ -13,7 +13,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
         public int Header => ClientPacketHeader.GetPromotableRoomsMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            List<RoomData> rooms = RoomFactory.GetRoomsDataByOwnerSortByName(session.GetHabbo().Id);
+            List<RoomData> rooms = RoomFactory.GetRoomsDataByOwnerSortByName(session.Habbo.Id);
 
             rooms = rooms.Where(x => x.Promotion == null || x.Promotion.TimestampExpires < UnixTimestamp.GetNow()).ToList();
 

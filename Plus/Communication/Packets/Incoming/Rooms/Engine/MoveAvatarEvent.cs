@@ -8,17 +8,17 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
         public int Header => ClientPacketHeader.MoveAvatarMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null)
+            if (session == null || session.Habbo == null)
                 return;
 
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
-            RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(session.GetHabbo().Id);
+            RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(session.Habbo.Id);
             if (user == null || !user.CanWalk)
                 return;
 

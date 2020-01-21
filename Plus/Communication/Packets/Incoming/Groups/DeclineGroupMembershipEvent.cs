@@ -15,7 +15,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
             if (!PlusEnvironment.GetGame().GetGroupManager().TryGetGroup(groupId, out Group group))
                 return;
 
-            if (session.GetHabbo().Id != group.CreatorId && !group.IsAdmin(session.GetHabbo().Id))
+            if (session.Habbo.Id != group.CreatorId && !group.IsAdmin(session.Habbo.Id))
                 return;
 
             if (!group.HasRequest(userId))

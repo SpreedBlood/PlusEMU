@@ -22,42 +22,42 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Avatar
         public int Header => ClientPacketHeader.ChangeMottoMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session.GetHabbo().TimeMuted > 0)
+            if (session.Habbo.TimeMuted > 0)
             {
                 session.SendNotification("Oops, you're currently muted - you cannot change your motto.");
                 return;
             }
 
-            if ((DateTime.Now - session.GetHabbo().LastMottoUpdateTime).TotalSeconds <= 2.0)
+            if ((DateTime.Now - session.Habbo.LastMottoUpdateTime).TotalSeconds <= 2.0)
             {
-                session.GetHabbo().MottoUpdateWarnings += 1;
-                if (session.GetHabbo().MottoUpdateWarnings >= 25)
-                    session.GetHabbo().SessionMottoBlocked = true;
+                session.Habbo.MottoUpdateWarnings += 1;
+                if (session.Habbo.MottoUpdateWarnings >= 25)
+                    session.Habbo.SessionMottoBlocked = true;
                 return;
             }
 
-            if (session.GetHabbo().SessionMottoBlocked)
+            if (session.Habbo.SessionMottoBlocked)
                 return;
 
-            session.GetHabbo().LastMottoUpdateTime = DateTime.Now;
+            session.Habbo.LastMottoUpdateTime = DateTime.Now;
 
             string newMotto = StringCharFilter.Escape(packet.PopString().Trim());
 
             if (newMotto.Length > 38)
                 newMotto = newMotto.Substring(0, 38);
 
-            if (newMotto == session.GetHabbo().Motto)
+            if (newMotto == session.Habbo.Motto)
                 return;
 
-            if (!session.GetHabbo().GetPermissions().HasRight("word_filter_override"))
+            if (!session.Habbo.GetPermissions().HasRight("word_filter_override"))
                 newMotto = PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckMessage(newMotto);
 
-            session.GetHabbo().Motto = newMotto;
+            session.Habbo.Motto = newMotto;
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("UPDATE `users` SET `motto` = @motto WHERE `id` = @userId LIMIT 1");
-                dbClient.AddParameter("userId", session.GetHabbo().Id);
+                dbClient.AddParameter("userId", session.Habbo.Id);
                 dbClient.AddParameter("motto", newMotto);
                 dbClient.RunQuery();
             }
@@ -65,13 +65,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Avatar
             PlusEnvironment.GetGame().GetQuestManager().ProgressUserQuest(session, QuestType.ProfileChangeMotto);
             _achievementManager.ProgressAchievement(session, "ACH_Motto", 1);
 
-            if (session.GetHabbo().InRoom)
+            if (session.Habbo.InRoom)
             {
-                Room room = session.GetHabbo().CurrentRoom;
+                Room room = session.Habbo.CurrentRoom;
                 if (room == null)
                     return;
 
-                RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(session.GetHabbo().Id);
+                RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(session.Habbo.Id);
                 if (user == null || user.GetClient() == null)
                     return;
 

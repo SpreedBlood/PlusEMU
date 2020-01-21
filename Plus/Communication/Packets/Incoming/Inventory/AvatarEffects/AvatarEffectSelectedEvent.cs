@@ -12,18 +12,18 @@ namespace Plus.Communication.Packets.Incoming.Inventory.AvatarEffects
             if (effectId < 0)
                 effectId = 0;
 
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
-            RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(session.GetHabbo().Id);
+            RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(session.Habbo.Id);
             if (user == null)
                 return;
 
-            if (effectId != 0 && session.GetHabbo().Effects().HasEffect(effectId, true))
+            if (effectId != 0 && session.Habbo.Effects().HasEffect(effectId, true))
                 user.ApplyEffect(effectId);
         }
     }

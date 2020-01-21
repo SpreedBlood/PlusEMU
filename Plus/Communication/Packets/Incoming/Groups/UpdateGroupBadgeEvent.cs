@@ -15,7 +15,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
             if (!PlusEnvironment.GetGame().GetGroupManager().TryGetGroup(groupId, out Group group))
                 return;
 
-            if (group.CreatorId != session.GetHabbo().Id)
+            if (group.CreatorId != session.Habbo.Id)
                 return;
 
             int count = packet.PopInt();

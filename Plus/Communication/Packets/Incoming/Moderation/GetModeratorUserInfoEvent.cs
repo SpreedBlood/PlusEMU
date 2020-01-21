@@ -10,7 +10,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
         public int Header => ClientPacketHeader.GetModeratorUserInfoMessageEvent;
         public void Parse(HabboHotel.GameClients.GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().GetPermissions().HasRight("mod_tool"))
+            if (!session.Habbo.GetPermissions().HasRight("mod_tool"))
                 return;
 
             int userId = packet.PopInt();

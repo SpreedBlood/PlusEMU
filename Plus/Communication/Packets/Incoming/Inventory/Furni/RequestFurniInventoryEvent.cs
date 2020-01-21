@@ -13,7 +13,7 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Furni
         public int Header => ClientPacketHeader.RequestFurniInventoryMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            IEnumerable<Item> items = session.GetHabbo().GetInventoryComponent().GetWallAndFloor;
+            IEnumerable<Item> items = session.Habbo.GetInventoryComponent().GetWallAndFloor;
 
             int page = 0;
             int pages = ((items.Count() - 1) / 700) + 1;

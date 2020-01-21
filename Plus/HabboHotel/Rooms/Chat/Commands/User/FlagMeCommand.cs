@@ -22,15 +22,15 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
 
         public void Execute(GameClients.GameClient Session, Room Room, string[] Params)
         {
-            if (!CanChangeName(Session.GetHabbo()))
+            if (!CanChangeName(Session.Habbo))
             {
                 Session.SendWhisper("Sorry, it seems you currently do not have the option to change your username!");
                 return;
             }
 
-            Session.GetHabbo().ChangingName = true;
+            Session.Habbo.ChangingName = true;
             Session.SendNotification("Please be aware that if your username is deemed as inappropriate, you will be banned without question.\r\rAlso note that Staff will NOT change your username again should you have an issue with what you have chosen.\r\rClose this window and click yourself to begin choosing a new username!");
-            Session.SendPacket(new UserObjectComposer(Session.GetHabbo()));
+            Session.SendPacket(new UserObjectComposer(Session.Habbo));
         }
 
         private bool CanChangeName(Habbo Habbo)

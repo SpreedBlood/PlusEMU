@@ -17,7 +17,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
             DataTable table;
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("SELECT `asking_price` FROM `catalog_marketplace_offers` WHERE `user_id` = '" + session.GetHabbo().Id + "' AND `state` = '2'");
+                dbClient.SetQuery("SELECT `asking_price` FROM `catalog_marketplace_offers` WHERE `user_id` = '" + session.Habbo.Id + "' AND `state` = '2'");
                 table = dbClient.GetTable();
             }
 
@@ -30,13 +30,13 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
 
                 if (creditsOwed >= 1)
                 {
-                    session.GetHabbo().Credits += creditsOwed;
-                    session.SendPacket(new CreditBalanceComposer(session.GetHabbo().Credits));
+                    session.Habbo.Credits += creditsOwed;
+                    session.SendPacket(new CreditBalanceComposer(session.Habbo.Credits));
                 }
 
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                 {
-                    dbClient.RunQuery("DELETE FROM `catalog_marketplace_offers` WHERE `user_id` = '" + session.GetHabbo().Id + "' AND `state` = '2'");
+                    dbClient.RunQuery("DELETE FROM `catalog_marketplace_offers` WHERE `user_id` = '" + session.Habbo.Id + "' AND `state` = '2'");
                 }
             }
         }

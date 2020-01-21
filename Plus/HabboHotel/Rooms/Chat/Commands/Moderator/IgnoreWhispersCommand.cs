@@ -19,8 +19,8 @@
 
         public void Execute(GameClients.GameClient Session, Room Room, string[] Params)
         {
-            Session.GetHabbo().IgnorePublicWhispers = !Session.GetHabbo().IgnorePublicWhispers;
-            Session.SendWhisper("You're " + (Session.GetHabbo().IgnorePublicWhispers ? "now" : "no longer") + " ignoring public whispers!");
+            Session.Habbo.IgnorePublicWhispers = !Session.Habbo.IgnorePublicWhispers;
+            Session.SendWhisper("You're " + (Session.Habbo.IgnorePublicWhispers ? "now" : "no longer") + " ignoring public whispers!");
         }
     }
 }

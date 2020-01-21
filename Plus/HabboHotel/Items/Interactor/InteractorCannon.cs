@@ -14,14 +14,14 @@ namespace Plus.HabboHotel.Items.Interactor
 
         public void OnTrigger(GameClients.GameClient Session, Item Item, int Request, bool HasRights)
         {
-            if (Session == null || Session.GetHabbo() == null || Item == null)
+            if (Session == null || Session.Habbo == null || Item == null)
                 return;
 
-            Room Room = Session.GetHabbo().CurrentRoom;
+            Room Room = Session.Habbo.CurrentRoom;
             if (Room == null)
                 return;
 
-            RoomUser Actor = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
+            RoomUser Actor = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.Habbo.Id);
             if (Actor == null)
                 return;
 

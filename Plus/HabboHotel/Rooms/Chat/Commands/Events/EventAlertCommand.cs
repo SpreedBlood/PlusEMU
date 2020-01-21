@@ -38,7 +38,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Events
                     }
                     else if (!PlusEnvironment.Event)
                     {
-                        PlusEnvironment.GetGame().GetClientManager().SendPacket(new BroadcastMessageAlertComposer(":follow " + Session.GetHabbo().Username + " for events! win prizes!\r\n- " + Session.GetHabbo().Username, ""), "");
+                        PlusEnvironment.GetGame().GetClientManager().SendPacket(new BroadcastMessageAlertComposer(":follow " + Session.Habbo.Username + " for events! win prizes!\r\n- " + Session.Habbo.Username, ""), "");
                         PlusEnvironment.lastEvent = DateTime.Now;
                         PlusEnvironment.Event = true;
                     }
@@ -47,7 +47,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Events
                         TimeSpan timeSpan = DateTime.Now - PlusEnvironment.lastEvent;
                         if (timeSpan.Hours >= 1)
                         {
-                            PlusEnvironment.GetGame().GetClientManager().SendPacket(new BroadcastMessageAlertComposer(":follow " + Session.GetHabbo().Username + " for events! win prizes!\r\n- " + Session.GetHabbo().Username, ""), "");
+                            PlusEnvironment.GetGame().GetClientManager().SendPacket(new BroadcastMessageAlertComposer(":follow " + Session.Habbo.Username + " for events! win prizes!\r\n- " + Session.Habbo.Username, ""), "");
                             PlusEnvironment.lastEvent = DateTime.Now;
                         }
                         else

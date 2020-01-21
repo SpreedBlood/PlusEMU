@@ -23,7 +23,7 @@ namespace Plus.Communication.Rcon.Commands.User
                 return false;
 
             GameClient client = PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(userId);
-            if (client == null || client.GetHabbo() == null)
+            if (client == null || client.Habbo == null)
                 return false;
 
             // Validate the currency type
@@ -48,8 +48,8 @@ namespace Plus.Communication.Rcon.Commands.User
                             credits = dbClient.GetInteger();
                         }
 
-                        client.GetHabbo().Credits = credits;
-                        client.SendPacket(new CreditBalanceComposer(client.GetHabbo().Credits));
+                        client.Habbo.Credits = credits;
+                        client.SendPacket(new CreditBalanceComposer(client.Habbo.Credits));
                         break;
                     }
 
@@ -64,8 +64,8 @@ namespace Plus.Communication.Rcon.Commands.User
                             duckets = dbClient.GetInteger();
                         }
 
-                        client.GetHabbo().Duckets = duckets;
-                        client.SendPacket(new HabboActivityPointNotificationComposer(client.GetHabbo().Duckets, duckets));
+                        client.Habbo.Duckets = duckets;
+                        client.SendPacket(new HabboActivityPointNotificationComposer(client.Habbo.Duckets, duckets));
                         break;
                     }
 
@@ -79,7 +79,7 @@ namespace Plus.Communication.Rcon.Commands.User
                             diamonds = dbClient.GetInteger();
                         }
 
-                        client.GetHabbo().Diamonds = diamonds;
+                        client.Habbo.Diamonds = diamonds;
                         client.SendPacket(new HabboActivityPointNotificationComposer(diamonds, 0, 5));
                         break;
                     }
@@ -94,7 +94,7 @@ namespace Plus.Communication.Rcon.Commands.User
                             gotw = dbClient.GetInteger();
                         }
 
-                        client.GetHabbo().GOTWPoints = gotw;
+                        client.Habbo.GOTWPoints = gotw;
                         client.SendPacket(new HabboActivityPointNotificationComposer(gotw, 0, 103));
                         break;
                     }

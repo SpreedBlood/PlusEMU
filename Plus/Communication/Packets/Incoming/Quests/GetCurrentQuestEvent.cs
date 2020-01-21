@@ -10,10 +10,10 @@ namespace Plus.Communication.Packets.Incoming.Quests
         public int Header => ClientPacketHeader.GetCurrentQuestMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || !session.GetHabbo().InRoom)
+            if (session == null || session.Habbo == null || !session.Habbo.InRoom)
                 return;
 
-            Quest userQuest = PlusEnvironment.GetGame().GetQuestManager().GetQuest(session.GetHabbo().QuestLastCompleted);
+            Quest userQuest = PlusEnvironment.GetGame().GetQuestManager().GetQuest(session.Habbo.QuestLastCompleted);
             Quest nextQuest = PlusEnvironment.GetGame().GetQuestManager().GetNextQuestInSeries(userQuest.Category, userQuest.Number + 1);
 
             if (nextQuest == null)
@@ -21,11 +21,11 @@ namespace Plus.Communication.Packets.Incoming.Quests
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.RunQuery("REPLACE INTO `user_quests`(`user_id`,`quest_id`) VALUES (" + session.GetHabbo().Id + ", " + nextQuest.Id + ")");
-                dbClient.RunQuery("UPDATE `user_stats` SET `quest_id` = '" + nextQuest.Id + "' WHERE `id` = '" + session.GetHabbo().Id + "' LIMIT 1");
+                dbClient.RunQuery("REPLACE INTO `user_quests`(`user_id`,`quest_id`) VALUES (" + session.Habbo.Id + ", " + nextQuest.Id + ")");
+                dbClient.RunQuery("UPDATE `user_stats` SET `quest_id` = '" + nextQuest.Id + "' WHERE `id` = '" + session.Habbo.Id + "' LIMIT 1");
             }
 
-            session.GetHabbo().GetStats().QuestId = nextQuest.Id;
+            session.Habbo.GetStats().QuestId = nextQuest.Id;
             PlusEnvironment.GetGame().GetQuestManager().GetList(session, null);
             session.SendPacket(new QuestStartedComposer(session, nextQuest));
         }

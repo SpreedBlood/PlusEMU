@@ -35,23 +35,23 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator.Fun
                 return;
             }
 
-            if (TargetClient.GetHabbo() == null)
+            if (TargetClient.Habbo == null)
             {
                 Session.SendWhisper("An error occoured whilst finding that user, maybe they're not online.");
                 return;
             }
 
-            if (TargetClient.GetHabbo().Username == Session.GetHabbo().Username)
+            if (TargetClient.Habbo.Username == Session.Habbo.Username)
             {
                 Session.SendWhisper("Get a life.");
                 return;
             }
 
-            TargetClient.SendNotification("You have been summoned to " + Session.GetHabbo().Username + "!");
-            if (!TargetClient.GetHabbo().InRoom)
-                TargetClient.SendPacket(new RoomForwardComposer(Session.GetHabbo().CurrentRoomId));
+            TargetClient.SendNotification("You have been summoned to " + Session.Habbo.Username + "!");
+            if (!TargetClient.Habbo.InRoom)
+                TargetClient.SendPacket(new RoomForwardComposer(Session.Habbo.CurrentRoomId));
             else
-                TargetClient.GetHabbo().PrepareRoom(Session.GetHabbo().CurrentRoomId, "");
+                TargetClient.Habbo.PrepareRoom(Session.Habbo.CurrentRoomId, "");
         }
     }
 }

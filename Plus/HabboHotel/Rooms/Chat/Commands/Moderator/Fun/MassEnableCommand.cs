@@ -37,7 +37,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator.Fun
                     return;
                 }
 
-                if (!Session.GetHabbo().GetPermissions().HasCommand("command_override_massenable") && Room.OwnerId != Session.GetHabbo().Id)
+                if (!Session.Habbo.GetPermissions().HasCommand("command_override_massenable") && Room.OwnerId != Session.Habbo.Id)
                 {
                     Session.SendWhisper("You can only use this command in your own room.");
                     return;

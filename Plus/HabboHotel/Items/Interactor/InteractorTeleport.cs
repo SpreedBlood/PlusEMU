@@ -69,10 +69,10 @@ namespace Plus.HabboHotel.Items.Interactor
 
         public void OnTrigger(GameClient Session, Item Item, int Request, bool HasRights)
         {
-            if (Item == null || Item.GetRoom() == null || Session == null || Session.GetHabbo() == null)
+            if (Item == null || Item.GetRoom() == null || Session == null || Session.Habbo == null)
                 return;
 
-            RoomUser User = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
+            RoomUser User = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Session.Habbo.Id);
             if (User == null)
                 return;
 
@@ -87,13 +87,13 @@ namespace Plus.HabboHotel.Items.Interactor
                     return;
                 }
 
-                if (!User.CanWalk || Session.GetHabbo().IsTeleporting || Session.GetHabbo().TeleporterId != 0 ||
+                if (!User.CanWalk || Session.Habbo.IsTeleporting || Session.Habbo.TeleporterId != 0 ||
                     (User.LastInteraction + 2) - PlusEnvironment.GetUnixTimestamp() < 0)
                     return;
 
                 User.TeleDelay = 2;
 
-                Item.InteractingUser = User.GetClient().GetHabbo().Id;
+                Item.InteractingUser = User.GetClient().Habbo.Id;
             }
             else if (User.CanWalk)
             {

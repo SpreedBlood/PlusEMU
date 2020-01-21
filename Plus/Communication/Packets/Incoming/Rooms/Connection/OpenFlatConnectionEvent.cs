@@ -7,13 +7,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Connection
         public int Header => ClientPacketHeader.OpenFlatConnectionMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null)
+            if (session == null || session.Habbo == null)
                 return;
 
             int roomId = packet.PopInt();
             string password = packet.PopString();
 
-            session.GetHabbo().PrepareRoom(roomId, password);
+            session.Habbo.PrepareRoom(roomId, password);
         }
     }
 }

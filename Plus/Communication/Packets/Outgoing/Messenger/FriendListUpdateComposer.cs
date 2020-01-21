@@ -24,18 +24,18 @@ namespace Plus.Communication.Packets.Outgoing.Messenger
             WriteInteger(1);//Updates Count
             WriteInteger(0);//Update
 
-            Relationship Relationship = Session.GetHabbo().Relationships.FirstOrDefault(x => x.Value.UserId == Convert.ToInt32(Buddy.UserId)).Value;
+            Relationship Relationship = Session.Habbo.Relationships.FirstOrDefault(x => x.Value.UserId == Convert.ToInt32(Buddy.UserId)).Value;
             int y = Relationship == null ? 0 : Relationship.Type;
 
             WriteInteger(Buddy.UserId);
             WriteString(Buddy.mUsername);
             WriteInteger(1);
-            if (!Buddy.mAppearOffline || Session.GetHabbo().GetPermissions().HasRight("mod_tool"))
+            if (!Buddy.mAppearOffline || Session.Habbo.GetPermissions().HasRight("mod_tool"))
                 WriteBoolean(Buddy.IsOnline);
             else
                 WriteBoolean(false);
 
-            if (!Buddy.mHideInroom || Session.GetHabbo().GetPermissions().HasRight("mod_tool"))
+            if (!Buddy.mHideInroom || Session.Habbo.GetPermissions().HasRight("mod_tool"))
                 WriteBoolean(Buddy.InRoom);
             else
                 WriteBoolean(false);

@@ -14,10 +14,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
         public int Header => ClientPacketHeader.CreditFurniRedeemMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
             if (!room.CheckRights(session, true))
@@ -41,8 +41,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
 
             if (value > 0)
             {
-                session.GetHabbo().Credits += value;
-                session.SendPacket(new CreditBalanceComposer(session.GetHabbo().Credits));
+                session.Habbo.Credits += value;
+                session.SendPacket(new CreditBalanceComposer(session.Habbo.Credits));
             }
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
@@ -54,7 +54,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
 
             session.SendPacket(new FurniListUpdateComposer());
             room.GetRoomItemHandler().RemoveFurniture(null, exchange.Id);
-            session.GetHabbo().GetInventoryComponent().RemoveItem(exchange.Id);
+            session.Habbo.GetInventoryComponent().RemoveItem(exchange.Id);
 
         }
     }

@@ -16,7 +16,7 @@ namespace Plus.Communication.Packets.Incoming.Navigator
             if (!RoomFactory.TryGetData(roomId, out RoomData _))
                 return;
 
-            session.GetHabbo().HomeRoom = roomId;
+            session.Habbo.HomeRoom = roomId;
             session.SendPacket(new NavigatorSettingsComposer(roomId));
         }
     }

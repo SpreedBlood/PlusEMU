@@ -51,7 +51,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
             if (!PlusEnvironment.GetGame().GetCatalog().TryGetPage(pageId, out CatalogPage page))
                 return;
 
-            if (!page.Enabled || !page.Visible || page.MinimumRank > session.GetHabbo().Rank || (page.MinimumVIP > session.GetHabbo().VIPRank && session.GetHabbo().Rank == 1))
+            if (!page.Enabled || !page.Visible || page.MinimumRank > session.Habbo.Rank || (page.MinimumVIP > session.Habbo.VIPRank && session.Habbo.Rank == 1))
                 return;
 
             if (!page.Items.TryGetValue(itemId, out CatalogItem item))
@@ -75,7 +75,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
             int totalPixelCost = amount > 1 ? ((item.CostPixels * amount) - ((int)Math.Floor((double)amount / 6) * item.CostPixels)) : item.CostPixels;
             int totalDiamondCost = amount > 1 ? ((item.CostDiamonds * amount) - ((int)Math.Floor((double)amount / 6) * item.CostDiamonds)) : item.CostDiamonds;
 
-            if (session.GetHabbo().Credits < totalCreditsCost || session.GetHabbo().Duckets < totalPixelCost || session.GetHabbo().Diamonds < totalDiamondCost)
+            if (session.Habbo.Credits < totalCreditsCost || session.Habbo.Duckets < totalPixelCost || session.Habbo.Diamonds < totalDiamondCost)
                 return;
 
             int limitedEditionSells = 0;
@@ -150,7 +150,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                     break;
 
                 case InteractionType.TROPHY:
-                    extraData = session.GetHabbo().Username + Convert.ToChar(9) + DateTime.Now.Day + "-" + DateTime.Now.Month + "-" + DateTime.Now.Year + Convert.ToChar(9) + extraData;
+                    extraData = session.Habbo.Username + Convert.ToChar(9) + DateTime.Now.Day + "-" + DateTime.Now.Month + "-" + DateTime.Now.Year + Convert.ToChar(9) + extraData;
                     break;
 
                 case InteractionType.MANNEQUIN:
@@ -158,18 +158,18 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                     break;
 
                 case InteractionType.BADGE_DISPLAY:
-                    if (!session.GetHabbo().GetBadgeComponent().HasBadge(extraData))
+                    if (!session.Habbo.GetBadgeComponent().HasBadge(extraData))
                     {
                         session.SendPacket(new BroadcastMessageAlertComposer("Oops, it appears that you do not own this badge."));
                         return;
                     }
 
-                    extraData = extraData + Convert.ToChar(9) + session.GetHabbo().Username + Convert.ToChar(9) + DateTime.Now.Day + "-" + DateTime.Now.Month + "-" + DateTime.Now.Year;
+                    extraData = extraData + Convert.ToChar(9) + session.Habbo.Username + Convert.ToChar(9) + DateTime.Now.Day + "-" + DateTime.Now.Month + "-" + DateTime.Now.Year;
                     break;
 
                 case InteractionType.BADGE:
                     {
-                        if (session.GetHabbo().GetBadgeComponent().HasBadge(item.Data.ItemName))
+                        if (session.Habbo.GetBadgeComponent().HasBadge(item.Data.ItemName))
                         {
                             session.SendPacket(new PurchaseErrorComposer(1));
                             return;
@@ -208,20 +208,20 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
             if (item.CostCredits > 0)
             {
-                session.GetHabbo().Credits -= totalCreditsCost;
-                session.SendPacket(new CreditBalanceComposer(session.GetHabbo().Credits));
+                session.Habbo.Credits -= totalCreditsCost;
+                session.SendPacket(new CreditBalanceComposer(session.Habbo.Credits));
             }
 
             if (item.CostPixels > 0)
             {
-                session.GetHabbo().Duckets -= totalPixelCost;
-                session.SendPacket(new HabboActivityPointNotificationComposer(session.GetHabbo().Duckets, session.GetHabbo().Duckets));//Love you, Tom.
+                session.Habbo.Duckets -= totalPixelCost;
+                session.SendPacket(new HabboActivityPointNotificationComposer(session.Habbo.Duckets, session.Habbo.Duckets));//Love you, Tom.
             }
 
             if (item.CostDiamonds > 0)
             {
-                session.GetHabbo().Diamonds -= totalDiamondCost;
-                session.SendPacket(new HabboActivityPointNotificationComposer(session.GetHabbo().Diamonds, 0, 5));
+                session.Habbo.Diamonds -= totalDiamondCost;
+                session.SendPacket(new HabboActivityPointNotificationComposer(session.Habbo.Diamonds, 0, 5));
             }
 
             switch (item.Data.Type.ToString().ToLower())
@@ -235,7 +235,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                         default:
                             if (amountPurchase > 1)
                             {
-                                List<Item> items = ItemFactory.CreateMultipleItems(item.Data, session.GetHabbo(), extraData, amountPurchase);
+                                List<Item> items = ItemFactory.CreateMultipleItems(item.Data, session.Habbo, extraData, amountPurchase);
 
                                 if (items != null)
                                 {
@@ -244,7 +244,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                             }
                             else
                             {
-                                newItem = ItemFactory.CreateSingleItemNullable(item.Data, session.GetHabbo(), extraData, extraData, 0, limitedEditionSells, limitedEditionStack);
+                                newItem = ItemFactory.CreateSingleItemNullable(item.Data, session.Habbo, extraData, extraData, 0, limitedEditionSells, limitedEditionStack);
 
                                 if (newItem != null)
                                 {
@@ -258,7 +258,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                         case InteractionType.GUILD_FORUM:
                             if (amountPurchase > 1)
                             {
-                                List<Item> items = ItemFactory.CreateMultipleItems(item.Data, session.GetHabbo(), extraData, amountPurchase, Convert.ToInt32(extraData));
+                                List<Item> items = ItemFactory.CreateMultipleItems(item.Data, session.Habbo, extraData, amountPurchase, Convert.ToInt32(extraData));
 
                                 if (items != null)
                                 {
@@ -267,7 +267,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                             }
                             else
                             {
-                                newItem = ItemFactory.CreateSingleItemNullable(item.Data, session.GetHabbo(), extraData, extraData, Convert.ToInt32(extraData));
+                                newItem = ItemFactory.CreateSingleItemNullable(item.Data, session.Habbo, extraData, extraData, Convert.ToInt32(extraData));
 
                                 if (newItem != null)
                                 {
@@ -280,7 +280,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                         case InteractionType.TELEPORT:
                             for (int i = 0; i < amountPurchase; i++)
                             {
-                                List<Item> teleItems = ItemFactory.CreateTeleporterItems(item.Data, session.GetHabbo());
+                                List<Item> teleItems = ItemFactory.CreateTeleporterItems(item.Data, session.Habbo);
 
                                 if (teleItems != null)
                                 {
@@ -293,7 +293,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                             {
                                 if (amountPurchase > 1)
                                 {
-                                    List<Item> items = ItemFactory.CreateMultipleItems(item.Data, session.GetHabbo(), extraData, amountPurchase);
+                                    List<Item> items = ItemFactory.CreateMultipleItems(item.Data, session.Habbo, extraData, amountPurchase);
 
                                     if (items != null)
                                     {
@@ -306,7 +306,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                                 }
                                 else
                                 {
-                                    newItem = ItemFactory.CreateSingleItemNullable(item.Data, session.GetHabbo(), extraData, extraData);
+                                    newItem = ItemFactory.CreateSingleItemNullable(item.Data, session.Habbo, extraData, extraData);
 
                                     if (newItem != null)
                                     {
@@ -321,7 +321,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                             {
                                 if (amountPurchase > 1)
                                 {
-                                    List<Item> items = ItemFactory.CreateMultipleItems(item.Data, session.GetHabbo(), extraData, amountPurchase);
+                                    List<Item> items = ItemFactory.CreateMultipleItems(item.Data, session.Habbo, extraData, amountPurchase);
 
                                     if (items != null)
                                     {
@@ -334,7 +334,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                                 }
                                 else
                                 {
-                                    newItem = ItemFactory.CreateSingleItemNullable(item.Data, session.GetHabbo(), extraData, extraData);
+                                    newItem = ItemFactory.CreateSingleItemNullable(item.Data, session.Habbo, extraData, extraData);
 
                                     if (newItem != null)
                                     {
@@ -351,7 +351,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                                 {
                                     foreach (CatalogItem catalogItem in deal.ItemDataList.ToList())
                                     {
-                                        List<Item> items = ItemFactory.CreateMultipleItems(catalogItem.Data, session.GetHabbo(), "", amountPurchase);
+                                        List<Item> items = ItemFactory.CreateMultipleItems(catalogItem.Data, session.Habbo, "", amountPurchase);
 
                                         if (items != null)
                                         {
@@ -365,7 +365,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
                     foreach (Item purchasedItem in generatedGenericItems)
                     {
-                        if (session.GetHabbo().GetInventoryComponent().TryAddItem(purchasedItem))
+                        if (session.Habbo.GetInventoryComponent().TryAddItem(purchasedItem))
                         {
                             //Session.SendMessage(new FurniListAddComposer(PurchasedItem));
                             session.SendPacket(new FurniListNotificationComposer(purchasedItem.Id, 1));
@@ -376,9 +376,9 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                 case "e":
                     AvatarEffect effect;
 
-                    if (session.GetHabbo().Effects().HasEffect(item.Data.SpriteId))
+                    if (session.Habbo.Effects().HasEffect(item.Data.SpriteId))
                     {
-                        effect = session.GetHabbo().Effects().GetEffectNullable(item.Data.SpriteId);
+                        effect = session.Habbo.Effects().GetEffectNullable(item.Data.SpriteId);
 
                         if (effect != null)
                         {
@@ -386,20 +386,20 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                         }
                     }
                     else
-                        effect = AvatarEffectFactory.CreateNullable(session.GetHabbo(), item.Data.SpriteId, 3600);
+                        effect = AvatarEffectFactory.CreateNullable(session.Habbo, item.Data.SpriteId, 3600);
 
-                    if (effect != null)// && Session.GetHabbo().Effects().TryAdd(Effect))
+                    if (effect != null)// && Session.Habbo.Effects().TryAdd(Effect))
                     {
                         session.SendPacket(new AvatarEffectAddedComposer(item.Data.SpriteId, 3600));
                     }
                     break;
 
                 case "r":
-                    Bot bot = BotUtility.CreateBot(item.Data, session.GetHabbo().Id);
+                    Bot bot = BotUtility.CreateBot(item.Data, session.Habbo.Id);
                     if (bot != null)
                     {
-                        session.GetHabbo().GetInventoryComponent().TryAddBot(bot);
-                        session.SendPacket(new BotInventoryComposer(session.GetHabbo().GetInventoryComponent().GetBots()));
+                        session.Habbo.GetInventoryComponent().TryAddBot(bot);
+                        session.SendPacket(new BotInventoryComposer(session.Habbo.GetInventoryComponent().GetBots()));
                         session.SendPacket(new FurniListNotificationComposer(bot.Id, 5));
                     }
                     else
@@ -408,7 +408,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
                 case "b":
                     {
-                        session.GetHabbo().GetBadgeComponent().GiveBadge(item.Data.ItemName, true, session);
+                        session.Habbo.GetBadgeComponent().GiveBadge(item.Data.ItemName, true, session);
                         session.SendPacket(new FurniListNotificationComposer(0, 4));
                         break;
                     }
@@ -417,20 +417,20 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                     {
                         string[] petData = extraData.Split('\n');
 
-                        Pet generatedPet = PetUtility.CreatePet(session.GetHabbo().Id, petData[0], item.Data.BehaviourData, petData[1], petData[2]);
+                        Pet generatedPet = PetUtility.CreatePet(session.Habbo.Id, petData[0], item.Data.BehaviourData, petData[1], petData[2]);
                         if (generatedPet != null)
                         {
-                            session.GetHabbo().GetInventoryComponent().TryAddPet(generatedPet);
+                            session.Habbo.GetInventoryComponent().TryAddPet(generatedPet);
 
                             session.SendPacket(new FurniListNotificationComposer(generatedPet.PetId, 3));
-                            session.SendPacket(new PetInventoryComposer(session.GetHabbo().GetInventoryComponent().GetPets()));
+                            session.SendPacket(new PetInventoryComposer(session.Habbo.GetInventoryComponent().GetPets()));
 
                             if (PlusEnvironment.GetGame().GetItemManager().GetItem(320, out ItemData petFood))
                             {
-                                Item food = ItemFactory.CreateSingleItemNullable(petFood, session.GetHabbo(), "", "");
+                                Item food = ItemFactory.CreateSingleItemNullable(petFood, session.Habbo, "", "");
                                 if (food != null)
                                 {
-                                    session.GetHabbo().GetInventoryComponent().TryAddItem(food);
+                                    session.Habbo.GetInventoryComponent().TryAddItem(food);
                                     session.SendPacket(new FurniListNotificationComposer(food.Id, 1));
                                 }
                             }
@@ -442,9 +442,9 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
             if (!string.IsNullOrEmpty(item.Badge) &&
                 PlusEnvironment.GetGame().GetBadgeManager().TryGetBadge(item.Badge, out BadgeDefinition badge) &&
-                (string.IsNullOrEmpty(badge.RequiredRight) || session.GetHabbo().GetPermissions().HasRight(badge.RequiredRight)))
+                (string.IsNullOrEmpty(badge.RequiredRight) || session.Habbo.GetPermissions().HasRight(badge.RequiredRight)))
             {
-                session.GetHabbo().GetBadgeComponent().GiveBadge(badge.Code, true, session);
+                session.Habbo.GetBadgeComponent().GiveBadge(badge.Code, true, session);
             }
 
             session.SendPacket(new PurchaseOKComposer(item, item.Data));

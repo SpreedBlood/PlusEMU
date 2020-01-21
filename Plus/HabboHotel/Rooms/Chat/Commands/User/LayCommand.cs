@@ -19,7 +19,7 @@
 
         public void Execute(GameClients.GameClient Session, Room Room, string[] Params)
         {
-            RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
+            RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.Habbo.Id);
             if (User == null)
                 return;
 
@@ -32,8 +32,8 @@
             if (User.Statusses.ContainsKey("sit") || User.isSitting || User.RidingHorse || User.IsWalking)
                 return;
 
-            if (Session.GetHabbo().Effects().CurrentEffect > 0)
-                Session.GetHabbo().Effects().ApplyEffect(0);
+            if (Session.Habbo.Effects().CurrentEffect > 0)
+                Session.Habbo.Effects().ApplyEffect(0);
 
             if (!User.Statusses.ContainsKey("lay"))
             {

@@ -82,7 +82,7 @@ namespace Plus.HabboHotel.Rewards
 
         public void CheckRewards(GameClient Session)
         {
-            if (Session == null || Session.GetHabbo() == null)
+            if (Session == null || Session.Habbo == null)
                 return;
 
             foreach (KeyValuePair<int, Reward> Entry in _rewards)
@@ -90,7 +90,7 @@ namespace Plus.HabboHotel.Rewards
                 int Id = Entry.Key;
                 Reward Reward = Entry.Value;
 
-                if (HasReward(Session.GetHabbo().Id, Id))
+                if (HasReward(Session.Habbo.Id, Id))
                     continue;
 
                 if (Reward.Active)
@@ -99,29 +99,29 @@ namespace Plus.HabboHotel.Rewards
                     {
                         case RewardType.Badge:
                             {
-                                if (!Session.GetHabbo().GetBadgeComponent().HasBadge(Reward.RewardData))
-                                    Session.GetHabbo().GetBadgeComponent().GiveBadge(Reward.RewardData, true, Session);
+                                if (!Session.Habbo.GetBadgeComponent().HasBadge(Reward.RewardData))
+                                    Session.Habbo.GetBadgeComponent().GiveBadge(Reward.RewardData, true, Session);
                                 break;
                             }
 
                         case RewardType.Credits:
                             {
-                                Session.GetHabbo().Credits += Convert.ToInt32(Reward.RewardData);
-                                Session.SendPacket(new CreditBalanceComposer(Session.GetHabbo().Credits));
+                                Session.Habbo.Credits += Convert.ToInt32(Reward.RewardData);
+                                Session.SendPacket(new CreditBalanceComposer(Session.Habbo.Credits));
                                 break;
                             }
 
                         case RewardType.Duckets:
                             {
-                                Session.GetHabbo().Duckets += Convert.ToInt32(Reward.RewardData);
-                                Session.SendPacket(new HabboActivityPointNotificationComposer(Session.GetHabbo().Duckets, Convert.ToInt32(Reward.RewardData)));
+                                Session.Habbo.Duckets += Convert.ToInt32(Reward.RewardData);
+                                Session.SendPacket(new HabboActivityPointNotificationComposer(Session.Habbo.Duckets, Convert.ToInt32(Reward.RewardData)));
                                 break;
                             }
 
                         case RewardType.Diamonds:
                             {
-                                Session.GetHabbo().Diamonds += Convert.ToInt32(Reward.RewardData);
-                                Session.SendPacket(new HabboActivityPointNotificationComposer(Session.GetHabbo().Diamonds, Convert.ToInt32(Reward.RewardData), 5));
+                                Session.Habbo.Diamonds += Convert.ToInt32(Reward.RewardData);
+                                Session.SendPacket(new HabboActivityPointNotificationComposer(Session.Habbo.Diamonds, Convert.ToInt32(Reward.RewardData), 5));
                                 break;
                             }
                     }
@@ -129,7 +129,7 @@ namespace Plus.HabboHotel.Rewards
                     if (!String.IsNullOrEmpty(Reward.Message))
                         Session.SendNotification(Reward.Message);
 
-                    LogReward(Session.GetHabbo().Id, Id);
+                    LogReward(Session.Habbo.Id, Id);
                 }
                 else
                     continue;

@@ -38,7 +38,7 @@
                 }
                 else
                 {
-                    session.GetHabbo().PrepareRoom(roomId, "");
+                    session.Habbo.PrepareRoom(roomId, "");
                 }
             }
         }

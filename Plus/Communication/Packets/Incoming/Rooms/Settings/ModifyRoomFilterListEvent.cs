@@ -8,10 +8,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
         public int Header => ClientPacketHeader.ModifyRoomFilterListMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            Room instance = session.GetHabbo().CurrentRoom;
+            Room instance = session.Habbo.CurrentRoom;
             if (instance == null)
                 return;
 

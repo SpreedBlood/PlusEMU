@@ -11,17 +11,17 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
         public int Header => ClientPacketHeader.SetMannequinFigureMessageEvent;
         public void Parse(HabboHotel.GameClients.GameClient session, ClientPacket packet)
         {
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null || !room.CheckRights(session, true))
                 return;
 
             int itemId = packet.PopInt();
-            Item item = session.GetHabbo().CurrentRoom.GetRoomItemHandler().GetItem(itemId);
+            Item item = session.Habbo.CurrentRoom.GetRoomItemHandler().GetItem(itemId);
             if (item == null)
                 return;
 
-            string gender = session.GetHabbo().Gender.ToLower();
-            string figure = session.GetHabbo().Look.Split('.').Where(str => !str.Contains("hr") && !str.Contains("hd") && !str.Contains("he") && !str.Contains("ea") && !str.Contains("ha")).Aggregate("", (current, str) => current + (str + "."));
+            string gender = session.Habbo.Gender.ToLower();
+            string figure = session.Habbo.Look.Split('.').Where(str => !str.Contains("hr") && !str.Contains("hd") && !str.Contains("he") && !str.Contains("ea") && !str.Contains("ha")).Aggregate("", (current, str) => current + (str + "."));
 
             figure = figure.TrimEnd('.');
             if (item.ExtraData.Contains(Convert.ToChar(5)))

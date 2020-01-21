@@ -9,7 +9,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
         public int Header => ClientPacketHeader.GetModeratorRoomInfoMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().GetPermissions().HasRight("mod_tool"))
+            if (!session.Habbo.GetPermissions().HasRight("mod_tool"))
                 return;
 
             int roomId = packet.PopInt();

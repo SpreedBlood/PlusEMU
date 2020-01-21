@@ -21,7 +21,7 @@ namespace Plus.HabboHotel.Items.Interactor
             RoomUser User = null;
 
             if (Session != null)
-                User = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
+                User = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Session.Habbo.Id);
 
             if (User == null)
                 return;
@@ -63,8 +63,8 @@ namespace Plus.HabboHotel.Items.Interactor
                         UserOne.CanWalk = false;
                         UserTwo.CanWalk = false;
 
-                        Item.InteractingUser = UserOne.GetClient().GetHabbo().Id;
-                        Item.InteractingUser2 = UserTwo.GetClient().GetHabbo().Id;
+                        Item.InteractingUser = UserOne.GetClient().Habbo.Id;
+                        Item.InteractingUser2 = UserTwo.GetClient().Habbo.Id;
 
                         UserOne.GetClient().SendPacket(new LoveLockDialogueMessageComposer(Item.Id));
                         UserTwo.GetClient().SendPacket(new LoveLockDialogueMessageComposer(Item.Id));

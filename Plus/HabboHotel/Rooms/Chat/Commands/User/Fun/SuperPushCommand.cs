@@ -29,7 +29,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
                 return;
             }
 
-            if (!Room.SuperPushEnabled && !Room.CheckRights(Session, true) && !Session.GetHabbo().GetPermissions().HasRight("room_override_custom_config"))
+            if (!Room.SuperPushEnabled && !Room.CheckRights(Session, true) && !Session.Habbo.GetPermissions().HasRight("room_override_custom_config"))
             {
                 Session.SendWhisper("Oops, it appears that the room owner has disabled the ability to use the push command in here.");
                 return;
@@ -42,14 +42,14 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
                 return;
             }
 
-            RoomUser TargetUser = Room.GetRoomUserManager().GetRoomUserByHabbo(TargetClient.GetHabbo().Id);
+            RoomUser TargetUser = Room.GetRoomUserManager().GetRoomUserByHabbo(TargetClient.Habbo.Id);
             if (TargetUser == null)
             {
                 Session.SendWhisper("An error occoured whilst finding that user, maybe they're not online or in this room.");
                 return;
             }
 
-            if (TargetClient.GetHabbo().Username == Session.GetHabbo().Username)
+            if (TargetClient.Habbo.Username == Session.Habbo.Username)
             {
                 Session.SendWhisper("Come on, surely you don't want to push yourself!");
                 return;
@@ -61,7 +61,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
                 return;
             }
 
-            RoomUser ThisUser = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
+            RoomUser ThisUser = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.Habbo.Id);
             if (ThisUser == null)
                 return;
 

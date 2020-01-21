@@ -32,7 +32,7 @@ namespace Plus.Communication.Packets.Outgoing.Rooms.Engine
         {
             if (!User.IsPet && !User.IsBot)
             {
-                Habbo Habbo = User.GetClient().GetHabbo();
+                Habbo Habbo = User.GetClient().Habbo;
 
                 Group Group = null;
                 if (Habbo != null)

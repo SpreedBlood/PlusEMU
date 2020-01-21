@@ -21,7 +21,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
 
         public void Execute(GameClients.GameClient Session, Room Room, string[] Params)
         {
-            RoomUser ThisUser = Session.GetHabbo().CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
+            RoomUser ThisUser = Session.Habbo.CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(Session.Habbo.Id);
             if (ThisUser == null)
                 return;
 
@@ -40,7 +40,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
                     return;
                 }
 
-                Session.GetHabbo().CurrentRoom.SendPacket(new DanceComposer(ThisUser, DanceId));
+                Session.Habbo.CurrentRoom.SendPacket(new DanceComposer(ThisUser, DanceId));
             }
             else
                 Session.SendWhisper("Please enter a valid dance ID.");

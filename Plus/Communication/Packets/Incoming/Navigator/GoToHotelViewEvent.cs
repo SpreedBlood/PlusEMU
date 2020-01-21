@@ -8,13 +8,13 @@ namespace Plus.Communication.Packets.Incoming.Navigator
         public int Header => ClientPacketHeader.GoToHotelViewMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null)
+            if (session == null || session.Habbo == null)
                 return;
 
 
-            if (session.GetHabbo().InRoom)
+            if (session.Habbo.InRoom)
             {
-                if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room oldRoom))
+                if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room oldRoom))
                     return;
 
                 if (oldRoom.GetRoomUserManager() != null)

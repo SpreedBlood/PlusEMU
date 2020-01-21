@@ -54,7 +54,7 @@ namespace Plus.HabboHotel.Rooms.Games.Teams
             {
                 case "banzai":
                     {
-                        Room room = user.GetClient().GetHabbo().CurrentRoom;
+                        Room room = user.GetClient().Habbo.CurrentRoom;
                         if (room == null)
                             return;
 
@@ -121,7 +121,7 @@ namespace Plus.HabboHotel.Rooms.Games.Teams
 
                 case "freeze":
                     {
-                        Room room = user.GetClient().GetHabbo().CurrentRoom;
+                        Room room = user.GetClient().Habbo.CurrentRoom;
                         if (room == null)
                             return;
 
@@ -172,7 +172,7 @@ namespace Plus.HabboHotel.Rooms.Games.Teams
             {
                 case "banzai":
                     {
-                        Room room = user.GetClient().GetHabbo().CurrentRoom;
+                        Room room = user.GetClient().Habbo.CurrentRoom;
                         if (room == null)
                             return;
 
@@ -238,7 +238,7 @@ namespace Plus.HabboHotel.Rooms.Games.Teams
                     }
                 case "freeze":
                     {
-                        Room room = user.GetClient().GetHabbo().CurrentRoom;
+                        Room room = user.GetClient().Habbo.CurrentRoom;
                         if (room == null)
                             return;
 

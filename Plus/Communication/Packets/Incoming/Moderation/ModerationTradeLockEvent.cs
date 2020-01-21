@@ -9,7 +9,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
         public int Header => ClientPacketHeader.ModerationTradeLockMessageEvent;
         public void Parse(HabboHotel.GameClients.GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || !session.GetHabbo().GetPermissions().HasRight("mod_trade_lock"))
+            if (session == null || session.Habbo == null || !session.Habbo.GetPermissions().HasRight("mod_trade_lock"))
                 return;
 
             int userId = packet.PopInt();
@@ -27,7 +27,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
                 return;
             }
 
-            if (habbo.GetPermissions().HasRight("mod_trade_lock") && !session.GetHabbo().GetPermissions().HasRight("mod_trade_lock_any"))
+            if (habbo.GetPermissions().HasRight("mod_trade_lock") && !session.Habbo.GetPermissions().HasRight("mod_trade_lock_any"))
             {
                 session.SendWhisper("Oops, you cannot trade lock another user ranked 5 or higher.");
                 return;

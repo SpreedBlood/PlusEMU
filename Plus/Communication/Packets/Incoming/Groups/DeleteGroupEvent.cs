@@ -18,13 +18,13 @@ namespace Plus.Communication.Packets.Incoming.Groups
                 return;
             }
 
-            if (group.CreatorId != session.GetHabbo().Id && !session.GetHabbo().GetPermissions().HasRight("group_delete_override"))//Maybe a FUSE check for staff override?
+            if (group.CreatorId != session.Habbo.Id && !session.Habbo.GetPermissions().HasRight("group_delete_override"))//Maybe a FUSE check for staff override?
             {
                 session.SendNotification("Oops, only the group owner can delete a group!");
                 return;
             }
 
-            if (group.MemberCount >= Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("group.delete.member.limit")) && !session.GetHabbo().GetPermissions().HasRight("group_delete_limit_override"))
+            if (group.MemberCount >= Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("group.delete.member.limit")) && !session.Habbo.GetPermissions().HasRight("group_delete_limit_override"))
             {
                 session.SendNotification("Oops, your group exceeds the maximum amount of members (" + Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("group.delete.member.limit")) + ") a group can exceed before being eligible for deletion. Seek assistance from a staff member.");
                 return;

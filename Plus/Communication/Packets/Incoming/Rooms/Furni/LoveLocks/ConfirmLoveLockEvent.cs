@@ -15,7 +15,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.LoveLocks
             int pId = packet.PopInt();
             bool isConfirmed = packet.PopBoolean();
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
@@ -94,12 +94,12 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.LoveLocks
                 return;
             }
 
-            if (userOneId == session.GetHabbo().Id)
+            if (userOneId == session.Habbo.Id)
             {
                 session.SendPacket(new LoveLockDialogueSetLockedMessageComposer(pId));
                 userOne.LLPartner = userTwoId;
             }
-            else if (userTwoId == session.GetHabbo().Id)
+            else if (userTwoId == session.Habbo.Id)
             {
                 session.SendPacket(new LoveLockDialogueSetLockedMessageComposer(pId));
                 userTwo.LLPartner = userOneId;
@@ -107,7 +107,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.LoveLocks
 
             if (userOne.LLPartner == 0 || userTwo.LLPartner == 0)
                 return;
-            item.ExtraData = "1" + (char)5 + userOne.GetUsername() + (char)5 + userTwo.GetUsername() + (char)5 + userOne.GetClient().GetHabbo().Look + (char)5 + userTwo.GetClient().GetHabbo().Look + (char)5 + DateTime.Now.ToString("dd/MM/yyyy");
+            item.ExtraData = "1" + (char)5 + userOne.GetUsername() + (char)5 + userTwo.GetUsername() + (char)5 + userOne.GetClient().Habbo.Look + (char)5 + userTwo.GetClient().Habbo.Look + (char)5 + DateTime.Now.ToString("dd/MM/yyyy");
 
             item.InteractingUser = 0;
             item.InteractingUser2 = 0;

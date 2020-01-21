@@ -10,10 +10,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Avatar
         public void Parse(GameClient session, ClientPacket packet)
         {
             int signId = packet.PopInt();
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
-            RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(session.GetHabbo().Id);
+            RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(session.Habbo.Id);
             if (user == null)
                 return;
 

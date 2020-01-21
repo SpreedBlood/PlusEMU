@@ -8,10 +8,10 @@ namespace Plus.Communication.Packets.Outgoing.Rooms.Engine
             : base(ServerPacketHeader.UserChangeMessageComposer)
         {
             WriteInteger((Self) ? -1 : User.VirtualId);
-            WriteString(User.GetClient().GetHabbo().Look);
-            WriteString(User.GetClient().GetHabbo().Gender);
-            WriteString(User.GetClient().GetHabbo().Motto);
-            WriteInteger(User.GetClient().GetHabbo().GetStats().AchievementPoints);
+            WriteString(User.GetClient().Habbo.Look);
+            WriteString(User.GetClient().Habbo.Gender);
+            WriteString(User.GetClient().Habbo.Motto);
+            WriteInteger(User.GetClient().Habbo.GetStats().AchievementPoints);
         }
     }
 }

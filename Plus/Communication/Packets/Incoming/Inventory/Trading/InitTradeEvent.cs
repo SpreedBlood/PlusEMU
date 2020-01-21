@@ -14,14 +14,14 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Trading
         {
             int userId = packet.PopInt();
 
-            if (session == null || session.GetHabbo() == null || !session.GetHabbo().InRoom)
+            if (session == null || session.Habbo == null || !session.Habbo.InRoom)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
-            RoomUser roomUser = room.GetRoomUserManager().GetRoomUserByHabbo(session.GetHabbo().Id);
+            RoomUser roomUser = room.GetRoomUserManager().GetRoomUserByHabbo(session.Habbo.Id);
             if (roomUser == null)
                 return;
 
@@ -29,24 +29,24 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Trading
             if (targetUser == null)
                 return;
 
-            if (session.GetHabbo().TradingLockExpiry > 0)
+            if (session.Habbo.TradingLockExpiry > 0)
             {
-                if (session.GetHabbo().TradingLockExpiry > PlusEnvironment.GetUnixTimestamp())
+                if (session.Habbo.TradingLockExpiry > PlusEnvironment.GetUnixTimestamp())
                 {
                     session.SendNotification("You're currently banned from trading.");
                     return;
                 }
 
-                session.GetHabbo().TradingLockExpiry = 0;
+                session.Habbo.TradingLockExpiry = 0;
                 session.SendNotification("Your trading ban has now expired.");
 
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                 {
-                    dbClient.RunQuery("UPDATE `user_info` SET `trading_locked` = '0' WHERE `id` = '" + session.GetHabbo().Id + "' LIMIT 1");
+                    dbClient.RunQuery("UPDATE `user_info` SET `trading_locked` = '0' WHERE `id` = '" + session.Habbo.Id + "' LIMIT 1");
                 }
             }
 
-            if (!session.GetHabbo().GetPermissions().HasRight("room_trade_override"))
+            if (!session.Habbo.GetPermissions().HasRight("room_trade_override"))
             {
                 if (room.TradeSettings == 0)
                 {
@@ -54,7 +54,7 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Trading
                     return;
                 }
 
-                if (room.TradeSettings == 1 && room.OwnerId != session.GetHabbo().Id)
+                if (room.TradeSettings == 1 && room.OwnerId != session.Habbo.Id)
                 {
                     session.SendPacket(new TradingErrorComposer(6, targetUser.GetUsername()));
                     return;
@@ -73,13 +73,13 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Trading
                 return;
             }
 
-            if (!targetUser.GetClient().GetHabbo().AllowTradingRequests)
+            if (!targetUser.GetClient().Habbo.AllowTradingRequests)
             {
                 session.SendPacket(new TradingErrorComposer(4, targetUser.GetUsername()));
                 return;
             }
 
-            if (targetUser.GetClient().GetHabbo().TradingLockExpiry > 0)
+            if (targetUser.GetClient().Habbo.TradingLockExpiry > 0)
             {
                 session.SendPacket(new TradingErrorComposer(4, targetUser.GetUsername()));
                 return;

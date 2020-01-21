@@ -19,16 +19,16 @@ namespace Plus.Communication.Packets.Outgoing.Groups
             WriteString(Group.Badge);
             WriteInteger(Group.RoomId);
             WriteString(Group.GetRoom() != null ? Group.GetRoom().Name : "No room found..");    // room name
-            WriteInteger(Group.CreatorId == Session.GetHabbo().Id ? 3 : Group.HasRequest(Session.GetHabbo().Id) ? 2 : Group.IsMember(Session.GetHabbo().Id) ? 1 : 0);
+            WriteInteger(Group.CreatorId == Session.Habbo.Id ? 3 : Group.HasRequest(Session.Habbo.Id) ? 2 : Group.IsMember(Session.Habbo.Id) ? 1 : 0);
             WriteInteger(Group.MemberCount); // Members
             WriteBoolean(false);//?? CHANGED
             WriteString(Origin.Day + "-" + Origin.Month + "-" + Origin.Year);
-            WriteBoolean(Group.CreatorId == Session.GetHabbo().Id);
-            WriteBoolean(Group.IsAdmin(Session.GetHabbo().Id)); // admin
+            WriteBoolean(Group.CreatorId == Session.Habbo.Id);
+            WriteBoolean(Group.IsAdmin(Session.Habbo.Id)); // admin
             WriteString(PlusEnvironment.GetUsernameById(Group.CreatorId));
             WriteBoolean(NewWindow); // Show group info
             WriteBoolean(Group.AdminOnlyDeco == 0); // Any user can place furni in home room
-            WriteInteger(Group.CreatorId == Session.GetHabbo().Id ? Group.RequestCount : Group.IsAdmin(Session.GetHabbo().Id) ? Group.RequestCount : Group.IsMember(Session.GetHabbo().Id) ? 0 : 0); // Pending users
+            WriteInteger(Group.CreatorId == Session.Habbo.Id ? Group.RequestCount : Group.IsAdmin(Session.Habbo.Id) ? Group.RequestCount : Group.IsMember(Session.Habbo.Id) ? 0 : 0); // Pending users
             //base.WriteInteger(0);//what the fuck
             WriteBoolean(Group != null ? Group.ForumEnabled : true);//HabboTalk.
         }

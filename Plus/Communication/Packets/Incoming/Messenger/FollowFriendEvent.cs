@@ -10,30 +10,30 @@ namespace Plus.Communication.Packets.Incoming.Messenger
         public int Header => ClientPacketHeader.FollowFriendMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || session.GetHabbo().GetMessenger() == null)
+            if (session == null || session.Habbo == null || session.Habbo.GetMessenger() == null)
                 return;
 
             int buddyId = packet.PopInt();
-            if (buddyId == 0 || buddyId == session.GetHabbo().Id)
+            if (buddyId == 0 || buddyId == session.Habbo.Id)
                 return;
 
             GameClient client = PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(buddyId);
-            if (client == null || client.GetHabbo() == null)
+            if (client == null || client.Habbo == null)
                 return;
 
-            if (!client.GetHabbo().InRoom)
+            if (!client.Habbo.InRoom)
             {
                 session.SendPacket(new FollowFriendFailedComposer(2));
-                session.GetHabbo().GetMessenger().UpdateFriend(client.GetHabbo().Id, client, true);
+                session.Habbo.GetMessenger().UpdateFriend(client.Habbo.Id, client, true);
                 return;
             }
-            else if (session.GetHabbo().CurrentRoom != null && client.GetHabbo().CurrentRoom != null)
+            else if (session.Habbo.CurrentRoom != null && client.Habbo.CurrentRoom != null)
             {
-                if (session.GetHabbo().CurrentRoom.RoomId == client.GetHabbo().CurrentRoom.RoomId)
+                if (session.Habbo.CurrentRoom.RoomId == client.Habbo.CurrentRoom.RoomId)
                     return;
             }
 
-            session.SendPacket(new RoomForwardComposer(client.GetHabbo().CurrentRoomId));
+            session.SendPacket(new RoomForwardComposer(client.Habbo.CurrentRoomId));
         }
     }
 }

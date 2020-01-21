@@ -11,13 +11,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.Wired
         public int Header => ClientPacketHeader.SaveWiredTriggeRconfigMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null)
+            if (session == null || session.Habbo == null)
                 return;
 
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null || !room.CheckRights(session, false, true))
                 return;
 
@@ -29,17 +29,17 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.Wired
             if (selectedItem == null)
                 return;
 
-            if (!session.GetHabbo().CurrentRoom.GetWired().TryGet(itemId, out IWiredItem box))
+            if (!session.Habbo.CurrentRoom.GetWired().TryGet(itemId, out IWiredItem box))
                 return;
 
-            if (box.Type == WiredBoxType.EffectGiveUserBadge && !session.GetHabbo().GetPermissions().HasRight("room_item_wired_rewards"))
+            if (box.Type == WiredBoxType.EffectGiveUserBadge && !session.Habbo.GetPermissions().HasRight("room_item_wired_rewards"))
             {
                 session.SendNotification("You don't have the correct permissions to do this.");
                 return;
             }
 
             box.HandleSave(packet);
-            session.GetHabbo().CurrentRoom.GetWired().SaveBox(box);
+            session.Habbo.CurrentRoom.GetWired().SaveBox(box);
         }
     }
 }

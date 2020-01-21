@@ -33,7 +33,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `user_vouchers` WHERE `user_id` = @userId AND `voucher` = @Voucher LIMIT 1");
-                dbClient.AddParameter("userId", session.GetHabbo().Id);
+                dbClient.AddParameter("userId", session.Habbo.Id);
                 dbClient.AddParameter("Voucher", code);
                 row = dbClient.GetRow();
             }
@@ -48,7 +48,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                 {
                     dbClient.SetQuery("INSERT INTO `user_vouchers` (`user_id`,`voucher`) VALUES (@userId, @Voucher)");
-                    dbClient.AddParameter("userId", session.GetHabbo().Id);
+                    dbClient.AddParameter("userId", session.Habbo.Id);
                     dbClient.AddParameter("Voucher", code);
                     dbClient.RunQuery();
                 }
@@ -58,13 +58,13 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
             if (voucher.Type == VoucherType.Credit)
             {
-                session.GetHabbo().Credits += voucher.Value;
-                session.SendPacket(new CreditBalanceComposer(session.GetHabbo().Credits));
+                session.Habbo.Credits += voucher.Value;
+                session.SendPacket(new CreditBalanceComposer(session.Habbo.Credits));
             }
             else if (voucher.Type == VoucherType.Ducket)
             {
-                session.GetHabbo().Duckets += voucher.Value;
-                session.SendPacket(new HabboActivityPointNotificationComposer(session.GetHabbo().Duckets, voucher.Value));
+                session.Habbo.Duckets += voucher.Value;
+                session.SendPacket(new HabboActivityPointNotificationComposer(session.Habbo.Duckets, voucher.Value));
             }
 
             session.SendPacket(new VoucherRedeemOkComposer());

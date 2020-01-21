@@ -158,17 +158,17 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
                         {
                             foreach (RoomUser User in Room.GetRoomUserManager().GetRoomUsers())
                             {
-                                if (User == null || User.GetClient() == null || User.GetClient().GetHabbo() == null)
+                                if (User == null || User.GetClient() == null || User.GetClient().Habbo == null)
                                     continue;
 
                                 User.GetClient().SendWhisper("The room owner has disabled the ability to use a pet morph in this room.");
-                                if (User.GetClient().GetHabbo().PetId > 0)
+                                if (User.GetClient().Habbo.PetId > 0)
                                 {
                                     //Tell the user what is going on.
                                     User.GetClient().SendWhisper("Oops, the room owner has just disabled pet-morphs, un-morphing you.");
 
                                     //Change the users Pet Id.
-                                    User.GetClient().GetHabbo().PetId = 0;
+                                    User.GetClient().Habbo.PetId = 0;
 
                                     //Quickly remove the old user instance.
                                     Room.SendPacket(new UserRemoveComposer(User.VirtualId));

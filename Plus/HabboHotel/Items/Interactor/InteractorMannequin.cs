@@ -22,12 +22,12 @@ namespace Plus.HabboHotel.Items.Interactor
             if (Item.ExtraData.Contains(Convert.ToChar(5).ToString()))
             {
                 String[] Stuff = Item.ExtraData.Split(Convert.ToChar(5));
-                Session.GetHabbo().Gender = Stuff[0].ToUpper();
+                Session.Habbo.Gender = Stuff[0].ToUpper();
                 Dictionary<String, String> NewFig = new Dictionary<String, String>();
                 NewFig.Clear();
                 foreach (String Man in Stuff[1].Split('.'))
                 {
-                    foreach (String Fig in Session.GetHabbo().Look.Split('.'))
+                    foreach (String Fig in Session.Habbo.Look.Split('.'))
                     {
                         if (Fig.Split('-')[0] == Man.Split('-')[0])
                         {
@@ -58,24 +58,24 @@ namespace Plus.HabboHotel.Items.Interactor
                 }
 
 
-                Session.GetHabbo().Look = Final.TrimEnd('.');
+                Session.Habbo.Look = Final.TrimEnd('.');
 
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                 {
-                    dbClient.SetQuery("UPDATE users SET look = @look, gender = @gender WHERE id = '" + Session.GetHabbo().Id + "' LIMIT 1");
-                    dbClient.AddParameter("look", Session.GetHabbo().Look);
-                    dbClient.AddParameter("gender", Session.GetHabbo().Gender);
+                    dbClient.SetQuery("UPDATE users SET look = @look, gender = @gender WHERE id = '" + Session.Habbo.Id + "' LIMIT 1");
+                    dbClient.AddParameter("look", Session.Habbo.Look);
+                    dbClient.AddParameter("gender", Session.Habbo.Gender);
                     dbClient.RunQuery();
                 }
 
-                Room Room = Session.GetHabbo().CurrentRoom;
+                Room Room = Session.Habbo.CurrentRoom;
                 if (Room != null)
                 {
-                    RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Username);
+                    RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.Habbo.Username);
                     if (User != null)
                     {
                         Session.SendPacket(new UserChangeComposer(User, true));
-                        Session.GetHabbo().CurrentRoom.SendPacket(new UserChangeComposer(User, false));
+                        Session.Habbo.CurrentRoom.SendPacket(new UserChangeComposer(User, false));
                     }
                 }
             }

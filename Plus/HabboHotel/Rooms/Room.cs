@@ -353,21 +353,21 @@ namespace Plus.HabboHotel.Rooms
         {
             try
             {
-                if (Session == null || Session.GetHabbo() == null)
+                if (Session == null || Session.Habbo == null)
                     return false;
 
-                if (Session.GetHabbo().Username == OwnerName && Type == "private")
+                if (Session.Habbo.Username == OwnerName && Type == "private")
                     return true;
 
-                if (Session.GetHabbo().GetPermissions().HasRight("room_any_owner"))
+                if (Session.Habbo.GetPermissions().HasRight("room_any_owner"))
                     return true;
 
                 if (!RequireOwnership && Type == "private")
                 {
-                    if (Session.GetHabbo().GetPermissions().HasRight("room_any_rights"))
+                    if (Session.Habbo.GetPermissions().HasRight("room_any_rights"))
                         return true;
 
-                    if (UsersWithRights.Contains(Session.GetHabbo().Id))
+                    if (UsersWithRights.Contains(Session.Habbo.Id))
                         return true;
                 }
 
@@ -376,12 +376,12 @@ namespace Plus.HabboHotel.Rooms
                     if (Group == null)
                         return false;
 
-                    if (Group.IsAdmin(Session.GetHabbo().Id))
+                    if (Group.IsAdmin(Session.Habbo.Id))
                         return true;
 
                     if (Group.AdminOnlyDeco == 0)
                     {
-                        if (Group.IsAdmin(Session.GetHabbo().Id))
+                        if (Group.IsAdmin(Session.Habbo.Id))
                             return true;
                     }
                 }
@@ -535,11 +535,11 @@ namespace Plus.HabboHotel.Rooms
 
         public bool CheckMute(GameClient session)
         {
-            if (MutedUsers.ContainsKey(session.GetHabbo().Id))
+            if (MutedUsers.ContainsKey(session.Habbo.Id))
             {
-                if (MutedUsers[session.GetHabbo().Id] < PlusEnvironment.GetUnixTimestamp())
+                if (MutedUsers[session.Habbo.Id] < PlusEnvironment.GetUnixTimestamp())
                 {
-                    MutedUsers.Remove(session.GetHabbo().Id);
+                    MutedUsers.Remove(session.Habbo.Id);
                 }
                 else
                 {
@@ -547,7 +547,7 @@ namespace Plus.HabboHotel.Rooms
                 }
             }
 
-            if (session.GetHabbo().TimeMuted > 0 || (RoomMuted && session.GetHabbo().Username != OwnerName))
+            if (session.Habbo.TimeMuted > 0 || (RoomMuted && session.Habbo.Username != OwnerName))
                 return true;
 
             return false;
@@ -602,10 +602,10 @@ namespace Plus.HabboHotel.Rooms
             List<RoomUser> Users = Tents[TentId];
             foreach (RoomUser User in Users.ToList())
             {
-                if (User == null || User.GetClient() == null || User.GetClient().GetHabbo() == null)
+                if (User == null || User.GetClient() == null || User.GetClient().Habbo == null)
                     continue;
 
-                User.GetClient().GetHabbo().TentId = 0;
+                User.GetClient().Habbo.TentId = 0;
             }
 
             if (Tents.ContainsKey(TentId))
@@ -614,20 +614,20 @@ namespace Plus.HabboHotel.Rooms
 
         public void AddUserToTent(int TentId, RoomUser User)
         {
-            if (User != null && User.GetClient() != null && User.GetClient().GetHabbo() != null)
+            if (User != null && User.GetClient() != null && User.GetClient().Habbo != null)
             {
                 if (!Tents.ContainsKey(TentId))
                     Tents.Add(TentId, new List<RoomUser>());
 
                 if (!Tents[TentId].Contains(User))
                     Tents[TentId].Add(User);
-                User.GetClient().GetHabbo().TentId = TentId;
+                User.GetClient().Habbo.TentId = TentId;
             }
         }
 
         public void RemoveUserFromTent(int TentId, RoomUser User)
         {
-            if (User != null && User.GetClient() != null && User.GetClient().GetHabbo() != null)
+            if (User != null && User.GetClient() != null && User.GetClient().Habbo != null)
             {
                 if (!Tents.ContainsKey(TentId))
                     Tents.Add(TentId, new List<RoomUser>());
@@ -635,7 +635,7 @@ namespace Plus.HabboHotel.Rooms
                 if (Tents[TentId].Contains(User))
                     Tents[TentId].Remove(User);
 
-                User.GetClient().GetHabbo().TentId = 0;
+                User.GetClient().Habbo.TentId = 0;
             }
         }
 
@@ -646,7 +646,7 @@ namespace Plus.HabboHotel.Rooms
 
             foreach (RoomUser User in Tents[TentId].ToList())
             {
-                if (User == null || User.GetClient() == null || User.GetClient().GetHabbo() == null || User.GetClient().GetHabbo().GetIgnores().IgnoredUserIds().Contains(Id) || User.GetClient().GetHabbo().TentId != TentId)
+                if (User == null || User.GetClient() == null || User.GetClient().Habbo == null || User.GetClient().Habbo.GetIgnores().IgnoredUserIds().Contains(Id) || User.GetClient().Habbo.TentId != TentId)
                     continue;
 
                 User.GetClient().SendPacket(Packet);

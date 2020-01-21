@@ -10,7 +10,7 @@ namespace Plus.Communication.Packets.Incoming.GameCenter
         public int Header => ClientPacketHeader.JoinPlayerQueueMessageEvent;
         public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
         {
-            if (Session == null || Session.GetHabbo() == null)
+            if (Session == null || Session.Habbo == null)
                 return;
 
             int GameId = Packet.PopInt();
@@ -18,7 +18,7 @@ namespace Plus.Communication.Packets.Incoming.GameCenter
             GameData GameData = null;
             if (PlusEnvironment.GetGame().GetGameDataManager().TryGetGame(GameId, out GameData))
             {
-                string SSOTicket = "HABBOON-Fastfood-" + GenerateSSO(32) + "-" + Session.GetHabbo().Id;
+                string SSOTicket = "HABBOON-Fastfood-" + GenerateSSO(32) + "-" + Session.Habbo.Id;
 
                 Session.SendPacket(new JoinQueueComposer(GameData.Id));
                 Session.SendPacket(new LoadGameComposer(GameData, SSOTicket));

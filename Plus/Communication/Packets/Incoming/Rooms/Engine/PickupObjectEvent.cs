@@ -13,10 +13,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
         public void Parse(GameClient session, ClientPacket packet)
         {
 
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
@@ -31,11 +31,11 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
                 return;
 
             bool itemRights = false;
-            if (item.UserID == session.GetHabbo().Id || room.CheckRights(session, false))
+            if (item.UserID == session.Habbo.Id || room.CheckRights(session, false))
                 itemRights = true;
             else if (room.Group != null && room.CheckRights(session, false, true))//Room has a group, this user has group rights.
                 itemRights = true;
-            else if (session.GetHabbo().GetPermissions().HasRight("room_item_take"))
+            else if (session.Habbo.GetPermissions().HasRight("room_item_take"))
                 itemRights = true;
 
             if (itemRights)
@@ -59,27 +59,27 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
                 }
 
 
-                if (item.UserID == session.GetHabbo().Id)
+                if (item.UserID == session.Habbo.Id)
                 {
                     room.GetRoomItemHandler().RemoveFurniture(session, item.Id);
-                    session.GetHabbo().GetInventoryComponent().AddNewItem(item.Id, item.BaseItem, item.ExtraData, item.GroupId, true, true, item.LimitedNo, item.LimitedTot);
-                    session.GetHabbo().GetInventoryComponent().UpdateItems(false);
+                    session.Habbo.GetInventoryComponent().AddNewItem(item.Id, item.BaseItem, item.ExtraData, item.GroupId, true, true, item.LimitedNo, item.LimitedTot);
+                    session.Habbo.GetInventoryComponent().UpdateItems(false);
                 }
-                else if (session.GetHabbo().GetPermissions().HasRight("room_item_take"))//Staff are taking this item
+                else if (session.Habbo.GetPermissions().HasRight("room_item_take"))//Staff are taking this item
                 {
                     room.GetRoomItemHandler().RemoveFurniture(session, item.Id);
-                    session.GetHabbo().GetInventoryComponent().AddNewItem(item.Id, item.BaseItem, item.ExtraData, item.GroupId, true, true, item.LimitedNo, item.LimitedTot);
-                    session.GetHabbo().GetInventoryComponent().UpdateItems(false);
+                    session.Habbo.GetInventoryComponent().AddNewItem(item.Id, item.BaseItem, item.ExtraData, item.GroupId, true, true, item.LimitedNo, item.LimitedTot);
+                    session.Habbo.GetInventoryComponent().UpdateItems(false);
 
                 }
                 else//Item is being ejected.
                 {
                     GameClient targetClient = PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(item.UserID);
-                    if (targetClient != null && targetClient.GetHabbo() != null)//Again, do we have an active client?
+                    if (targetClient != null && targetClient.Habbo != null)//Again, do we have an active client?
                     {
                         room.GetRoomItemHandler().RemoveFurniture(targetClient, item.Id);
-                        targetClient.GetHabbo().GetInventoryComponent().AddNewItem(item.Id, item.BaseItem, item.ExtraData, item.GroupId, true, true, item.LimitedNo, item.LimitedTot);
-                        targetClient.GetHabbo().GetInventoryComponent().UpdateItems(false);
+                        targetClient.Habbo.GetInventoryComponent().AddNewItem(item.Id, item.BaseItem, item.ExtraData, item.GroupId, true, true, item.LimitedNo, item.LimitedTot);
+                        targetClient.Habbo.GetInventoryComponent().UpdateItems(false);
                     }
                     else//No, query time.
                     {

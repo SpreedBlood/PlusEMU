@@ -34,7 +34,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
                 return;
             }
 
-            if (TargetClient.GetHabbo().GetPermissions().HasRight("mod_tool") && !Session.GetHabbo().GetPermissions().HasRight("mod_disconnect_any"))
+            if (TargetClient.Habbo.GetPermissions().HasRight("mod_tool") && !Session.Habbo.GetPermissions().HasRight("mod_disconnect_any"))
             {
                 Session.SendWhisper("You are not allowed to Disconnect that user.");
                 return;

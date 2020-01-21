@@ -10,7 +10,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
         public int Header => ClientPacketHeader.GetModeratorTicketChatlogsMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || !session.GetHabbo().GetPermissions().HasRight("mod_tickets"))
+            if (session == null || session.Habbo == null || !session.Habbo.GetPermissions().HasRight("mod_tickets"))
                 return;
 
             int ticketId = packet.PopInt();

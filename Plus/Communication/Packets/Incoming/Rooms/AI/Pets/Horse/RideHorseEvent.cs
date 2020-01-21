@@ -11,13 +11,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets.Horse
         public int Header => ClientPacketHeader.RideHorseMessageEvent;
         public void Parse(HabboHotel.GameClients.GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
-            RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(session.GetHabbo().Id);
+            RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(session.Habbo.Id);
             if (user == null)
                 return;
 

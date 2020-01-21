@@ -10,7 +10,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
         public int Header => ClientPacketHeader.LetUserInMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
             if (!room.CheckRights(session))
@@ -25,14 +25,14 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
 
             if (accepted)
             {
-                client.GetHabbo().RoomAuthOk = true;
+                client.Habbo.RoomAuthOk = true;
                 client.SendPacket(new FlatAccessibleComposer(""));
-                room.SendPacket(new FlatAccessibleComposer(client.GetHabbo().Username), true);
+                room.SendPacket(new FlatAccessibleComposer(client.Habbo.Username), true);
             }
             else
             {
                 client.SendPacket(new FlatAccessDeniedComposer(""));
-                room.SendPacket(new FlatAccessDeniedComposer(client.GetHabbo().Username), true);
+                room.SendPacket(new FlatAccessDeniedComposer(client.Habbo.Username), true);
             }
         }
     }

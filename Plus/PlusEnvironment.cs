@@ -270,8 +270,8 @@ namespace Plus
             string Name = "Unknown User";
 
             GameClient Client = GetGame().GetClientManager().GetClientByUserId(UserId);
-            if (Client != null && Client.GetHabbo() != null)
-                return Client.GetHabbo().Username;
+            if (Client != null && Client.Habbo != null)
+                return Client.Habbo.Username;
 
             UserCache User = GetGame().GetCacheManager().GenerateUser(UserId);
             if (User != null)
@@ -297,7 +297,7 @@ namespace Plus
                 GameClient Client = GetGame().GetClientManager().GetClientByUserId(UserId);
                 if (Client != null)
                 {
-                    Habbo User = Client.GetHabbo();
+                    Habbo User = Client.Habbo;
                     if (User != null && User.Id > 0)
                     {
                         if (_usersCached.ContainsKey(UserId))

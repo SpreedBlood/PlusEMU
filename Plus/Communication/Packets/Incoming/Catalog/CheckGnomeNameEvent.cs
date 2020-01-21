@@ -19,17 +19,17 @@ namespace Plus.Communication.Packets.Incoming.Catalog
         public int Header => ClientPacketHeader.CheckGnomeNameMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || !session.GetHabbo().InRoom)
+            if (session == null || session.Habbo == null || !session.Habbo.InRoom)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
             int itemId = packet.PopInt();
             Item item = room.GetRoomItemHandler().GetItem(itemId);
 
-            if (item == null || item.Data == null || item.UserID != session.GetHabbo().Id || item.Data.InteractionType != InteractionType.GNOME_BOX)
+            if (item == null || item.Data == null || item.UserID != session.Habbo.Id || item.Data.InteractionType != InteractionType.GNOME_BOX)
                 return;
 
             string petName = packet.PopString();
@@ -63,7 +63,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
             session.SendPacket(new CheckGnomeNameComposer(petName, 0));
 
             //Create the pet here.
-            Pet pet = PetUtility.CreatePet(session.GetHabbo().Id, petName, 26, "30", "ffffff");
+            Pet pet = PetUtility.CreatePet(session.Habbo.Id, petName, 26, "30", "ffffff");
             if (pet == null)
             {
                 session.SendNotification("Oops, an error occoured. Please report this!");
@@ -72,7 +72,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
             List<RandomSpeech> rndSpeechList = new List<RandomSpeech>();
 
-            pet.RoomId = session.GetHabbo().CurrentRoomId;
+            pet.RoomId = session.Habbo.CurrentRoomId;
             pet.GnomeClothing = RandomClothing();
 
             //Update the pets gnome clothing.
@@ -90,10 +90,10 @@ namespace Plus.Communication.Packets.Incoming.Catalog
             //Give the food.
             if (PlusEnvironment.GetGame().GetItemManager().GetItem(320, out ItemData petFood))
             {
-                Item food = ItemFactory.CreateSingleItemNullable(petFood, session.GetHabbo(), "", "");
+                Item food = ItemFactory.CreateSingleItemNullable(petFood, session.Habbo, "", "");
                 if (food != null)
                 {
-                    session.GetHabbo().GetInventoryComponent().TryAddItem(food);
+                    session.Habbo.GetInventoryComponent().TryAddItem(food);
                     session.SendPacket(new FurniListNotificationComposer(food.Id, 1));
                 }
             }

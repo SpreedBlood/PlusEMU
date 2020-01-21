@@ -22,7 +22,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
 
         public void Execute(GameClients.GameClient Session, Room Room, string[] Params)
         {
-            double Minutes = Session.GetHabbo().GetStats().OnlineTime / 60;
+            double Minutes = Session.Habbo.GetStats().OnlineTime / 60;
             double Hours = Minutes / 60;
             int OnlineTime = Convert.ToInt32(Hours);
             string s = OnlineTime == 1 ? "" : "s";
@@ -31,12 +31,12 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
             HabboInfo.Append("Your account stats:\r\r");
 
             HabboInfo.Append("Currency Info:\r");
-            HabboInfo.Append("Credits: " + Session.GetHabbo().Credits + "\r");
-            HabboInfo.Append("Duckets: " + Session.GetHabbo().Duckets + "\r");
-            HabboInfo.Append("Diamonds: " + Session.GetHabbo().Diamonds + "\r");
+            HabboInfo.Append("Credits: " + Session.Habbo.Credits + "\r");
+            HabboInfo.Append("Duckets: " + Session.Habbo.Duckets + "\r");
+            HabboInfo.Append("Diamonds: " + Session.Habbo.Diamonds + "\r");
             HabboInfo.Append("Online Time: " + OnlineTime + " Hour" + s + "\r");
-            HabboInfo.Append("Respects: " + Session.GetHabbo().GetStats().Respect + "\r");
-            HabboInfo.Append("GOTW Points: " + Session.GetHabbo().GOTWPoints + "\r\r");
+            HabboInfo.Append("Respects: " + Session.Habbo.GetStats().Respect + "\r");
+            HabboInfo.Append("GOTW Points: " + Session.Habbo.GOTWPoints + "\r\r");
 
 
             Session.SendNotification(HabboInfo.ToString());

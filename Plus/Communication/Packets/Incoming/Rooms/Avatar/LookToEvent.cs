@@ -9,10 +9,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Avatar
         public int Header => ClientPacketHeader.LookToMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
-            RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(session.GetHabbo().Id);
+            RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(session.Habbo.Id);
             if (user == null)
                 return;
 
@@ -34,7 +34,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Avatar
 
             if (user.RidingHorse)
             {
-                RoomUser horse = session.GetHabbo().CurrentRoom.GetRoomUserManager().GetRoomUserByVirtualId(user.HorseID);
+                RoomUser horse = session.Habbo.CurrentRoom.GetRoomUserManager().GetRoomUserByVirtualId(user.HorseID);
                 if (horse != null)
                 {
                     horse.SetRot(rot, false);

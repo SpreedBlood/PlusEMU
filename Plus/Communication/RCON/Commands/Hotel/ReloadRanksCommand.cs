@@ -21,10 +21,10 @@ namespace Plus.Communication.Rcon.Commands.Hotel
 
             foreach (GameClient client in PlusEnvironment.GetGame().GetClientManager().GetClients.ToList())
             {
-                if (client == null || client.GetHabbo() == null || client.GetHabbo().GetPermissions() == null)
+                if (client == null || client.Habbo == null || client.Habbo.GetPermissions() == null)
                     continue;
 
-                client.GetHabbo().GetPermissions().Init(client.GetHabbo());
+                client.Habbo.GetPermissions().Init(client.Habbo);
             }
 
             return true;

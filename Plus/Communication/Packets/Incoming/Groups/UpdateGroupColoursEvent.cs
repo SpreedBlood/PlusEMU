@@ -23,7 +23,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
             if (!PlusEnvironment.GetGame().GetGroupManager().TryGetGroup(groupId, out Group group))
                 return;
 
-            if (group.CreatorId != session.GetHabbo().Id)
+            if (group.CreatorId != session.Habbo.Id)
                 return;
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
@@ -39,9 +39,9 @@ namespace Plus.Communication.Packets.Incoming.Groups
             group.Colour2 = secondaryColour;
 
             session.SendPacket(new GroupInfoComposer(group, session));
-            if (session.GetHabbo().CurrentRoom != null)
+            if (session.Habbo.CurrentRoom != null)
             {
-                foreach (Item item in session.GetHabbo().CurrentRoom.GetRoomItemHandler().GetFloor.ToList())
+                foreach (Item item in session.Habbo.CurrentRoom.GetRoomItemHandler().GetFloor.ToList())
                 {
                     if (item == null || item.GetBaseItem() == null)
                         continue;
@@ -49,7 +49,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
                     if (item.GetBaseItem().InteractionType != InteractionType.GUILD_ITEM && item.GetBaseItem().InteractionType != InteractionType.GUILD_GATE || item.GetBaseItem().InteractionType != InteractionType.GUILD_FORUM)
                         continue;
 
-                    session.GetHabbo().CurrentRoom.SendPacket(new ObjectUpdateComposer(item, Convert.ToInt32(item.UserID)));
+                    session.Habbo.CurrentRoom.SendPacket(new ObjectUpdateComposer(item, Convert.ToInt32(item.UserID)));
                 }
             }
         }

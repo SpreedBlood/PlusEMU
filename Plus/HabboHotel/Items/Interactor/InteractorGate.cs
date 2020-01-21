@@ -59,7 +59,7 @@ namespace Plus.HabboHotel.Items.Interactor
             Item.UpdateState();
 
             Item.GetRoom().GetGameMap().UpdateMapForItem(Item);
-            Item.GetRoom().GetWired().TriggerEvent(WiredBoxType.TriggerStateChanges, Session.GetHabbo(), Item);
+            Item.GetRoom().GetWired().TriggerEvent(WiredBoxType.TriggerStateChanges, Session.Habbo, Item);
             //Item.GetRoom().GenerateMaps();
         }
 

@@ -21,7 +21,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
 
         public void Execute(GameClients.GameClient Session, Room Room, string[] Params)
         {
-            RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
+            RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.Habbo.Id);
             if (User == null)
                 return;
 
@@ -39,14 +39,14 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
             }
 
             ChatStyle Style = null;
-            if (!PlusEnvironment.GetGame().GetChatManager().GetChatStyles().TryGetStyle(Bubble, out Style) || (Style.RequiredRight.Length > 0 && !Session.GetHabbo().GetPermissions().HasRight(Style.RequiredRight)))
+            if (!PlusEnvironment.GetGame().GetChatManager().GetChatStyles().TryGetStyle(Bubble, out Style) || (Style.RequiredRight.Length > 0 && !Session.Habbo.GetPermissions().HasRight(Style.RequiredRight)))
             {
                 Session.SendWhisper("Oops, you cannot use this bubble due to a rank requirement, sorry!");
                 return;
             }
 
             User.LastBubble = Bubble;
-            Session.GetHabbo().CustomBubbleId = Bubble;
+            Session.Habbo.CustomBubbleId = Bubble;
             Session.SendWhisper("Bubble set to: " + Bubble);
         }
     }

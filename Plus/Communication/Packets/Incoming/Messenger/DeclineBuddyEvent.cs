@@ -5,7 +5,7 @@ namespace Plus.Communication.Packets.Incoming.Messenger
         public int Header => ClientPacketHeader.DeclineBuddyMessageEvent;
         public void Parse(HabboHotel.GameClients.GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || session.GetHabbo().GetMessenger() == null)
+            if (session == null || session.Habbo == null || session.Habbo.GetMessenger() == null)
                 return;
 
             bool declineAll = packet.PopBoolean();
@@ -14,10 +14,10 @@ namespace Plus.Communication.Packets.Incoming.Messenger
             if (!declineAll)
             {
                 int requestId = packet.PopInt();
-                session.GetHabbo().GetMessenger().HandleRequest(requestId);
+                session.Habbo.GetMessenger().HandleRequest(requestId);
             }
             else
-                session.GetHabbo().GetMessenger().HandleAllRequests();
+                session.Habbo.GetMessenger().HandleAllRequests();
         }
     }
 }

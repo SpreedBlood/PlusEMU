@@ -9,7 +9,7 @@ namespace Plus.Communication.Packets.Incoming.Avatar
 
         public void Parse(GameClient session, ClientPacket packet)
         {
-            session.SendPacket(new WardrobeComposer(session.GetHabbo().Id));
+            session.SendPacket(new WardrobeComposer(session.Habbo.Id));
         }
     }
 }

@@ -52,8 +52,8 @@ namespace Plus.HabboHotel.Items.Wired.Boxes.Effects
 
                     User.Team = Rooms.Games.Teams.Team.None;
 
-                    if (User.GetClient().GetHabbo().Effects().CurrentEffect != 0)
-                        User.GetClient().GetHabbo().Effects().ApplyEffect(0);
+                    if (User.GetClient().Habbo.Effects().CurrentEffect != 0)
+                        User.GetClient().Habbo.Effects().ApplyEffect(0);
                 }
             }
             return true;

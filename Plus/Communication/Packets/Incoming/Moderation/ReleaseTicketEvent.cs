@@ -9,7 +9,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
         public int Header => ClientPacketHeader.ReleaseTicketMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || !session.GetHabbo().GetPermissions().HasRight("mod_tool"))
+            if (session == null || session.Habbo == null || !session.Habbo.GetPermissions().HasRight("mod_tool"))
                 return;
 
             int amount = packet.PopInt();
@@ -20,7 +20,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
                     continue;
 
                 ticket.Moderator = null;
-                PlusEnvironment.GetGame().GetClientManager().SendPacket(new ModeratorSupportTicketComposer(session.GetHabbo().Id, ticket), "mod_tool");
+                PlusEnvironment.GetGame().GetClientManager().SendPacket(new ModeratorSupportTicketComposer(session.Habbo.Id, ticket), "mod_tool");
             }
         }
     }

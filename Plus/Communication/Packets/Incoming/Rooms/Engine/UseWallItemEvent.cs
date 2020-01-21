@@ -12,10 +12,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
         public int Header => ClientPacketHeader.UseWallItemMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || !session.GetHabbo().InRoom)
+            if (session == null || session.Habbo == null || !session.Habbo.InRoom)
                 return;
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
             int itemId = packet.PopInt();
@@ -28,7 +28,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
             int request = packet.PopInt();
 
             item.Interactor.OnTrigger(session, item, request, hasRights);
-            item.GetRoom().GetWired().TriggerEvent(WiredBoxType.TriggerStateChanges, session.GetHabbo(), item);
+            item.GetRoom().GetWired().TriggerEvent(WiredBoxType.TriggerStateChanges, session.Habbo, item);
 
             PlusEnvironment.GetGame().GetQuestManager().ProgressUserQuest(session, QuestType.ExploreFindItem, item.GetBaseItem().Id);
         }

@@ -14,16 +14,16 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.Stickys
             int itemId = packet.PopInt();
             string locationData = packet.PopString();
 
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
             if (!room.CheckRights(session))
                 return;
 
-            Item item = session.GetHabbo().GetInventoryComponent().GetItem(itemId);
+            Item item = session.Habbo.GetInventoryComponent().GetItem(itemId);
             if (item == null)
                 return;
 
@@ -31,9 +31,9 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.Stickys
             {
                 string wallPossition = WallPositionCheck(":" + locationData.Split(':')[1]);
 
-                Item roomItem = new Item(item.Id, room.RoomId, item.BaseItem, item.ExtraData, 0, 0, 0, 0, session.GetHabbo().Id, item.GroupId, 0, 0, wallPossition, room);
+                Item roomItem = new Item(item.Id, room.RoomId, item.BaseItem, item.ExtraData, 0, 0, 0, 0, session.Habbo.Id, item.GroupId, 0, 0, wallPossition, room);
                 if (room.GetRoomItemHandler().SetWallItem(session, roomItem))
-                    session.GetHabbo().GetInventoryComponent().RemoveItem(itemId);
+                    session.Habbo.GetInventoryComponent().RemoveItem(itemId);
             }
             catch
             {

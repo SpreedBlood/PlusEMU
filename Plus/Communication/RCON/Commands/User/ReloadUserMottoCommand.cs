@@ -23,28 +23,28 @@ namespace Plus.Communication.Rcon.Commands.User
                 return false;
 
             GameClient client = PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(userId);
-            if (client == null || client.GetHabbo() == null)
+            if (client == null || client.Habbo == null)
                 return false;
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `motto` FROM `users` WHERE `id` = @userID LIMIT 1");
                 dbClient.AddParameter("userID", userId);
-                client.GetHabbo().Motto = dbClient.GetString();
+                client.Habbo.Motto = dbClient.GetString();
             }
 
             // If we're in a room, we cannot really send the packets, so flag this as completed successfully, since we already updated it.
-            if (!client.GetHabbo().InRoom)
+            if (!client.Habbo.InRoom)
             {
                 return true;
             }
             else
             {
                 //We are in a room, let's try to run the packets.
-                Room room = client.GetHabbo().CurrentRoom;
+                Room room = client.Habbo.CurrentRoom;
                 if (room != null)
                 {
-                    RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(client.GetHabbo().Id);
+                    RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(client.Habbo.Id);
                     if (user != null)
                     {
                         room.SendPacket(new UserChangeComposer(user, false));

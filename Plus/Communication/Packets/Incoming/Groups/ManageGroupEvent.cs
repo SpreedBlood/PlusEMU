@@ -14,7 +14,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
             if (!PlusEnvironment.GetGame().GetGroupManager().TryGetGroup(groupId, out Group group))
                 return;
 
-            if (group.CreatorId != session.GetHabbo().Id && !session.GetHabbo().GetPermissions().HasRight("group_management_override"))
+            if (group.CreatorId != session.Habbo.Id && !session.Habbo.GetPermissions().HasRight("group_management_override"))
                 return;
 
             session.SendPacket(new ManageGroupComposer(group, group.Badge.Replace("b", "").Split('s')));

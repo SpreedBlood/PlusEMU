@@ -13,14 +13,14 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
         public int Header => ClientPacketHeader.SetMannequinNameMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null || !room.CheckRights(session, true))
                 return;
 
             int itemId = packet.PopInt();
             string name = packet.PopString();
 
-            Item item = session.GetHabbo().CurrentRoom.GetRoomItemHandler().GetItem(itemId);
+            Item item = session.Habbo.CurrentRoom.GetRoomItemHandler().GetItem(itemId);
             if (item == null)
                 return;
 

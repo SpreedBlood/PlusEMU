@@ -85,7 +85,7 @@ namespace Plus.HabboHotel.Users.Badges
                 return;
 
             BadgeDefinition badge = null;
-            if (!PlusEnvironment.GetGame().GetBadgeManager().TryGetBadge(code.ToUpper(), out badge) || badge.RequiredRight.Length > 0 && !session.GetHabbo().GetPermissions().HasRight(badge.RequiredRight))
+            if (!PlusEnvironment.GetGame().GetBadgeManager().TryGetBadge(code.ToUpper(), out badge) || badge.RequiredRight.Length > 0 && !session.Habbo.GetPermissions().HasRight(badge.RequiredRight))
                 return;
 
             if (inDatabase)

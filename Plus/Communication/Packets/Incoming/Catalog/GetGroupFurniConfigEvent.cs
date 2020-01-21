@@ -8,7 +8,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
         public int Header => ClientPacketHeader.GetGroupFurniConfigMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            session.SendPacket(new GroupFurniConfigComposer(PlusEnvironment.GetGame().GetGroupManager().GetGroupsForUser(session.GetHabbo().Id)));
+            session.SendPacket(new GroupFurniConfigComposer(PlusEnvironment.GetGame().GetGroupManager().GetGroupsForUser(session.Habbo.Id)));
         }
     }
 }

@@ -80,16 +80,16 @@ namespace Plus.HabboHotel.Users.Messenger
 
             foreach (GameClient client in onlineUsers)
             {
-                if (client.GetHabbo() == null || client.GetHabbo().GetMessenger() == null)
+                if (client.Habbo == null || client.Habbo.GetMessenger() == null)
                     continue;
 
-                client.GetHabbo().GetMessenger().UpdateFriend(_userId, null, true);
+                client.Habbo.GetMessenger().UpdateFriend(_userId, null, true);
             }
         }
 
         public void OnStatusChanged(bool notification)
         {
-            if (GetClient() == null || GetClient().GetHabbo() == null || GetClient().GetHabbo().GetMessenger() == null)
+            if (GetClient() == null || GetClient().Habbo == null || GetClient().Habbo.GetMessenger() == null)
                 return;
 
             if (_friends == null)
@@ -103,15 +103,15 @@ namespace Plus.HabboHotel.Users.Messenger
             {
                 try
                 {
-                    if (client == null || client.GetHabbo() == null || client.GetHabbo().GetMessenger() == null)
+                    if (client == null || client.Habbo == null || client.Habbo.GetMessenger() == null)
                         continue;
 
-                    client.GetHabbo().GetMessenger().UpdateFriend(_userId, client, true);
+                    client.Habbo.GetMessenger().UpdateFriend(_userId, client, true);
 
-                    if (client == null || client.GetHabbo() == null)
+                    if (client == null || client.Habbo == null)
                         continue;
 
-                    UpdateFriend(client.GetHabbo().Id, client, notification);
+                    UpdateFriend(client.Habbo.Id, client, notification);
                 }
                 catch
                 {
@@ -166,9 +166,9 @@ namespace Plus.HabboHotel.Users.Messenger
 
             GameClient User = PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(friendID);
 
-            if (User != null && User.GetHabbo().GetMessenger() != null)
+            if (User != null && User.Habbo.GetMessenger() != null)
             {
-                User.GetHabbo().GetMessenger().OnNewFriendship(_userId);
+                User.Habbo.GetMessenger().OnNewFriendship(_userId);
             }
 
             if (User != null)
@@ -191,8 +191,8 @@ namespace Plus.HabboHotel.Users.Messenger
 
             GameClient User = PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(friendID);
 
-            if (User != null && User.GetHabbo().GetMessenger() != null)
-                User.GetHabbo().GetMessenger().OnDestroyFriendship(_userId);
+            if (User != null && User.Habbo.GetMessenger() != null)
+                User.Habbo.GetMessenger().OnDestroyFriendship(_userId);
         }
 
         public void OnNewFriendship(int friendID)
@@ -200,7 +200,7 @@ namespace Plus.HabboHotel.Users.Messenger
             GameClient friend = PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(friendID);
 
             MessengerBuddy newFriend;
-            if (friend == null || friend.GetHabbo() == null)
+            if (friend == null || friend.Habbo == null)
             {
                 DataRow dRow;
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
@@ -215,7 +215,7 @@ namespace Plus.HabboHotel.Users.Messenger
             }
             else
             {
-                Habbo user = friend.GetHabbo();
+                Habbo user = friend.Habbo;
 
 
                 newFriend = new MessengerBuddy(friendID, user.Username, user.Look, user.Motto, 0, user.AppearOffline, user.AllowPublicRoomStatus);
@@ -280,8 +280,8 @@ namespace Plus.HabboHotel.Users.Messenger
             }
             else
             {
-                userID = client.GetHabbo().Id;
-                hasFQDisabled = client.GetHabbo().AllowFriendRequests;
+                userID = client.Habbo.Id;
+                hasFQDisabled = client.Habbo.AllowFriendRequests;
             }
 
             if (hasFQDisabled)
@@ -302,12 +302,12 @@ namespace Plus.HabboHotel.Users.Messenger
             PlusEnvironment.GetGame().GetQuestManager().ProgressUserQuest(GetClient(), QuestType.AddFriends);
 
             GameClient ToUser = PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(ToId);
-            if (ToUser == null || ToUser.GetHabbo() == null)
+            if (ToUser == null || ToUser.Habbo == null)
                 return true;
 
             MessengerRequest Request = new MessengerRequest(ToId, _userId, PlusEnvironment.GetGame().GetClientManager().GetNameById(_userId));
 
-            ToUser.GetHabbo().GetMessenger().OnNewRequest(_userId);
+            ToUser.Habbo.GetMessenger().OnNewRequest(_userId);
 
             UserCache ThisUser = PlusEnvironment.GetGame().GetCacheManager().GenerateUser(_userId);
 
@@ -332,7 +332,7 @@ namespace Plus.HabboHotel.Users.Messenger
             if (GetClient() == null)
                 return;
 
-            if (GetClient().GetHabbo() == null)
+            if (GetClient().Habbo == null)
                 return;
 
             if (!FriendshipExists(ToId))
@@ -341,50 +341,50 @@ namespace Plus.HabboHotel.Users.Messenger
                 return;
             }
 
-            if (GetClient().GetHabbo().MessengerSpamCount >= 12)
+            if (GetClient().Habbo.MessengerSpamCount >= 12)
             {
-                GetClient().GetHabbo().MessengerSpamTime = PlusEnvironment.GetUnixTimestamp() + 60;
-                GetClient().GetHabbo().MessengerSpamCount = 0;
+                GetClient().Habbo.MessengerSpamTime = PlusEnvironment.GetUnixTimestamp() + 60;
+                GetClient().Habbo.MessengerSpamCount = 0;
                 GetClient().SendNotification("You cannot send a message, you have flooded the console.\n\nYou can send a message in 60 seconds.");
                 return;
             }
-            else if (GetClient().GetHabbo().MessengerSpamTime > PlusEnvironment.GetUnixTimestamp())
+            else if (GetClient().Habbo.MessengerSpamTime > PlusEnvironment.GetUnixTimestamp())
             {
-                double Time = GetClient().GetHabbo().MessengerSpamTime - PlusEnvironment.GetUnixTimestamp();
+                double Time = GetClient().Habbo.MessengerSpamTime - PlusEnvironment.GetUnixTimestamp();
                 GetClient().SendNotification("You cannot send a message, you have flooded the console.\n\nYou can send a message in " + Time + " seconds.");
                 return;
             }
 
 
-            GetClient().GetHabbo().MessengerSpamCount++;
+            GetClient().Habbo.MessengerSpamCount++;
 
             GameClient Client = PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(ToId);
-            if (Client == null || Client.GetHabbo() == null || Client.GetHabbo().GetMessenger() == null)
+            if (Client == null || Client.Habbo == null || Client.Habbo.GetMessenger() == null)
             {
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                 {
                     dbClient.SetQuery("INSERT INTO `messenger_offline_messages` (`to_id`, `from_id`, `message`, `timestamp`) VALUES (@tid, @fid, @msg, UNIX_TIMESTAMP())");
                     dbClient.AddParameter("tid", ToId);
-                    dbClient.AddParameter("fid", GetClient().GetHabbo().Id);
+                    dbClient.AddParameter("fid", GetClient().Habbo.Id);
                     dbClient.AddParameter("msg", Message);
                     dbClient.RunQuery();
                 }
                 return;
             }
 
-            if (!Client.GetHabbo().AllowConsoleMessages || Client.GetHabbo().GetIgnores().IgnoredUserIds().Contains(GetClient().GetHabbo().Id))
+            if (!Client.Habbo.AllowConsoleMessages || Client.Habbo.GetIgnores().IgnoredUserIds().Contains(GetClient().Habbo.Id))
             {
                 GetClient().SendPacket(new InstantMessageErrorComposer(MessengerMessageErrors.FriendBusy, ToId));
                 return;
             }
 
-            if (GetClient().GetHabbo().TimeMuted > 0)
+            if (GetClient().Habbo.TimeMuted > 0)
             {
                 GetClient().SendPacket(new InstantMessageErrorComposer(MessengerMessageErrors.yourMuted, ToId));
                 return;
             }
 
-            if (Client.GetHabbo().TimeMuted > 0)
+            if (Client.Habbo.TimeMuted > 0)
             {
                 GetClient().SendPacket(new InstantMessageErrorComposer(MessengerMessageErrors.FriendMuted, ToId));
             }
@@ -423,10 +423,10 @@ namespace Plus.HabboHotel.Users.Messenger
 
             foreach (GameClient Client in MyFriends.ToList())
             {
-                if (Client.GetHabbo() != null && Client.GetHabbo().GetMessenger() != null)
+                if (Client.Habbo != null && Client.Habbo.GetMessenger() != null)
                 {
                     Client.SendPacket(new FriendNotificationComposer(UserId, Type, Data));
-                    Client.GetHabbo().GetMessenger().OnStatusChanged(true);
+                    Client.Habbo.GetMessenger().OnStatusChanged(true);
                 }
             }
         }

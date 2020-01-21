@@ -13,7 +13,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null)
+            if (session == null || session.Habbo == null)
                 return;
 
             packet.PopInt(); //pageId
@@ -27,7 +27,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
             if (!RoomFactory.TryGetData(roomId, out RoomData data))
                 return;
 
-            if (data.OwnerId != session.GetHabbo().Id)
+            if (data.OwnerId != session.Habbo.Id)
                 return;
 
             if (data.Promotion == null)
@@ -51,14 +51,14 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                 dbClient.RunQuery();
             }
 
-            if (!session.GetHabbo().GetBadgeComponent().HasBadge("RADZZ"))
-                session.GetHabbo().GetBadgeComponent().GiveBadge("RADZZ", true, session);
+            if (!session.Habbo.GetBadgeComponent().HasBadge("RADZZ"))
+                session.Habbo.GetBadgeComponent().GiveBadge("RADZZ", true, session);
 
             session.SendPacket(new PurchaseOKComposer());
-            if (session.GetHabbo().InRoom && session.GetHabbo().CurrentRoomId == roomId)
-                session.GetHabbo().CurrentRoom.SendPacket(new RoomEventComposer(data, data.Promotion));
+            if (session.Habbo.InRoom && session.Habbo.CurrentRoomId == roomId)
+                session.Habbo.CurrentRoom.SendPacket(new RoomEventComposer(data, data.Promotion));
 
-            session.GetHabbo().GetMessenger().BroadcastAchievement(session.GetHabbo().Id, HabboHotel.Users.Messenger.MessengerEventTypes.EventStarted, name);
+            session.Habbo.GetMessenger().BroadcastAchievement(session.Habbo.Id, HabboHotel.Users.Messenger.MessengerEventTypes.EventStarted, name);
         }
     }
 }

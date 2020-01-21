@@ -19,7 +19,7 @@
 
         public void Execute(GameClients.GameClient session, Room room, string[] Params)
         {
-            if (room.CheckRights(session, true) || session.GetHabbo().GetPermissions().HasRight("room_unload_any"))
+            if (room.CheckRights(session, true) || session.Habbo.GetPermissions().HasRight("room_unload_any"))
             {
                 PlusEnvironment.GetGame().GetRoomManager().UnloadRoom(room.Id);
             }

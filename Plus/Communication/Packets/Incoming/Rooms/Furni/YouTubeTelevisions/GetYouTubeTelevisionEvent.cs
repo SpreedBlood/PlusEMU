@@ -12,7 +12,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.YouTubeTelevisions
         public int Header => ClientPacketHeader.GetYouTubeTelevisionMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
             int itemId = packet.PopInt();

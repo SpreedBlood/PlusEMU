@@ -12,14 +12,14 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
         public int Header => ClientPacketHeader.MoveObjectMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
             int itemId = packet.PopInt();
             if (itemId == 0)
                 return;
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
             Item item;

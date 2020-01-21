@@ -23,10 +23,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
         public int Header => ClientPacketHeader.PlaceObjectMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || !session.GetHabbo().InRoom)
+            if (session == null || session.Habbo == null || !session.Habbo.InRoom)
                 return;
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
             string rawData = packet.PopString();
@@ -43,7 +43,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
                 return;
             }
 
-            Item item = session.GetHabbo().GetInventoryComponent().GetItem(itemId);
+            Item item = session.Habbo.GetInventoryComponent().GetItem(itemId);
             if (item == null)
                 return;
 
@@ -53,7 +53,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
                 return;
             }
 
-            if (item.Data.InteractionType == InteractionType.EXCHANGE && room.OwnerId != session.GetHabbo().Id && !session.GetHabbo().GetPermissions().HasRight("room_item_place_exchange_anywhere"))
+            if (item.Data.InteractionType == InteractionType.EXCHANGE && room.OwnerId != session.Habbo.Id && !session.Habbo.GetPermissions().HasRight("room_item_place_exchange_anywhere"))
             {
                 session.SendNotification("You cannot place exchange items in other people's rooms!");
                 return;
@@ -111,12 +111,12 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
                 if (!int.TryParse(data[2], out int y)) { return; }
                 if (!int.TryParse(data[3], out int rotation)) { return; }
 
-                Item roomItem = new Item(item.Id, room.RoomId, item.BaseItem, item.ExtraData, x, y, 0, rotation, session.GetHabbo().Id, item.GroupId, item.LimitedNo, item.LimitedTot, string.Empty, room);
+                Item roomItem = new Item(item.Id, room.RoomId, item.BaseItem, item.ExtraData, x, y, 0, rotation, session.Habbo.Id, item.GroupId, item.LimitedNo, item.LimitedTot, string.Empty, room);
                 if (room.GetRoomItemHandler().SetFloorItem(session, roomItem, x, y, rotation, true, false, true))
                 {
-                    session.GetHabbo().GetInventoryComponent().RemoveItem(itemId);
+                    session.Habbo.GetInventoryComponent().RemoveItem(itemId);
 
-                    if (session.GetHabbo().Id == room.OwnerId)
+                    if (session.Habbo.Id == room.OwnerId)
                         _achievementManager.ProgressAchievement(session, "ACH_RoomDecoFurniCount", 1);
 
                     if (roomItem.IsWired)
@@ -143,12 +143,12 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
                 {
                     try
                     {
-                        Item roomItem = new Item(item.Id, room.RoomId, item.BaseItem, item.ExtraData, 0, 0, 0, 0, session.GetHabbo().Id, item.GroupId, item.LimitedNo, item.LimitedTot, wallPos, room);
+                        Item roomItem = new Item(item.Id, room.RoomId, item.BaseItem, item.ExtraData, 0, 0, 0, 0, session.Habbo.Id, item.GroupId, item.LimitedNo, item.LimitedTot, wallPos, room);
 
                         if (room.GetRoomItemHandler().SetWallItem(session, roomItem))
                         {
-                            session.GetHabbo().GetInventoryComponent().RemoveItem(itemId);
-                            if (session.GetHabbo().Id == room.OwnerId)
+                            session.Habbo.GetInventoryComponent().RemoveItem(itemId);
+                            if (session.Habbo.Id == room.OwnerId)
                                 _achievementManager.ProgressAchievement(session, "ACH_RoomDecoFurniCount", 1);
                         }
                     }

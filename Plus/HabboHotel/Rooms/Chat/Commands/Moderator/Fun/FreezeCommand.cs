@@ -34,11 +34,11 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator.Fun
                 return;
             }
 
-            RoomUser TargetUser = Session.GetHabbo().CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(Params[1]);
+            RoomUser TargetUser = Session.Habbo.CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(Params[1]);
             if (TargetUser != null)
                 TargetUser.Frozen = true;
 
-            Session.SendWhisper("Successfully froze " + TargetClient.GetHabbo().Username + "!");
+            Session.SendWhisper("Successfully froze " + TargetClient.Habbo.Username + "!");
         }
     }
 }

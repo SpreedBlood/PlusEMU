@@ -37,7 +37,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
             {
                 foreach (RoomUser User in RoomUsers)
                 {
-                    if (User == null || User.GetClient() == null || User.GetClient().GetHabbo() == null || User.GetClient().GetHabbo().Username == Session.GetHabbo().Username)
+                    if (User == null || User.GetClient() == null || User.GetClient().Habbo == null || User.GetClient().Habbo.Username == Session.Habbo.Username)
                         continue;
 
                     User.GetClient().SendWhisper("This room has been muted because: " + Msg);

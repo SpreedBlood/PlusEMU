@@ -24,7 +24,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
 
         public void Execute(GameClient Session, Room Room, string[] Params)
         {
-            if (Session.GetHabbo().Id == Room.OwnerId)
+            if (Session.Habbo.Id == Room.OwnerId)
             {
                 //Let us check anyway.
                 if (!Room.CheckRights(Session, true))
@@ -32,15 +32,15 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
 
                 foreach (Item Item in Room.GetRoomItemHandler().GetWallAndFloor.ToList())
                 {
-                    if (Item == null || Item.UserID == Session.GetHabbo().Id)
+                    if (Item == null || Item.UserID == Session.Habbo.Id)
                         continue;
 
                     GameClient TargetClient = PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(Item.UserID);
-                    if (TargetClient != null && TargetClient.GetHabbo() != null)
+                    if (TargetClient != null && TargetClient.Habbo != null)
                     {
                         Room.GetRoomItemHandler().RemoveFurniture(TargetClient, Item.Id);
-                        TargetClient.GetHabbo().GetInventoryComponent().AddNewItem(Item.Id, Item.BaseItem, Item.ExtraData, Item.GroupId, true, true, Item.LimitedNo, Item.LimitedTot);
-                        TargetClient.GetHabbo().GetInventoryComponent().UpdateItems(false);
+                        TargetClient.Habbo.GetInventoryComponent().AddNewItem(Item.Id, Item.BaseItem, Item.ExtraData, Item.GroupId, true, true, Item.LimitedNo, Item.LimitedTot);
+                        TargetClient.Habbo.GetInventoryComponent().UpdateItems(false);
                     }
                     else
                     {
@@ -56,15 +56,15 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
             {
                 foreach (Item Item in Room.GetRoomItemHandler().GetWallAndFloor.ToList())
                 {
-                    if (Item == null || Item.UserID != Session.GetHabbo().Id)
+                    if (Item == null || Item.UserID != Session.Habbo.Id)
                         continue;
 
                     GameClient TargetClient = PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(Item.UserID);
-                    if (TargetClient != null && TargetClient.GetHabbo() != null)
+                    if (TargetClient != null && TargetClient.Habbo != null)
                     {
                         Room.GetRoomItemHandler().RemoveFurniture(TargetClient, Item.Id);
-                        TargetClient.GetHabbo().GetInventoryComponent().AddNewItem(Item.Id, Item.BaseItem, Item.ExtraData, Item.GroupId, true, true, Item.LimitedNo, Item.LimitedTot);
-                        TargetClient.GetHabbo().GetInventoryComponent().UpdateItems(false);
+                        TargetClient.Habbo.GetInventoryComponent().AddNewItem(Item.Id, Item.BaseItem, Item.ExtraData, Item.GroupId, true, true, Item.LimitedNo, Item.LimitedTot);
+                        TargetClient.Habbo.GetInventoryComponent().UpdateItems(false);
                     }
                     else
                     {

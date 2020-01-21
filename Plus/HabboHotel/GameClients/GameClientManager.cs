@@ -79,7 +79,7 @@ namespace Plus.HabboHotel.GameClients
             GameClient client = GetClientByUserId(id);
 
             if (client != null)
-                return client.GetHabbo().Username;
+                return client.Habbo.Username;
 
             string username;
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
@@ -106,10 +106,10 @@ namespace Plus.HabboHotel.GameClients
         {
             foreach (GameClient client in GetClients.ToList())
             {
-                if (client == null || client.GetHabbo() == null)
+                if (client == null || client.Habbo == null)
                     continue;
 
-                if (client.GetHabbo().Rank < 2 || client.GetHabbo().Id == exclude)
+                if (client.Habbo.Rank < 2 || client.Habbo.Id == exclude)
                     continue;
 
                 client.SendPacket(message);
@@ -120,10 +120,10 @@ namespace Plus.HabboHotel.GameClients
         {
             foreach (GameClient client in GetClients.ToList())
             {
-                if (client == null || client.GetHabbo() == null)
+                if (client == null || client.Habbo == null)
                     continue;
 
-                if (client.GetHabbo().GetPermissions().HasRight("mod_tool") && !client.GetHabbo().GetPermissions().HasRight("staff_ignore_mod_alert"))
+                if (client.Habbo.GetPermissions().HasRight("mod_tool") && !client.Habbo.GetPermissions().HasRight("staff_ignore_mod_alert"))
                 {
                     try { client.SendWhisper(message, 5); }
                     catch { }
@@ -133,18 +133,18 @@ namespace Plus.HabboHotel.GameClients
 
         public void DoAdvertisingReport(GameClient reporter, GameClient target)
         {
-            if (reporter == null || target == null || reporter.GetHabbo() == null || target.GetHabbo() == null)
+            if (reporter == null || target == null || reporter.Habbo == null || target.Habbo == null)
                 return;
 
             StringBuilder builder = new StringBuilder();
             builder.Append("New report submitted!\r\r");
-            builder.Append("Reporter: " + reporter.GetHabbo().Username + "\r");
-            builder.Append("Reported User: " + target.GetHabbo().Username + "\r\r");
-            builder.Append(target.GetHabbo().Username + "s last 10 messages:\r\r");
+            builder.Append("Reporter: " + reporter.Habbo.Username + "\r");
+            builder.Append("Reported User: " + target.Habbo.Username + "\r\r");
+            builder.Append(target.Habbo.Username + "s last 10 messages:\r\r");
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("SELECT `message` FROM `chatlogs` WHERE `user_id` = '" + target.GetHabbo().Id + "' ORDER BY `id` DESC LIMIT 10");
+                dbClient.SetQuery("SELECT `message` FROM `chatlogs` WHERE `user_id` = '" + target.Habbo.Id + "' ORDER BY `id` DESC LIMIT 10");
                 DataTable logs = dbClient.GetTable();
 
                 if (logs != null)
@@ -160,10 +160,10 @@ namespace Plus.HabboHotel.GameClients
 
             foreach (GameClient client in GetClients.ToList())
             {
-                if (client == null || client.GetHabbo() == null)
+                if (client == null || client.Habbo == null)
                     continue;
 
-                if (client.GetHabbo().GetPermissions().HasRight("mod_tool") && !client.GetHabbo().GetPermissions().HasRight("staff_ignore_advertisement_reports"))
+                if (client.Habbo.GetPermissions().HasRight("mod_tool") && !client.Habbo.GetPermissions().HasRight("staff_ignore_advertisement_reports"))
                     client.SendPacket(new MotdNotificationComposer(builder.ToString()));
             }
         }
@@ -173,12 +173,12 @@ namespace Plus.HabboHotel.GameClients
         {
             foreach (GameClient client in _clients.Values.ToList())
             {
-                if (client == null || client.GetHabbo() == null)
+                if (client == null || client.Habbo == null)
                     continue;
 
                 if (!string.IsNullOrEmpty(fuse))
                 {
-                    if (!client.GetHabbo().GetPermissions().HasRight(fuse))
+                    if (!client.Habbo.GetPermissions().HasRight(fuse))
                         continue;
                 }
 
@@ -239,13 +239,13 @@ namespace Plus.HabboHotel.GameClients
                 if (client == null)
                     continue;
 
-                if (client.GetHabbo() != null)
+                if (client.Habbo != null)
                 {
                     try
                     {
                         using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                         {
-                            dbClient.RunQuery(client.GetHabbo().GetQueryString);
+                            dbClient.RunQuery(client.Habbo.GetQueryString);
                         }
                         Console.Clear();
                         Log.Info("<<- SERVER SHUTDOWN ->> IVNENTORY IS SAVING");

@@ -8,10 +8,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Connection
         public int Header => ClientPacketHeader.GoToFlatMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            if (!session.GetHabbo().EnterRoom(session.GetHabbo().CurrentRoom))
+            if (!session.Habbo.EnterRoom(session.Habbo.CurrentRoom))
                 session.SendPacket(new CloseConnectionComposer());
         }
     }

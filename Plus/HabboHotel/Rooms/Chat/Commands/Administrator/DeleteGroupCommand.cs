@@ -22,7 +22,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
 
         public void Execute(GameClients.GameClient Session, Room Room, string[] Params)
         {
-            Room = Session.GetHabbo().CurrentRoom;
+            Room = Session.Habbo.CurrentRoom;
             if (Room == null)
                 return;
 

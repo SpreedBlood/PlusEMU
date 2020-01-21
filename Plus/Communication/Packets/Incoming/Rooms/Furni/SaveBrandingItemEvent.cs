@@ -10,14 +10,14 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
         public int Header => ClientPacketHeader.SaveBrandingItemMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || !session.GetHabbo().InRoom)
+            if (session == null || session.Habbo == null || !session.Habbo.InRoom)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
-            if (!room.CheckRights(session, true) || !session.GetHabbo().GetPermissions().HasRight("room_item_save_branding_items"))
+            if (!room.CheckRights(session, true) || !session.Habbo.GetPermissions().HasRight("room_item_save_branding_items"))
                 return;
 
             int itemId = packet.PopInt();

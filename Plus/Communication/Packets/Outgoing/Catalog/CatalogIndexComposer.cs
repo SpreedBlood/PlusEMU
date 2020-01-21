@@ -13,14 +13,14 @@ namespace Plus.Communication.Packets.Outgoing.Catalog
 
             foreach (CatalogPage Parent in pages)
             {
-                if (Parent.ParentId != -1 || Parent.MinimumRank > sesion.GetHabbo().Rank || (Parent.MinimumVIP > sesion.GetHabbo().VIPRank && sesion.GetHabbo().Rank == 1))
+                if (Parent.ParentId != -1 || Parent.MinimumRank > sesion.Habbo.Rank || (Parent.MinimumVIP > sesion.Habbo.VIPRank && sesion.Habbo.Rank == 1))
                     continue;
 
                 WritePage(Parent, CalcTreeSize(sesion, pages, Parent.Id));
 
                 foreach (CatalogPage child in pages)
                 {
-                    if (child.ParentId != Parent.Id || child.MinimumRank > sesion.GetHabbo().Rank || (child.MinimumVIP > sesion.GetHabbo().VIPRank && sesion.GetHabbo().Rank == 1))
+                    if (child.ParentId != Parent.Id || child.MinimumRank > sesion.Habbo.Rank || (child.MinimumVIP > sesion.Habbo.VIPRank && sesion.Habbo.Rank == 1))
                         continue;
 
                     if (child.Enabled)
@@ -30,7 +30,7 @@ namespace Plus.Communication.Packets.Outgoing.Catalog
 
                     foreach (CatalogPage SubChild in pages)
                     {
-                        if (SubChild.ParentId != child.Id || SubChild.MinimumRank > sesion.GetHabbo().Rank)
+                        if (SubChild.ParentId != child.Id || SubChild.MinimumRank > sesion.Habbo.Rank)
                             continue;
 
                         WritePage(SubChild, 0);
@@ -86,7 +86,7 @@ namespace Plus.Communication.Packets.Outgoing.Catalog
             int i = 0;
             foreach (CatalogPage Page in Pages)
             {
-                if (Page.MinimumRank > Session.GetHabbo().Rank || (Page.MinimumVIP > Session.GetHabbo().VIPRank && Session.GetHabbo().Rank == 1) || Page.ParentId != ParentId)
+                if (Page.MinimumRank > Session.Habbo.Rank || (Page.MinimumVIP > Session.Habbo.VIPRank && Session.Habbo.Rank == 1) || Page.ParentId != ParentId)
                     continue;
 
                 if (Page.ParentId == ParentId)

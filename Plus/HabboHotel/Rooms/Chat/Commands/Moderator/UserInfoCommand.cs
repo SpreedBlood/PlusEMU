@@ -92,13 +92,13 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
             if (TargetClient != null)
             {
                 HabboInfo.Append("Current Session:\r");
-                if (!TargetClient.GetHabbo().InRoom)
+                if (!TargetClient.Habbo.InRoom)
                     HabboInfo.Append("Currently not in a room.\r");
                 else
                 {
-                    HabboInfo.Append("Room: " + TargetClient.GetHabbo().CurrentRoom.Name + " (" + TargetClient.GetHabbo().CurrentRoom.RoomId + ")\r");
-                    HabboInfo.Append("Room Owner: " + TargetClient.GetHabbo().CurrentRoom.OwnerName + "\r");
-                    HabboInfo.Append("Current Visitors: " + TargetClient.GetHabbo().CurrentRoom.UserCount + "/" + TargetClient.GetHabbo().CurrentRoom.UsersMax);
+                    HabboInfo.Append("Room: " + TargetClient.Habbo.CurrentRoom.Name + " (" + TargetClient.Habbo.CurrentRoom.RoomId + ")\r");
+                    HabboInfo.Append("Room Owner: " + TargetClient.Habbo.CurrentRoom.OwnerName + "\r");
+                    HabboInfo.Append("Current Visitors: " + TargetClient.Habbo.CurrentRoom.UserCount + "/" + TargetClient.Habbo.CurrentRoom.UsersMax);
                 }
             }
             Session.SendNotification(HabboInfo.ToString());

@@ -22,7 +22,7 @@ namespace Plus.Communication.Rcon.Commands.User
                 return false;
 
             GameClient client = PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(userId);
-            if (client == null || client.GetHabbo() == null)
+            if (client == null || client.Habbo == null)
                 return false;
 
             // Validate the currency type
@@ -42,7 +42,7 @@ namespace Plus.Communication.Rcon.Commands.User
                         using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                         {
                             dbClient.SetQuery("UPDATE `users` SET `credits` = @credits WHERE `id` = @id LIMIT 1");
-                            dbClient.AddParameter("credits", client.GetHabbo().Credits);
+                            dbClient.AddParameter("credits", client.Habbo.Credits);
                             dbClient.AddParameter("id", userId);
                             dbClient.RunQuery();
                         }
@@ -55,7 +55,7 @@ namespace Plus.Communication.Rcon.Commands.User
                         using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                         {
                             dbClient.SetQuery("UPDATE `users` SET `activity_points` = @duckets WHERE `id` = @id LIMIT 1");
-                            dbClient.AddParameter("duckets", client.GetHabbo().Duckets);
+                            dbClient.AddParameter("duckets", client.Habbo.Duckets);
                             dbClient.AddParameter("id", userId);
                             dbClient.RunQuery();
                         }
@@ -67,7 +67,7 @@ namespace Plus.Communication.Rcon.Commands.User
                         using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                         {
                             dbClient.SetQuery("UPDATE `users` SET `vip_points` = @diamonds WHERE `id` = @id LIMIT 1");
-                            dbClient.AddParameter("diamonds", client.GetHabbo().Diamonds);
+                            dbClient.AddParameter("diamonds", client.Habbo.Diamonds);
                             dbClient.AddParameter("id", userId);
                             dbClient.RunQuery();
                         }
@@ -79,7 +79,7 @@ namespace Plus.Communication.Rcon.Commands.User
                         using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                         {
                             dbClient.SetQuery("UPDATE `users` SET `gotw_points` = @gotw WHERE `id` = @id LIMIT 1");
-                            dbClient.AddParameter("gotw", client.GetHabbo().GOTWPoints);
+                            dbClient.AddParameter("gotw", client.Habbo.GOTWPoints);
                             dbClient.AddParameter("id", userId);
                             dbClient.RunQuery();
                         }

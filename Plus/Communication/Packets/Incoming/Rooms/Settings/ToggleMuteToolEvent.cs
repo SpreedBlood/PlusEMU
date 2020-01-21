@@ -12,10 +12,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
         public int Header => ClientPacketHeader.ToggleMuteToolMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null || !room.CheckRights(session, true))
                 return;
 

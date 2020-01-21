@@ -13,14 +13,14 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
         public int Header => ClientPacketHeader.UpdateMagicTileMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
-            if (!room.CheckRights(session, false, true) && !session.GetHabbo().GetPermissions().HasRight("room_item_use_any_stack_tile"))
+            if (!room.CheckRights(session, false, true) && !session.Habbo.GetPermissions().HasRight("room_item_use_any_stack_tile"))
                 return;
 
             int itemId = packet.PopInt();
@@ -32,7 +32,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
 
             item.GetZ = decimalHeight / 100.0;
 
-            room.SendPacket(new ObjectUpdateComposer(item, Convert.ToInt32(session.GetHabbo().Id)));
+            room.SendPacket(new ObjectUpdateComposer(item, Convert.ToInt32(session.Habbo.Id)));
             room.SendPacket(new UpdateMagicTileComposer(itemId, decimalHeight));
         }
     }

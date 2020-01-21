@@ -34,13 +34,13 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
                 return;
             }
 
-            if (TargetClient.GetHabbo() == null)
+            if (TargetClient.Habbo == null)
             {
                 Session.SendWhisper("An error occoured whilst finding that user, maybe they're not online.");
                 return;
             }
 
-            if (TargetClient.GetHabbo().Username == Session.GetHabbo().Username)
+            if (TargetClient.Habbo.Username == Session.Habbo.Username)
             {
                 Session.SendWhisper("Get a life.");
                 return;
@@ -48,8 +48,8 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
 
             string Message = CommandManager.MergeParams(Params, 2);
 
-            TargetClient.SendNotification(Session.GetHabbo().Username + " alerted you with the following message:\n\n" + Message);
-            Session.SendWhisper("Alert successfully sent to " + TargetClient.GetHabbo().Username);
+            TargetClient.SendNotification(Session.Habbo.Username + " alerted you with the following message:\n\n" + Message);
+            Session.SendWhisper("Alert successfully sent to " + TargetClient.Habbo.Username);
 
         }
     }

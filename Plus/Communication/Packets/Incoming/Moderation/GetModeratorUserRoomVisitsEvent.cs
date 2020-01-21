@@ -14,7 +14,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
         public int Header => ClientPacketHeader.GetModeratorUserRoomVisitsMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().GetPermissions().HasRight("mod_tool"))
+            if (!session.Habbo.GetPermissions().HasRight("mod_tool"))
                 return;
 
             int userId = packet.PopInt();
@@ -42,7 +42,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
                 }
             }
 
-            session.SendPacket(new ModeratorUserRoomVisitsComposer(target.GetHabbo(), visits));
+            session.SendPacket(new ModeratorUserRoomVisitsComposer(target.Habbo, visits));
         }
     }
 }

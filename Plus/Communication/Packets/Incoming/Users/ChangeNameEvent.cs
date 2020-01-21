@@ -25,28 +25,28 @@ namespace Plus.Communication.Packets.Incoming.Users
         public int Header => ClientPacketHeader.ChangeNameMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null)
+            if (session == null || session.Habbo == null)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
-            RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(session.GetHabbo().Username);
+            RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(session.Habbo.Username);
             if (user == null)
                 return;
 
             string newName = packet.PopString();
-            string oldName = session.GetHabbo().Username;
+            string oldName = session.Habbo.Username;
 
             if (newName == oldName)
             {
-                session.GetHabbo().ChangeName(oldName);
+                session.Habbo.ChangeName(oldName);
                 session.SendPacket(new UpdateUsernameComposer(newName));
                 return;
             }
 
-            if (!CanChangeName(session.GetHabbo()))
+            if (!CanChangeName(session.Habbo))
             {
                 session.SendNotification("Oops, it appears you currently cannot change your username!");
                 return;
@@ -66,11 +66,11 @@ namespace Plus.Communication.Packets.Incoming.Users
             if (letters.Any(chr => !allowedCharacters.Contains(chr)))
                 return;
 
-            if (!session.GetHabbo().GetPermissions().HasRight("mod_tool") && newName.ToLower().Contains("mod") || newName.ToLower().Contains("adm") || newName.ToLower().Contains("admin")
+            if (!session.Habbo.GetPermissions().HasRight("mod_tool") && newName.ToLower().Contains("mod") || newName.ToLower().Contains("adm") || newName.ToLower().Contains("admin")
                 || newName.ToLower().Contains("m0d") || newName.ToLower().Contains("mob") || newName.ToLower().Contains("m0b"))
                 return;
 
-            if (!newName.ToLower().Contains("mod") && (session.GetHabbo().Rank == 2 || session.GetHabbo().Rank == 3))
+            if (!newName.ToLower().Contains("mod") && (session.Habbo.Rank == 2 || session.Habbo.Rank == 3))
                 return;
 
             if (newName.Length > 15)
@@ -88,19 +88,19 @@ namespace Plus.Communication.Packets.Incoming.Users
                 return;
             }
 
-            session.GetHabbo().ChangingName = false;
+            session.Habbo.ChangingName = false;
 
             room.GetRoomUserManager().RemoveUserFromRoom(session, true);
 
-            session.GetHabbo().ChangeName(newName);
-            session.GetHabbo().GetMessenger().OnStatusChanged(true);
+            session.Habbo.ChangeName(newName);
+            session.Habbo.GetMessenger().OnStatusChanged(true);
 
             session.SendPacket(new UpdateUsernameComposer(newName));
             room.SendPacket(new UserNameChangeComposer(room.Id, user.VirtualId, newName));
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("INSERT INTO `logs_client_namechange` (`user_id`,`new_name`,`old_name`,`timestamp`) VALUES ('" + session.GetHabbo().Id + "', @name, '" + oldName + "', '" + PlusEnvironment.GetUnixTimestamp() + "')");
+                dbClient.SetQuery("INSERT INTO `logs_client_namechange` (`user_id`,`new_name`,`old_name`,`timestamp`) VALUES ('" + session.Habbo.Id + "', @name, '" + oldName + "', '" + PlusEnvironment.GetUnixTimestamp() + "')");
                 dbClient.AddParameter("name", newName);
                 dbClient.RunQuery();
             }
@@ -108,7 +108,7 @@ namespace Plus.Communication.Packets.Incoming.Users
 
             foreach (Room ownRooms in PlusEnvironment.GetGame().GetRoomManager().GetRooms().ToList())
             {
-                if (ownRooms == null || ownRooms.OwnerId != session.GetHabbo().Id || ownRooms.OwnerName == newName)
+                if (ownRooms == null || ownRooms.OwnerId != session.Habbo.Id || ownRooms.OwnerName == newName)
                     continue;
 
                 ownRooms.OwnerName = newName;

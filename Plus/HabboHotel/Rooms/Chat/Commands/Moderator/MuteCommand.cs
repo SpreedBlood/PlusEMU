@@ -36,7 +36,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
                 return;
             }
 
-            if (Habbo.GetPermissions().HasRight("mod_tool") && !Session.GetHabbo().GetPermissions().HasRight("mod_mute_any"))
+            if (Habbo.GetPermissions().HasRight("mod_tool") && !Session.Habbo.GetPermissions().HasRight("mod_mute_any"))
             {
                 Session.SendWhisper("Oops, you cannot mute that user.");
                 return;
@@ -45,7 +45,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
             double Time;
             if (double.TryParse(Params[2], out Time))
             {
-                if (Time > 600 && !Session.GetHabbo().GetPermissions().HasRight("mod_mute_limit_override"))
+                if (Time > 600 && !Session.Habbo.GetPermissions().HasRight("mod_mute_limit_override"))
                     Time = 600;
 
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())

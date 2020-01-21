@@ -21,7 +21,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator.Fun
 
         public void Execute(GameClients.GameClient Session, Room Room, string[] Params)
         {
-            RoomUser ThisUser = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
+            RoomUser ThisUser = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.Habbo.Id);
             if (ThisUser == null)
                 return;
 
@@ -30,11 +30,11 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator.Fun
             else
             {
                 string Message = CommandManager.MergeParams(Params, 2);
-                RoomUser TargetUser = Session.GetHabbo().CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(Params[1]);
+                RoomUser TargetUser = Session.Habbo.CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(Params[1]);
                 if (TargetUser != null)
                 {
-                    if (TargetUser.GetClient() != null && TargetUser.GetClient().GetHabbo() != null)
-                        if (!TargetUser.GetClient().GetHabbo().GetPermissions().HasRight("mod_make_say_any"))
+                    if (TargetUser.GetClient() != null && TargetUser.GetClient().Habbo != null)
+                        if (!TargetUser.GetClient().Habbo.GetPermissions().HasRight("mod_make_say_any"))
                             Room.SendPacket(new ChatComposer(TargetUser.VirtualId, Message, 0, TargetUser.LastBubble));
                         else
                             Session.SendWhisper("You cannot use makesay on this user.");

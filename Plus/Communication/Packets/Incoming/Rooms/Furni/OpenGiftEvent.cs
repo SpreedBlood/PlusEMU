@@ -20,10 +20,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
         public int Header => ClientPacketHeader.OpenGiftMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || !session.GetHabbo().InRoom)
+            if (session == null || session.Habbo == null || !session.Habbo.InRoom)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
@@ -32,7 +32,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
             if (present == null)
                 return;
 
-            if (present.UserID != session.GetHabbo().Id)
+            if (present.UserID != session.Habbo.Id)
                 return;
 
             DataRow data;
@@ -54,7 +54,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
                     dbClient.RunQuery("DELETE FROM `user_presents` WHERE `item_id` = '" + present.Id + "' LIMIT 1");
                 }
 
-                session.GetHabbo().GetInventoryComponent().RemoveItem(present.Id);
+                session.Habbo.GetInventoryComponent().RemoveItem(present.Id);
                 return;
             }
 
@@ -68,7 +68,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
                     dbClient.RunQuery("DELETE FROM `items` WHERE `id` = '" + present.Id + "' LIMIT 1");
                     dbClient.RunQuery("DELETE FROM `user_presents` WHERE `item_id` = '" + present.Id + "' LIMIT 1");
                 }
-                session.GetHabbo().GetInventoryComponent().RemoveItem(present.Id);
+                session.Habbo.GetInventoryComponent().RemoveItem(present.Id);
 
                 return;
             }
@@ -85,7 +85,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
                     dbClient.RunQuery("DELETE FROM `user_presents` WHERE `item_id` = '" + present.Id + "' LIMIT 1");
                 }
 
-                session.GetHabbo().GetInventoryComponent().RemoveItem(present.Id);
+                session.Habbo.GetInventoryComponent().RemoveItem(present.Id);
                 return;
             }
 
@@ -100,13 +100,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
                     dbClient.RunQuery("DELETE FROM `user_presents` WHERE `item_id` = '" + present.Id + "' LIMIT 1");
                 }
 
-                session.GetHabbo().GetInventoryComponent().RemoveItem(present.Id);
+                session.Habbo.GetInventoryComponent().RemoveItem(present.Id);
                 return;
             }
 
 
             present.MagicRemove = true;
-            room.SendPacket(new ObjectUpdateComposer(present, Convert.ToInt32(session.GetHabbo().Id)));
+            room.SendPacket(new ObjectUpdateComposer(present, Convert.ToInt32(session.Habbo.Id)));
 
             Thread thread = new Thread(() => FinishOpenGift(session, baseItem, present, room, data));
             thread.Start();
@@ -171,7 +171,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
 
                 session.SendPacket(new OpenGiftComposer(present.Data, present.ExtraData, present, itemIsInRoom));
 
-                session.GetHabbo().GetInventoryComponent().UpdateItems(true);
+                session.Habbo.GetInventoryComponent().UpdateItems(true);
             }
             catch
             {

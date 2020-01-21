@@ -19,8 +19,8 @@
 
         public void Execute(GameClients.GameClient Session, Room Room, string[] Params)
         {
-            Session.GetHabbo().AllowConsoleMessages = !Session.GetHabbo().AllowConsoleMessages;
-            Session.SendWhisper("You're " + (Session.GetHabbo().AllowConsoleMessages == true ? "now" : "no longer") + " accepting console messages.");
+            Session.Habbo.AllowConsoleMessages = !Session.Habbo.AllowConsoleMessages;
+            Session.SendWhisper("You're " + (Session.Habbo.AllowConsoleMessages == true ? "now" : "no longer") + " accepting console messages.");
         }
     }
 }

@@ -17,10 +17,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
         public int Header => ClientPacketHeader.SaveBotActionMessageEvent;
         public void Parse(HabboHotel.GameClients.GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
@@ -34,7 +34,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
             if (!room.GetRoomUserManager().TryGetBot(botId, out RoomUser bot))
                 return;
 
-            if (bot.BotData.OwnerId != session.GetHabbo().Id && !session.GetHabbo().GetPermissions().HasRight("bot_edit_any_override"))
+            if (bot.BotData.OwnerId != session.Habbo.Id && !session.Habbo.GetPermissions().HasRight("bot_edit_any_override"))
                 return;
 
             RoomBot roomBot = bot.BotData;
@@ -55,20 +55,20 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
                     {
                         ServerPacket userChangeComposer = new ServerPacket(ServerPacketHeader.UserChangeMessageComposer);
                         userChangeComposer.WriteInteger(bot.VirtualId);
-                        userChangeComposer.WriteString(session.GetHabbo().Look);
-                        userChangeComposer.WriteString(session.GetHabbo().Gender);
+                        userChangeComposer.WriteString(session.Habbo.Look);
+                        userChangeComposer.WriteString(session.Habbo.Gender);
                         userChangeComposer.WriteString(bot.BotData.Motto);
                         userChangeComposer.WriteInteger(0);
                         room.SendPacket(userChangeComposer);
 
                         //Change the defaults
-                        bot.BotData.Look = session.GetHabbo().Look;
-                        bot.BotData.Gender = session.GetHabbo().Gender;
+                        bot.BotData.Look = session.Habbo.Look;
+                        bot.BotData.Gender = session.Habbo.Gender;
 
                         using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                         {
-                            dbClient.SetQuery("UPDATE `bots` SET `look` = @look, `gender` = '" + session.GetHabbo().Gender + "' WHERE `id` = '" + bot.BotData.Id + "' LIMIT 1");
-                            dbClient.AddParameter("look", session.GetHabbo().Look);
+                            dbClient.SetQuery("UPDATE `bots` SET `look` = @look, `gender` = '" + session.Habbo.Gender + "' WHERE `id` = '" + bot.BotData.Id + "' LIMIT 1");
+                            dbClient.AddParameter("look", session.Habbo.Look);
                             dbClient.RunQuery();
                         }
 

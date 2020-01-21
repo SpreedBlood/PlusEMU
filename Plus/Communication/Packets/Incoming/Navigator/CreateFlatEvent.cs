@@ -12,10 +12,10 @@ namespace Plus.Communication.Packets.Incoming.Navigator
         public int Header => ClientPacketHeader.CreateFlatMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null)
+            if (session == null || session.Habbo == null)
                 return;
 
-            List<RoomData> rooms = RoomFactory.GetRoomsDataByOwnerSortByName(session.GetHabbo().Id);
+            List<RoomData> rooms = RoomFactory.GetRoomsDataByOwnerSortByName(session.Habbo.Id);
             if (rooms.Count >= 500)
             {
                 session.SendPacket(new CanCreateRoomComposer(true, 500));
@@ -42,7 +42,7 @@ namespace Plus.Communication.Packets.Incoming.Navigator
             if (!PlusEnvironment.GetGame().GetNavigator().TryGetSearchResultList(category, out SearchResultList searchResultList))
                 category = 36;
 
-            if (searchResultList.CategoryType != NavigatorCategoryType.Category || searchResultList.RequiredRank > session.GetHabbo().Rank)
+            if (searchResultList.CategoryType != NavigatorCategoryType.Category || searchResultList.RequiredRank > session.Habbo.Rank)
                 category = 36;
 
             if (maxVisitors < 10 || maxVisitors > 25)
@@ -57,8 +57,8 @@ namespace Plus.Communication.Packets.Incoming.Navigator
                 session.SendPacket(new FlatCreatedComposer(newRoom.Id, name));
             }
 
-            if (session.GetHabbo() != null && session.GetHabbo().GetMessenger() != null)
-                session.GetHabbo().GetMessenger().OnStatusChanged(true);
+            if (session.Habbo != null && session.Habbo.GetMessenger() != null)
+                session.Habbo.GetMessenger().OnStatusChanged(true);
         }
     }
 }

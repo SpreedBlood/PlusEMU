@@ -13,21 +13,21 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
         public int Header => ClientPacketHeader.PickUpBotMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
             int botId = packet.PopInt();
             if (botId == 0)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
             if (!room.GetRoomUserManager().TryGetBot(botId, out RoomUser botUser))
                 return;
 
-            if (session.GetHabbo().Id != botUser.BotData.OwnerId && !session.GetHabbo().GetPermissions().HasRight("bot_place_any_override"))
+            if (session.Habbo.Id != botUser.BotData.OwnerId && !session.Habbo.GetPermissions().HasRight("bot_place_any_override"))
             {
                 session.SendWhisper("You can only pick up your own bots!");
                 return;
@@ -43,8 +43,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
 
             room.GetGameMap().RemoveUserFromMap(botUser, new System.Drawing.Point(botUser.X, botUser.Y));
 
-            session.GetHabbo().GetInventoryComponent().TryAddBot(new Bot(Convert.ToInt32(botUser.BotData.Id), Convert.ToInt32(botUser.BotData.OwnerId), botUser.BotData.Name, botUser.BotData.Motto, botUser.BotData.Look, botUser.BotData.Gender));
-            session.SendPacket(new BotInventoryComposer(session.GetHabbo().GetInventoryComponent().GetBots()));
+            session.Habbo.GetInventoryComponent().TryAddBot(new Bot(Convert.ToInt32(botUser.BotData.Id), Convert.ToInt32(botUser.BotData.OwnerId), botUser.BotData.Name, botUser.BotData.Motto, botUser.BotData.Look, botUser.BotData.Gender));
+            session.SendPacket(new BotInventoryComposer(session.Habbo.GetInventoryComponent().GetBots()));
             room.GetRoomUserManager().RemoveBot(botUser.VirtualId, false);
         }
     }

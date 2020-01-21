@@ -24,7 +24,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
         public int Header => ClientPacketHeader.SaveRoomSettingsMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null)
+            if (session == null || session.Habbo == null)
                 return;
 
             int roomId = packet.PopInt();
@@ -127,7 +127,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
             if (!PlusEnvironment.GetGame().GetNavigator().TryGetSearchResultList(categoryId, out SearchResultList searchResultList))
                 categoryId = 36;
 
-            if (searchResultList.CategoryType != NavigatorCategoryType.Category || searchResultList.RequiredRank > session.GetHabbo().Rank || (session.GetHabbo().Id != room.OwnerId && session.GetHabbo().Rank >= searchResultList.RequiredRank))
+            if (searchResultList.CategoryType != NavigatorCategoryType.Category || searchResultList.RequiredRank > session.Habbo.Rank || (session.Habbo.Id != room.OwnerId && session.Habbo.Rank >= searchResultList.RequiredRank))
                 categoryId = 36;
 
             if (tagCount > 2)
@@ -214,7 +214,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
 
             room.GetGameMap().GenerateMaps();
 
-            if (session.GetHabbo().CurrentRoom == null)
+            if (session.Habbo.CurrentRoom == null)
             {
                 session.SendPacket(new RoomSettingsSavedComposer(room.RoomId));
                 session.SendPacket(new RoomInfoUpdatedComposer(room.RoomId));

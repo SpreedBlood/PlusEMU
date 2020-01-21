@@ -59,26 +59,26 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
             }
             else
             {
-                if (Convert.ToInt32(row["user_id"]) == session.GetHabbo().Id)
+                if (Convert.ToInt32(row["user_id"]) == session.Habbo.Id)
                 {
                     session.SendNotification("To prevent average boosting you cannot purchase your own marketplace offers.");
                     return;
                 }
 
-                if (Convert.ToInt32(row["total_price"]) > session.GetHabbo().Credits)
+                if (Convert.ToInt32(row["total_price"]) > session.Habbo.Credits)
                 {
                     session.SendNotification("Oops, you do not have enough credits for this.");
                     return;
                 }
 
-                session.GetHabbo().Credits -= Convert.ToInt32(row["total_price"]);
-                session.SendPacket(new CreditBalanceComposer(session.GetHabbo().Credits));
+                session.Habbo.Credits -= Convert.ToInt32(row["total_price"]);
+                session.SendPacket(new CreditBalanceComposer(session.Habbo.Credits));
 
 
-                Item giveItem = ItemFactory.CreateSingleItem(item, session.GetHabbo(), Convert.ToString(row["extra_data"]), Convert.ToString(row["extra_data"]), Convert.ToInt32(row["furni_id"]), Convert.ToInt32(row["limited_number"]), Convert.ToInt32(row["limited_stack"]));
+                Item giveItem = ItemFactory.CreateSingleItem(item, session.Habbo, Convert.ToString(row["extra_data"]), Convert.ToString(row["extra_data"]), Convert.ToInt32(row["furni_id"]), Convert.ToInt32(row["limited_number"]), Convert.ToInt32(row["limited_stack"]));
                 if (giveItem != null)
                 {
-                    session.GetHabbo().GetInventoryComponent().TryAddItem(giveItem);
+                    session.Habbo.GetInventoryComponent().TryAddItem(giveItem);
                     session.SendPacket(new FurniListNotificationComposer(giveItem.Id, 1));
 
                     session.SendPacket(new Outgoing.Catalog.PurchaseOKComposer());

@@ -7,11 +7,11 @@ namespace Plus.Communication.Packets.Incoming.Messenger
         public int Header => ClientPacketHeader.SendMsgMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || session.GetHabbo().GetMessenger() == null)
+            if (session == null || session.Habbo == null || session.Habbo.GetMessenger() == null)
                 return;
 
             int userId = packet.PopInt();
-            if (userId == 0 || userId == session.GetHabbo().Id)
+            if (userId == 0 || userId == session.Habbo.Id)
                 return;
 
             string message = PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckMessage(packet.PopString());
@@ -19,13 +19,13 @@ namespace Plus.Communication.Packets.Incoming.Messenger
                 return;
 
 
-            if (session.GetHabbo().TimeMuted > 0)
+            if (session.Habbo.TimeMuted > 0)
             {
                 session.SendNotification("Oops, you're currently muted - you cannot send messages.");
                 return;
             }
 
-            session.GetHabbo().GetMessenger().SendInstantMessage(userId, message);
+            session.Habbo.GetMessenger().SendInstantMessage(userId, message);
 
         }
     }

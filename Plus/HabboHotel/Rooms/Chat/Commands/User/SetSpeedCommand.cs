@@ -31,7 +31,7 @@
             int Speed;
             if (int.TryParse(Params[1], out Speed))
             {
-                Session.GetHabbo().CurrentRoom.GetRoomItemHandler().SetSpeed(Speed);
+                Session.Habbo.CurrentRoom.GetRoomItemHandler().SetSpeed(Speed);
             }
             else
                 Session.SendWhisper("Invalid amount, please enter a valid number.");

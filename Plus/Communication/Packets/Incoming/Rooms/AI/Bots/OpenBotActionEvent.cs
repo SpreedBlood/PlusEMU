@@ -12,13 +12,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
         public int Header => ClientPacketHeader.OpenBotActionMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
             int botId = packet.PopInt();
             int actionId = packet.PopInt();
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 

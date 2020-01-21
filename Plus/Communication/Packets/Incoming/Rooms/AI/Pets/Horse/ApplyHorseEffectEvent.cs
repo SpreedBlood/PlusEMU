@@ -13,10 +13,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets.Horse
         public int Header => ClientPacketHeader.ApplyHorseEffectMessageEvent;
         public void Parse(HabboHotel.GameClients.GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
             int itemId = packet.PopInt();
@@ -29,7 +29,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets.Horse
             if (!room.GetRoomUserManager().TryGetPet(petId, out RoomUser petUser))
                 return;
 
-            if (petUser.PetData == null || petUser.PetData.OwnerId != session.GetHabbo().Id)
+            if (petUser.PetData == null || petUser.PetData.OwnerId != session.Habbo.Id)
                 return;
 
             if (item.Data.InteractionType == InteractionType.HORSE_SADDLE_1)

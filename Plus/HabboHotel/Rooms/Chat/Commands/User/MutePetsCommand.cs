@@ -22,13 +22,13 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
 
         public void Execute(GameClients.GameClient Session, Room Room, string[] Params)
         {
-            Session.GetHabbo().AllowPetSpeech = !Session.GetHabbo().AllowPetSpeech;
+            Session.Habbo.AllowPetSpeech = !Session.Habbo.AllowPetSpeech;
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.RunQuery("UPDATE `users` SET `pets_muted` = '" + ((Session.GetHabbo().AllowPetSpeech) ? 1 : 0) + "' WHERE `id` = '" + Session.GetHabbo().Id + "' LIMIT 1");
+                dbClient.RunQuery("UPDATE `users` SET `pets_muted` = '" + ((Session.Habbo.AllowPetSpeech) ? 1 : 0) + "' WHERE `id` = '" + Session.Habbo.Id + "' LIMIT 1");
             }
 
-            if (Session.GetHabbo().AllowPetSpeech)
+            if (Session.Habbo.AllowPetSpeech)
                 Session.SendWhisper("Change successful, you can no longer see speech from pets.");
             else
                 Session.SendWhisper("Change successful, you can now see speech from pets.");

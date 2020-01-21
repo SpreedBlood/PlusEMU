@@ -10,10 +10,10 @@ namespace Plus.Communication.Packets.Incoming.Users
         {
             bool status = packet.PopBoolean();
 
-            session.GetHabbo().AllowMessengerInvites = status;
+            session.Habbo.AllowMessengerInvites = status;
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("UPDATE `users` SET `ignore_invites` = @MessengerInvites WHERE `id` = '" + session.GetHabbo().Id + "' LIMIT 1");
+                dbClient.SetQuery("UPDATE `users` SET `ignore_invites` = @MessengerInvites WHERE `id` = '" + session.Habbo.Id + "' LIMIT 1");
                 dbClient.AddParameter("MessengerInvites", PlusEnvironment.BoolToEnum(status));
                 dbClient.RunQuery();
             }

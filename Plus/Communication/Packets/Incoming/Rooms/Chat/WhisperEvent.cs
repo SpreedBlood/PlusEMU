@@ -16,20 +16,20 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
         public int Header => ClientPacketHeader.WhisperMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
-            if (!session.GetHabbo().GetPermissions().HasRight("mod_tool") && room.CheckMute(session))
+            if (!session.Habbo.GetPermissions().HasRight("mod_tool") && room.CheckMute(session))
             {
                 session.SendWhisper("Oops, you're currently muted.");
                 return;
             }
 
-            if (PlusEnvironment.GetUnixTimestamp() < session.GetHabbo().FloodTime && session.GetHabbo().FloodTime != 0)
+            if (PlusEnvironment.GetUnixTimestamp() < session.Habbo.FloodTime && session.Habbo.FloodTime != 0)
                 return;
 
             string Params = packet.PopString();
@@ -37,7 +37,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
             string message = Params.Substring(toUser.Length + 1);
             int colour = packet.PopInt();
 
-            RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(session.GetHabbo().Id);
+            RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(session.Habbo.Id);
             if (user == null)
                 return;
 
@@ -45,21 +45,21 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
             if (user2 == null)
                 return;
 
-            if (session.GetHabbo().TimeMuted > 0)
+            if (session.Habbo.TimeMuted > 0)
             {
-                session.SendPacket(new MutedComposer(session.GetHabbo().TimeMuted));
+                session.SendPacket(new MutedComposer(session.Habbo.TimeMuted));
                 return;
             }
 
-            if (!session.GetHabbo().GetPermissions().HasRight("word_filter_override"))
+            if (!session.Habbo.GetPermissions().HasRight("word_filter_override"))
                 message = PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckMessage(message);
 
-            if (!PlusEnvironment.GetGame().GetChatManager().GetChatStyles().TryGetStyle(colour, out ChatStyle style) || style.RequiredRight.Length > 0 && !session.GetHabbo().GetPermissions().HasRight(style.RequiredRight))
+            if (!PlusEnvironment.GetGame().GetChatManager().GetChatStyles().TryGetStyle(colour, out ChatStyle style) || style.RequiredRight.Length > 0 && !session.Habbo.GetPermissions().HasRight(style.RequiredRight))
                 colour = 0;
 
-            user.LastBubble = session.GetHabbo().CustomBubbleId == 0 ? colour : session.GetHabbo().CustomBubbleId;
+            user.LastBubble = session.Habbo.CustomBubbleId == 0 ? colour : session.Habbo.CustomBubbleId;
 
-            if (!session.GetHabbo().GetPermissions().HasRight("mod_tool"))
+            if (!session.Habbo.GetPermissions().HasRight("mod_tool"))
             {
                 if (user.IncrementAndCheckFlood(out int muteTime))
                 {
@@ -68,20 +68,20 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
                 }
             }
 
-            if (!user2.GetClient().GetHabbo().ReceiveWhispers && !session.GetHabbo().GetPermissions().HasRight("room_whisper_override"))
+            if (!user2.GetClient().Habbo.ReceiveWhispers && !session.Habbo.GetPermissions().HasRight("room_whisper_override"))
             {
                 session.SendWhisper("Oops, this user has their whispers disabled!");
                 return;
             }
 
-            PlusEnvironment.GetGame().GetChatManager().GetLogs().StoreChatlog(new ChatlogEntry(session.GetHabbo().Id, room.Id, "<Whisper to " + toUser + ">: " + message, UnixTimestamp.GetNow(), session.GetHabbo(), room));
+            PlusEnvironment.GetGame().GetChatManager().GetLogs().StoreChatlog(new ChatlogEntry(session.Habbo.Id, room.Id, "<Whisper to " + toUser + ">: " + message, UnixTimestamp.GetNow(), session.Habbo, room));
 
             if (PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckBannedWords(message))
             {
-                session.GetHabbo().BannedPhraseCount++;
-                if (session.GetHabbo().BannedPhraseCount >= Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("room.chat.filter.banned_phrases.chances")))
+                session.Habbo.BannedPhraseCount++;
+                if (session.Habbo.BannedPhraseCount >= Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("room.chat.filter.banned_phrases.chances")))
                 {
-                    PlusEnvironment.GetGame().GetModerationManager().BanUser("System", HabboHotel.Moderation.ModerationBanType.Username, session.GetHabbo().Username, "Spamming banned phrases (" + message + ")", PlusEnvironment.GetUnixTimestamp() + 78892200);
+                    PlusEnvironment.GetGame().GetModerationManager().BanUser("System", HabboHotel.Moderation.ModerationBanType.Username, session.Habbo.Username, "Spamming banned phrases (" + message + ")", PlusEnvironment.GetUnixTimestamp() + 78892200);
                     session.Disconnect();
                     return;
                 }
@@ -97,7 +97,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
 
             if (!user2.IsBot && user2.UserId != user.UserId)
             {
-                if (!user2.GetClient().GetHabbo().GetIgnores().IgnoredUserIds().Contains(session.GetHabbo().Id))
+                if (!user2.GetClient().Habbo.GetIgnores().IgnoredUserIds().Contains(session.Habbo.Id))
                 {
                     user2.GetClient().SendPacket(new WhisperComposer(user.VirtualId, message, 0, user.LastBubble));
                 }
@@ -110,7 +110,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
                 {
                     if (notifiable != null && notifiable.HabboId != user2.HabboId && notifiable.HabboId != user.HabboId)
                     {
-                        if (notifiable.GetClient() != null && notifiable.GetClient().GetHabbo() != null && !notifiable.GetClient().GetHabbo().IgnorePublicWhispers)
+                        if (notifiable.GetClient() != null && notifiable.GetClient().Habbo != null && !notifiable.GetClient().Habbo.IgnorePublicWhispers)
                         {
                             notifiable.GetClient().SendPacket(new WhisperComposer(user.VirtualId, "[Whisper to " + toUser + "] " + message, 0, user.LastBubble));
                         }

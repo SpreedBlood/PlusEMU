@@ -950,12 +950,12 @@ namespace Plus.HabboHotel.Rooms
                         if (!PlusEnvironment.GetGame().GetGroupManager().TryGetGroup(I.GroupId, out Group Group))
                             return false;
 
-                        if (User.GetClient() == null || User.GetClient().GetHabbo() == null)
+                        if (User.GetClient() == null || User.GetClient().Habbo == null)
                             return false;
 
-                        if (Group.IsMember(User.GetClient().GetHabbo().Id))
+                        if (Group.IsMember(User.GetClient().Habbo.Id))
                         {
-                            I.InteractingUser = User.GetClient().GetHabbo().Id;
+                            I.InteractingUser = User.GetClient().Habbo.Id;
                             I.ExtraData = "1";
                             I.UpdateState(false, true);
 

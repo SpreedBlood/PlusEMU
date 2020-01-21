@@ -7,7 +7,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
         public int Header => ClientPacketHeader.ModerationMsgMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || !session.GetHabbo().GetPermissions().HasRight("mod_alert"))
+            if (session == null || session.Habbo == null || !session.Habbo.GetPermissions().HasRight("mod_alert"))
                 return;
 
             int userId = packet.PopInt();

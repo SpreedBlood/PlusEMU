@@ -30,7 +30,7 @@
             {
                 if (Params.Length == 2 && Params[1].ToString() == "yes")
                 {
-                    Session.GetHabbo().GetInventoryComponent().ClearItems();
+                    Session.Habbo.GetInventoryComponent().ClearItems();
                     Session.SendNotification("Your inventory has been cleared!");
                     return;
                 }

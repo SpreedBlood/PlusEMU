@@ -10,10 +10,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.Stickys
         public int Header => ClientPacketHeader.GetStickyNoteMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
             Item item = room.GetRoomItemHandler().GetItem(packet.PopInt());

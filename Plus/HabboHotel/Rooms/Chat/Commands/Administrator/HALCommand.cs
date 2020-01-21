@@ -30,7 +30,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
             string URL = Params[1];
 
             string Message = CommandManager.MergeParams(Params, 2);
-            PlusEnvironment.GetGame().GetClientManager().SendPacket(new RoomNotificationComposer("Habboon Hotel Alert!", Message + "\r\n" + "- " + Session.GetHabbo().Username, "", URL, URL));
+            PlusEnvironment.GetGame().GetClientManager().SendPacket(new RoomNotificationComposer("Habboon Hotel Alert!", Message + "\r\n" + "- " + Session.Habbo.Username, "", URL, URL));
             return;
         }
     }

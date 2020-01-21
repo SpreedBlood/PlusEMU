@@ -17,16 +17,16 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets.Horse
         public int Header => ClientPacketHeader.RemoveSaddleFromHorseMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
             if (!room.GetRoomUserManager().TryGetPet(packet.PopInt(), out RoomUser petUser))
                 return;
 
-            if (petUser.PetData == null || petUser.PetData.OwnerId != session.GetHabbo().Id)
+            if (petUser.PetData == null || petUser.PetData.OwnerId != session.Habbo.Id)
                 return;
 
             //Fetch the furniture Id for the pets current saddle.
@@ -44,10 +44,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets.Horse
             if (!PlusEnvironment.GetGame().GetItemManager().GetItem(saddleId, out ItemData itemData))
                 return;
 
-            Item item = ItemFactory.CreateSingleItemNullable(itemData, session.GetHabbo(), "", "");
+            Item item = ItemFactory.CreateSingleItemNullable(itemData, session.Habbo, "", "");
             if (item != null)
             {
-                session.GetHabbo().GetInventoryComponent().TryAddItem(item);
+                session.Habbo.GetInventoryComponent().TryAddItem(item);
                 session.SendPacket(new FurniListNotificationComposer(item.Id, 1));
                 session.SendPacket(new PurchaseOKComposer());
                 session.SendPacket(new FurniListAddComposer(item));

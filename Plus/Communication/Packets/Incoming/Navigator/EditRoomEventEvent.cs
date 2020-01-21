@@ -19,7 +19,7 @@ namespace Plus.Communication.Packets.Incoming.Navigator
             if (!RoomFactory.TryGetData(roomId, out RoomData data))
                 return;
 
-            if (data.OwnerId != session.GetHabbo().Id)
+            if (data.OwnerId != session.Habbo.Id)
                 return;
 
             if (data.Promotion == null)

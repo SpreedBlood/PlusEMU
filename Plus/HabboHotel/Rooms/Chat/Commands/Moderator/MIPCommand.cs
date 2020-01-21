@@ -41,7 +41,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
                 return;
             }
 
-            if (Habbo.GetPermissions().HasRight("mod_tool") && !Session.GetHabbo().GetPermissions().HasRight("mod_ban_any"))
+            if (Habbo.GetPermissions().HasRight("mod_tool") && !Session.Habbo.GetPermissions().HasRight("mod_ban_any"))
             {
                 Session.SendWhisper("Oops, you cannot ban that user.");
                 return;
@@ -66,11 +66,11 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
                 Reason = "No reason specified.";
 
             if (!string.IsNullOrEmpty(IPAddress))
-                PlusEnvironment.GetGame().GetModerationManager().BanUser(Session.GetHabbo().Username, ModerationBanType.IP, IPAddress, Reason, Expire);
-            PlusEnvironment.GetGame().GetModerationManager().BanUser(Session.GetHabbo().Username, ModerationBanType.Username, Habbo.Username, Reason, Expire);
+                PlusEnvironment.GetGame().GetModerationManager().BanUser(Session.Habbo.Username, ModerationBanType.IP, IPAddress, Reason, Expire);
+            PlusEnvironment.GetGame().GetModerationManager().BanUser(Session.Habbo.Username, ModerationBanType.Username, Habbo.Username, Reason, Expire);
 
             if (!string.IsNullOrEmpty(Habbo.MachineId))
-                PlusEnvironment.GetGame().GetModerationManager().BanUser(Session.GetHabbo().Username, ModerationBanType.Machine, Habbo.MachineId, Reason, Expire);
+                PlusEnvironment.GetGame().GetModerationManager().BanUser(Session.Habbo.Username, ModerationBanType.Machine, Habbo.MachineId, Reason, Expire);
 
             GameClient TargetClient = PlusEnvironment.GetGame().GetClientManager().GetClientByUsername(Username);
             if (TargetClient != null)

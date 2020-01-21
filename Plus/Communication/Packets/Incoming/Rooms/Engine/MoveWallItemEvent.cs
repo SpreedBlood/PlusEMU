@@ -10,7 +10,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
         public int Header => ClientPacketHeader.MoveWallItemMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
             if (!room.CheckRights(session))

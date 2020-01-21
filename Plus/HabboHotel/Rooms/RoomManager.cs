@@ -292,7 +292,7 @@ namespace Plus.HabboHotel.Rooms
                 dbClient.SetQuery("INSERT INTO `rooms` (`roomtype`,`caption`,`description`,`owner`,`model_name`,`category`,`users_max`,`trade_settings`) VALUES ('private',@caption,@description,@UserId,@model,@category,@usersmax,@tradesettings)");
                 dbClient.AddParameter("caption", name);
                 dbClient.AddParameter("description", description);
-                dbClient.AddParameter("UserId", session.GetHabbo().Id);
+                dbClient.AddParameter("UserId", session.Habbo.Id);
                 dbClient.AddParameter("model", model.Id);
                 dbClient.AddParameter("category", category);
                 dbClient.AddParameter("usersmax", maxVisitors);
@@ -301,7 +301,7 @@ namespace Plus.HabboHotel.Rooms
                 roomId = Convert.ToInt32(dbClient.InsertQuery());
             }
 
-            RoomData data = new RoomData(roomId, name, model.Id, session.GetHabbo().Username, session.GetHabbo().Id, "", 0, "public", "open", 0, maxVisitors, category, description, string.Empty,
+            RoomData data = new RoomData(roomId, name, model.Id, session.Habbo.Username, session.Habbo.Id, "", 0, "public", "open", 0, maxVisitors, category, description, string.Empty,
              floor, landscape, 1, 1, 0, 0, wallthick, floorthick, wallpaper, 1, 1, 1, 1, 1, 1, 1, 8, tradeSettings, true, true, true, true, true, true, true, 0, 0, true, model);
 
             return data;

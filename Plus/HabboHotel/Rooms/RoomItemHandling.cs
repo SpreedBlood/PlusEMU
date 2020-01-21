@@ -161,8 +161,8 @@ namespace Plus.HabboHotel.Rooms
                         GameClient Client = PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(Item.UserID);
                         if (Client != null)
                         {
-                            Client.GetHabbo().GetInventoryComponent().AddNewItem(Item.Id, Item.BaseItem, Item.ExtraData, Item.GroupId, true, true, Item.LimitedNo, Item.LimitedTot);
-                            Client.GetHabbo().GetInventoryComponent().UpdateItems(false);
+                            Client.Habbo.GetInventoryComponent().AddNewItem(Item.Id, Item.BaseItem, Item.ExtraData, Item.GroupId, true, true, Item.LimitedNo, Item.LimitedTot);
+                            Client.Habbo.GetInventoryComponent().UpdateItems(false);
                         }
                         continue;
                     }
@@ -446,7 +446,7 @@ namespace Plus.HabboHotel.Rooms
 
             _room.GetGameMap().GameMap[pUser.X, pUser.Y] = 0;
 
-            if (pUser != null && pUser.GetClient() != null && pUser.GetClient().GetHabbo() != null)
+            if (pUser != null && pUser.GetClient() != null && pUser.GetClient().Habbo != null)
             {
                 List<Item> Items = _room.GetGameMap().GetRoomItemForSquare(pNextCoord.X, pNextCoord.Y);
                 foreach (Item IItem in Items.ToList())
@@ -454,13 +454,13 @@ namespace Plus.HabboHotel.Rooms
                     if (IItem == null)
                         continue;
 
-                    _room.GetWired().TriggerEvent(WiredBoxType.TriggerWalkOnFurni, pUser.GetClient().GetHabbo(), IItem);
+                    _room.GetWired().TriggerEvent(WiredBoxType.TriggerWalkOnFurni, pUser.GetClient().Habbo, IItem);
                 }
 
                 Item Item = _room.GetRoomItemHandler().GetItem(pRollerID);
                 if (Item != null)
                 {
-                    _room.GetWired().TriggerEvent(WiredBoxType.TriggerWalkOffFurni, pUser.GetClient().GetHabbo(), Item);
+                    _room.GetWired().TriggerEvent(WiredBoxType.TriggerWalkOffFurni, pUser.GetClient().Habbo, Item);
                 }
             }
 
@@ -847,19 +847,19 @@ namespace Plus.HabboHotel.Rooms
 
             foreach (Item item in GetWallAndFloor.ToList())
             {
-                if (item == null || item.UserID != session.GetHabbo().Id)
+                if (item == null || item.UserID != session.Habbo.Id)
                     continue;
 
                 if (item.IsFloorItem)
                 {
                     _floorItems.TryRemove(item.Id, out Item I);
-                    session.GetHabbo().GetInventoryComponent().TryAddFloorItem(item.Id, I);
+                    session.Habbo.GetInventoryComponent().TryAddFloorItem(item.Id, I);
                     _room.SendPacket(new ObjectRemoveComposer(item, item.UserID));
                 }
                 else if (item.IsWallItem)
                 {
                     _wallItems.TryRemove(item.Id, out Item I);
-                    session.GetHabbo().GetInventoryComponent().TryAddWallItem(item.Id, I);
+                    session.Habbo.GetInventoryComponent().TryAddWallItem(item.Id, I);
                     _room.SendPacket(new ItemRemoveComposer(item, item.UserID));
                 }
 

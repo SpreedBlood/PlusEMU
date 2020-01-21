@@ -42,7 +42,7 @@ namespace Plus.HabboHotel.Items.Interactor
             if (Item.ExtraData != "1" && Item.GetBaseItem().VendingIds.Count >= 1 && Item.InteractingUser == 0 &&
                 Session != null)
             {
-                RoomUser User = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
+                RoomUser User = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Session.Habbo.Id);
 
                 if (User == null)
                 {
@@ -55,7 +55,7 @@ namespace Plus.HabboHotel.Items.Interactor
                     return;
                 }
 
-                Item.InteractingUser = Session.GetHabbo().Id;
+                Item.InteractingUser = Session.Habbo.Id;
 
                 User.CanWalk = false;
                 User.ClearMovement(true);

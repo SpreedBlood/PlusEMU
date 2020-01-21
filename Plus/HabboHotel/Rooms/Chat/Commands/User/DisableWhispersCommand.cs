@@ -19,8 +19,8 @@
 
         public void Execute(GameClients.GameClient Session, Room Room, string[] Params)
         {
-            Session.GetHabbo().ReceiveWhispers = !Session.GetHabbo().ReceiveWhispers;
-            Session.SendWhisper("You're " + (Session.GetHabbo().ReceiveWhispers ? "now" : "no longer") + " receiving whispers!");
+            Session.Habbo.ReceiveWhispers = !Session.Habbo.ReceiveWhispers;
+            Session.SendWhisper("You're " + (Session.Habbo.ReceiveWhispers ? "now" : "no longer") + " receiving whispers!");
         }
     }
 }

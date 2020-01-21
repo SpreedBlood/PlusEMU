@@ -29,16 +29,16 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
 
             foreach (RoomUser User in Room.GetRoomUserManager().GetUserList().ToList())
             {
-                if (User == null || User.GetClient() == null || User.GetClient().GetHabbo() == null)
+                if (User == null || User.GetClient() == null || User.GetClient().Habbo == null)
                     continue;
 
-                if (!User.GetClient().GetHabbo().GetBadgeComponent().HasBadge(Params[1]))
+                if (!User.GetClient().Habbo.GetBadgeComponent().HasBadge(Params[1]))
                 {
-                    User.GetClient().GetHabbo().GetBadgeComponent().GiveBadge(Params[1], true, User.GetClient());
+                    User.GetClient().Habbo.GetBadgeComponent().GiveBadge(Params[1], true, User.GetClient());
                     User.GetClient().SendNotification("You have just been given a badge!");
                 }
                 else
-                    User.GetClient().SendWhisper(Session.GetHabbo().Username + " tried to give you a badge, but you already have it!");
+                    User.GetClient().SendWhisper(Session.Habbo.Username + " tried to give you a badge, but you already have it!");
             }
 
             Session.SendWhisper("You have successfully given every user in this room the " + Params[2] + " badge!");

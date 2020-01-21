@@ -9,18 +9,18 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
         public int Header => ClientPacketHeader.StartTypingMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
-            RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(session.GetHabbo().Username);
+            RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(session.Habbo.Username);
             if (user == null)
                 return;
 
-            session.GetHabbo().CurrentRoom.SendPacket(new UserTypingComposer(user.VirtualId, true));
+            session.Habbo.CurrentRoom.SendPacket(new UserTypingComposer(user.VirtualId, true));
         }
     }
 }

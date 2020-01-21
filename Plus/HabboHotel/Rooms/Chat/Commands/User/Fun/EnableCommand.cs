@@ -27,13 +27,13 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
                 return;
             }
 
-            if (!Room.EnablesEnabled && !Session.GetHabbo().GetPermissions().HasRight("mod_tool"))
+            if (!Room.EnablesEnabled && !Session.Habbo.GetPermissions().HasRight("mod_tool"))
             {
                 Session.SendWhisper("Oops, it appears that the room owner has disabled the ability to use the enable command in here.");
                 return;
             }
 
-            RoomUser ThisUser = Session.GetHabbo().CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Username);
+            RoomUser ThisUser = Session.Habbo.CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(Session.Habbo.Username);
             if (ThisUser == null)
                 return;
 
@@ -54,19 +54,19 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
             if (EffectId > int.MaxValue || EffectId < int.MinValue)
                 return;
 
-            if ((EffectId == 102 || EffectId == 187) && !Session.GetHabbo().GetPermissions().HasRight("mod_tool"))
+            if ((EffectId == 102 || EffectId == 187) && !Session.Habbo.GetPermissions().HasRight("mod_tool"))
             {
                 Session.SendWhisper("Sorry, only staff members can use this effects.");
                 return;
             }
 
-            if (EffectId == 178 && (!Session.GetHabbo().GetPermissions().HasRight("gold_vip") && !Session.GetHabbo().GetPermissions().HasRight("events_staff")))
+            if (EffectId == 178 && (!Session.Habbo.GetPermissions().HasRight("gold_vip") && !Session.Habbo.GetPermissions().HasRight("events_staff")))
             {
                 Session.SendWhisper("Sorry, only Gold VIP and Events Staff members can use this effect.");
                 return;
             }
 
-            Session.GetHabbo().Effects().ApplyEffect(EffectId);
+            Session.Habbo.Effects().ApplyEffect(EffectId);
         }
     }
 }

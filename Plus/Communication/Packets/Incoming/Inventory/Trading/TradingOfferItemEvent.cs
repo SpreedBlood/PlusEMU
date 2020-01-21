@@ -12,14 +12,14 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Trading
         public int Header => ClientPacketHeader.TradingOfferItemMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || !session.GetHabbo().InRoom)
+            if (session == null || session.Habbo == null || !session.Habbo.InRoom)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
-            RoomUser roomUser = room.GetRoomUserManager().GetRoomUserByHabbo(session.GetHabbo().Id);
+            RoomUser roomUser = room.GetRoomUserManager().GetRoomUserByHabbo(session.Habbo.Id);
             if (roomUser == null)
                 return;
 
@@ -27,17 +27,17 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Trading
 
             if (!roomUser.IsTrading)
             {
-                session.SendPacket(new TradingClosedComposer(session.GetHabbo().Id));
+                session.SendPacket(new TradingClosedComposer(session.Habbo.Id));
                 return;
             }
 
             if (!room.GetTrading().TryGetTrade(roomUser.TradeId, out Trade trade))
             {
-                session.SendPacket(new TradingClosedComposer(session.GetHabbo().Id));
+                session.SendPacket(new TradingClosedComposer(session.Habbo.Id));
                 return;
             }
 
-            Item item = session.GetHabbo().GetInventoryComponent().GetItem(itemId);
+            Item item = session.Habbo.GetInventoryComponent().GetItem(itemId);
             if (item == null)
                 return;
 

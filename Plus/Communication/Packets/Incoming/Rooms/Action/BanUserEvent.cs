@@ -17,7 +17,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
         public int Header => ClientPacketHeader.BanUserMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
@@ -35,7 +35,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
             if (room.OwnerId == userId)
                 return;
 
-            if (user.GetClient().GetHabbo().GetPermissions().HasRight("mod_tool"))
+            if (user.GetClient().Habbo.GetPermissions().HasRight("mod_tool"))
                 return;
 
             long time = 0;

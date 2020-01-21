@@ -14,7 +14,7 @@ namespace Plus.Communication.Packets.Outgoing.Inventory.Achievements
             WriteInteger(Achievements.Count);
             foreach (Achievement Achievement in Achievements)
             {
-                UserAchievement UserData = Session.GetHabbo().GetAchievementData(Achievement.GroupName);
+                UserAchievement UserData = Session.Habbo.GetAchievementData(Achievement.GroupName);
                 int TargetLevel = (UserData != null ? UserData.Level + 1 : 1);
                 int TotalLevels = Achievement.Levels.Count;
 

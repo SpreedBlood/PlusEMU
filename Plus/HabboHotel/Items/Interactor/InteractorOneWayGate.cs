@@ -46,7 +46,7 @@ namespace Plus.HabboHotel.Items.Interactor
             if (Session == null)
                 return;
 
-            RoomUser User = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
+            RoomUser User = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Session.Habbo.Id);
 
             if (Item.InteractingUser2 != User.UserId)
                 Item.InteractingUser2 = User.UserId;

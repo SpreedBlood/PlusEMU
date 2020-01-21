@@ -23,13 +23,13 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
 
         public void Execute(GameClients.GameClient Session, Room Room, string[] Params)
         {
-            Session.GetHabbo().AllowMimic = !Session.GetHabbo().AllowMimic;
-            Session.SendWhisper("You're " + (Session.GetHabbo().AllowMimic == true ? "now" : "no longer") + " able to be mimiced.");
+            Session.Habbo.AllowMimic = !Session.Habbo.AllowMimic;
+            Session.SendWhisper("You're " + (Session.Habbo.AllowMimic == true ? "now" : "no longer") + " able to be mimiced.");
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("UPDATE `users` SET `allow_mimic` = @AllowMimic WHERE `id` = '" + Session.GetHabbo().Id + "'");
-                dbClient.AddParameter("AllowMimic", PlusEnvironment.BoolToEnum(Session.GetHabbo().AllowMimic));
+                dbClient.SetQuery("UPDATE `users` SET `allow_mimic` = @AllowMimic WHERE `id` = '" + Session.Habbo.Id + "'");
+                dbClient.AddParameter("AllowMimic", PlusEnvironment.BoolToEnum(Session.Habbo.AllowMimic));
                 dbClient.RunQuery();
             }
         }

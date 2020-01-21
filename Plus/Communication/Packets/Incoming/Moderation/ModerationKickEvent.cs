@@ -8,23 +8,23 @@ namespace Plus.Communication.Packets.Incoming.Moderation
         public int Header => ClientPacketHeader.ModerationKickMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || !session.GetHabbo().GetPermissions().HasRight("mod_kick"))
+            if (session == null || session.Habbo == null || !session.Habbo.GetPermissions().HasRight("mod_kick"))
                 return;
 
             int userId = packet.PopInt();
             packet.PopString(); //message
 
             GameClient client = PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(userId);
-            if (client == null || client.GetHabbo() == null || client.GetHabbo().CurrentRoomId < 1 || client.GetHabbo().Id == session.GetHabbo().Id)
+            if (client == null || client.Habbo == null || client.Habbo.CurrentRoomId < 1 || client.Habbo.Id == session.Habbo.Id)
                 return;
 
-            if (client.GetHabbo().Rank >= session.GetHabbo().Rank)
+            if (client.Habbo.Rank >= session.Habbo.Rank)
             {
                 session.SendNotification(PlusEnvironment.GetLanguageManager().TryGetValue("moderation.kick.disallowed"));
                 return;
             }
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
             room.GetRoomUserManager().RemoveUserFromRoom(client, true);

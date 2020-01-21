@@ -8,7 +8,7 @@ namespace Plus.Communication.Packets.Incoming.Messenger
         public int Header => ClientPacketHeader.AcceptBuddyMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || session.GetHabbo().GetMessenger() == null)
+            if (session == null || session.Habbo == null || session.Habbo.GetMessenger() == null)
                 return;
 
             int amount = packet.PopInt();
@@ -21,16 +21,16 @@ namespace Plus.Communication.Packets.Incoming.Messenger
             {
                 int requestId = packet.PopInt();
 
-                if (!session.GetHabbo().GetMessenger().TryGetRequest(requestId, out MessengerRequest request))
+                if (!session.Habbo.GetMessenger().TryGetRequest(requestId, out MessengerRequest request))
                     continue;
 
-                if (request.To != session.GetHabbo().Id)
+                if (request.To != session.Habbo.Id)
                     return;
 
-                if (!session.GetHabbo().GetMessenger().FriendshipExists(request.To))
-                    session.GetHabbo().GetMessenger().CreateFriendship(request.From);
+                if (!session.Habbo.GetMessenger().FriendshipExists(request.To))
+                    session.Habbo.GetMessenger().CreateFriendship(request.From);
 
-                session.GetHabbo().GetMessenger().HandleRequest(requestId);
+                session.Habbo.GetMessenger().HandleRequest(requestId);
             }
         }
     }

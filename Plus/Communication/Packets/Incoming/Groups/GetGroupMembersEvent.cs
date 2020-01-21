@@ -77,7 +77,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
             int startIndex = ((page - 1) * 14 + 14);
             int finishIndex = members.Count;
 
-            session.SendPacket(new GroupMembersComposer(group, members.Skip(startIndex).Take(finishIndex - startIndex).ToList(), members.Count, page, (group.CreatorId == session.GetHabbo().Id || group.IsAdmin(session.GetHabbo().Id)), requestType, searchVal));
+            session.SendPacket(new GroupMembersComposer(group, members.Skip(startIndex).Take(finishIndex - startIndex).ToList(), members.Count, page, (group.CreatorId == session.Habbo.Id || group.IsAdmin(session.Habbo.Id)), requestType, searchVal));
         }
     }
 }

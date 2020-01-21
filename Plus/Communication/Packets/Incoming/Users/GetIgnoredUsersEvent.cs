@@ -13,7 +13,7 @@ namespace Plus.Communication.Packets.Incoming.Users
         {
             List<string> ignoredUsers = new List<string>();
 
-            foreach (int userId in new List<int>(session.GetHabbo().GetIgnores().IgnoredUserIds()))
+            foreach (int userId in new List<int>(session.Habbo.GetIgnores().IgnoredUserIds()))
             {
                 Habbo player = PlusEnvironment.GetHabboById(userId);
                 if (player != null)

@@ -9,10 +9,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.Moodlight
         public int Header => ClientPacketHeader.ToggleMoodlightMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
             if (!room.CheckRights(session, true) || room.MoodlightData == null)

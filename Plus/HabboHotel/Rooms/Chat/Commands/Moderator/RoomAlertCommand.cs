@@ -25,7 +25,7 @@
                 return;
             }
 
-            if (!Session.GetHabbo().GetPermissions().HasRight("mod_alert") && Room.OwnerId != Session.GetHabbo().Id)
+            if (!Session.Habbo.GetPermissions().HasRight("mod_alert") && Room.OwnerId != Session.Habbo.Id)
             {
                 Session.SendWhisper("You can only Room Alert in your own room!");
                 return;
@@ -34,10 +34,10 @@
             string Message = CommandManager.MergeParams(Params, 1);
             foreach (RoomUser RoomUser in Room.GetRoomUserManager().GetRoomUsers())
             {
-                if (RoomUser == null || RoomUser.GetClient() == null || Session.GetHabbo().Id == RoomUser.UserId)
+                if (RoomUser == null || RoomUser.GetClient() == null || Session.Habbo.Id == RoomUser.UserId)
                     continue;
 
-                RoomUser.GetClient().SendNotification(Session.GetHabbo().Username + " alerted the room with the following message:\n\n" + Message);
+                RoomUser.GetClient().SendNotification(Session.Habbo.Username + " alerted the room with the following message:\n\n" + Message);
             }
             Session.SendWhisper("Message successfully sent to the room.");
         }

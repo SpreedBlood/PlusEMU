@@ -36,7 +36,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
                 case "catalog":
                 case "catalogue":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_catalog"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_catalog"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_catalog' permission.");
                             break;
@@ -52,7 +52,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
                 case "furni":
                 case "furniture":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_furni"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_furni"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_furni' permission.");
                             break;
@@ -65,7 +65,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
 
                 case "models":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_models"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_models"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_models' permission.");
                             break;
@@ -78,7 +78,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
 
                 case "promotions":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_promotions"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_promotions"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_promotions' permission.");
                             break;
@@ -91,7 +91,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
 
                 case "youtube":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_youtube"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_youtube"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_youtube' permission.");
                             break;
@@ -104,7 +104,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
 
                 case "filter":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_filter"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_filter"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_filter' permission.");
                             break;
@@ -117,7 +117,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
 
                 case "navigator":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_navigator"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_navigator"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_navigator' permission.");
                             break;
@@ -132,7 +132,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
                 case "rights":
                 case "permissions":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_rights"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_rights"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_rights' permission.");
                             break;
@@ -142,10 +142,10 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
 
                         foreach (GameClient Client in PlusEnvironment.GetGame().GetClientManager().GetClients.ToList())
                         {
-                            if (Client == null || Client.GetHabbo() == null || Client.GetHabbo().GetPermissions() == null)
+                            if (Client == null || Client.Habbo == null || Client.Habbo.GetPermissions() == null)
                                 continue;
 
-                            Client.GetHabbo().GetPermissions().Init(Client.GetHabbo());
+                            Client.Habbo.GetPermissions().Init(Client.Habbo);
                         }
 
                         Session.SendWhisper("Rank definitions successfully updated.");
@@ -155,7 +155,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
                 case "config":
                 case "settings":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_configuration"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_configuration"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_configuration' permission.");
                             break;
@@ -168,7 +168,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
 
                 case "bans":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_bans"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_bans"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_bans' permission.");
                             break;
@@ -181,7 +181,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
 
                 case "quests":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_quests"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_quests"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_quests' permission.");
                             break;
@@ -194,7 +194,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
 
                 case "achievements":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_achievements"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_achievements"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_achievements' permission.");
                             break;
@@ -207,7 +207,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
 
                 case "moderation":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_moderation"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_moderation"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_moderation' permission.");
                             break;
@@ -222,7 +222,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
 
                 case "vouchers":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_vouchers"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_vouchers"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_vouchers' permission.");
                             break;
@@ -237,7 +237,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
                 case "games":
                 case "gamecenter":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_game_center"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_game_center"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_game_center' permission.");
                             break;
@@ -250,7 +250,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
 
                 case "pet_locale":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_pet_locale"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_pet_locale"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_pet_locale' permission.");
                             break;
@@ -263,7 +263,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
 
                 case "locale":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_locale"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_locale"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_locale' permission.");
                             break;
@@ -276,7 +276,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
 
                 case "mutant":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_anti_mutant"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_anti_mutant"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_anti_mutant' permission.");
                             break;
@@ -289,7 +289,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
 
                 case "bots":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_bots"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_bots"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_bots' permission.");
                             break;
@@ -302,7 +302,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
 
                 case "rewards":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_rewards"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_rewards"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_rewards' permission.");
                             break;
@@ -315,7 +315,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
 
                 case "chat_styles":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_chat_styles"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_chat_styles"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_chat_styles' permission.");
                             break;
@@ -328,7 +328,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
 
                 case "badge_definitions":
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_badge_definitions"))
+                        if (!Session.Habbo.GetPermissions().HasCommand("command_update_badge_definitions"))
                         {
                             Session.SendWhisper("Oops, you do not have the 'command_update_badge_definitions' permission.");
                             break;

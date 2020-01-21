@@ -19,18 +19,18 @@ namespace Plus.Communication.Packets.Incoming.Navigator
             if (!RoomFactory.TryGetData(roomId, out RoomData data))
                 return;
 
-            if (data == null || session.GetHabbo().FavoriteRooms.Count >= 30 || session.GetHabbo().FavoriteRooms.Contains(roomId))
+            if (data == null || session.Habbo.FavoriteRooms.Count >= 30 || session.Habbo.FavoriteRooms.Contains(roomId))
             {
                 // send packet that favourites is full.
                 return;
             }
 
-            session.GetHabbo().FavoriteRooms.Add(roomId);
+            session.Habbo.FavoriteRooms.Add(roomId);
             session.SendPacket(new UpdateFavouriteRoomComposer(roomId, true));
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.RunQuery("INSERT INTO user_favorites (user_id,room_id) VALUES (" + session.GetHabbo().Id + "," + roomId + ")");
+                dbClient.RunQuery("INSERT INTO user_favorites (user_id,room_id) VALUES (" + session.Habbo.Id + "," + roomId + ")");
             }
         }
     }

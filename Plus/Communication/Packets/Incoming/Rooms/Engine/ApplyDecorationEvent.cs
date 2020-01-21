@@ -21,16 +21,16 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
         public int Header => ClientPacketHeader.ApplyDecorationMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
             if (!room.CheckRights(session, true))
                 return;
 
-            Item item = session.GetHabbo().GetInventoryComponent().GetItem(packet.PopInt());
+            Item item = session.Habbo.GetInventoryComponent().GetItem(packet.PopInt());
             if (item == null)
                 return;
 
@@ -85,7 +85,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
                 dbClient.RunQuery("DELETE FROM `items` WHERE `id` = '" + item.Id + "' LIMIT 1");
             }
 
-            session.GetHabbo().GetInventoryComponent().RemoveItem(item.Id);
+            session.Habbo.GetInventoryComponent().RemoveItem(item.Id);
             room.SendPacket(new RoomPropertyComposer(decorationKey, item.ExtraData));
         }
     }

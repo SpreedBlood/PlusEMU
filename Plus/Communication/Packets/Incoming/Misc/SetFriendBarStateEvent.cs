@@ -9,11 +9,11 @@ namespace Plus.Communication.Packets.Incoming.Misc
         public int Header => ClientPacketHeader.SetFriendBarStateMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null)
+            if (session == null || session.Habbo == null)
                 return;
 
-            session.GetHabbo().FriendbarState = FriendBarStateUtility.GetEnum(packet.PopInt());
-            session.SendPacket(new SoundSettingsComposer(session.GetHabbo().ClientVolume, session.GetHabbo().ChatPreference, session.GetHabbo().AllowMessengerInvites, session.GetHabbo().FocusPreference, FriendBarStateUtility.GetInt(session.GetHabbo().FriendbarState)));
+            session.Habbo.FriendbarState = FriendBarStateUtility.GetEnum(packet.PopInt());
+            session.SendPacket(new SoundSettingsComposer(session.Habbo.ClientVolume, session.Habbo.ChatPreference, session.Habbo.AllowMessengerInvites, session.Habbo.FocusPreference, FriendBarStateUtility.GetInt(session.Habbo.FriendbarState)));
         }
     }
 }

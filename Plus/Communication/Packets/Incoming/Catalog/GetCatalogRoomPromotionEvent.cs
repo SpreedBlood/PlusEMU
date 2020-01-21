@@ -12,7 +12,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
         public void Parse(GameClient session, ClientPacket packet)
         {
-            List<RoomData> rooms = RoomFactory.GetRoomsDataByOwnerSortByName(session.GetHabbo().Id);
+            List<RoomData> rooms = RoomFactory.GetRoomsDataByOwnerSortByName(session.Habbo.Id);
 
             session.SendPacket(new GetCatalogRoomPromotionComposer(rooms));
         }

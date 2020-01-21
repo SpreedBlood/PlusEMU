@@ -88,19 +88,19 @@ namespace Plus.HabboHotel.Quests
 
         public void ProgressUserQuest(GameClient session, QuestType type, int data = 0)
         {
-            if (session == null || session.GetHabbo() == null || session.GetHabbo().GetStats().QuestId <= 0)
+            if (session == null || session.Habbo == null || session.Habbo.GetStats().QuestId <= 0)
             {
                 return;
             }
 
-            Quest quest = GetQuest(session.GetHabbo().GetStats().QuestId);
+            Quest quest = GetQuest(session.Habbo.GetStats().QuestId);
 
             if (quest == null || quest.GoalType != type)
             {
                 return;
             }
 
-            int currentProgress = session.GetHabbo().GetQuestProgress(quest.Id);
+            int currentProgress = session.Habbo.GetQuestProgress(quest.Id);
             int totalProgress = currentProgress;
             bool completeQuest = false;
 
@@ -153,24 +153,24 @@ namespace Plus.HabboHotel.Quests
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.RunQuery("UPDATE `user_quests` SET `progress` = '" + totalProgress + "' WHERE `user_id` = '" + session.GetHabbo().Id + "' AND `quest_id` = '" + quest.Id + "' LIMIT 1");
+                dbClient.RunQuery("UPDATE `user_quests` SET `progress` = '" + totalProgress + "' WHERE `user_id` = '" + session.Habbo.Id + "' AND `quest_id` = '" + quest.Id + "' LIMIT 1");
 
                 if (completeQuest)
-                    dbClient.RunQuery("UPDATE `user_stats` SET `quest_id` = '0' WHERE `id` = '" + session.GetHabbo().Id + "' LIMIT 1");
+                    dbClient.RunQuery("UPDATE `user_stats` SET `quest_id` = '0' WHERE `id` = '" + session.Habbo.Id + "' LIMIT 1");
             }
 
-            session.GetHabbo().quests[session.GetHabbo().GetStats().QuestId] = totalProgress;
+            session.Habbo.quests[session.Habbo.GetStats().QuestId] = totalProgress;
             session.SendPacket(new QuestStartedComposer(session, quest));
 
             if (completeQuest)
             {
-                session.GetHabbo().GetMessenger().BroadcastAchievement(session.GetHabbo().Id, Users.Messenger.MessengerEventTypes.QuestCompleted, quest.Category + "." + quest.Name);
+                session.Habbo.GetMessenger().BroadcastAchievement(session.Habbo.Id, Users.Messenger.MessengerEventTypes.QuestCompleted, quest.Category + "." + quest.Name);
 
-                session.GetHabbo().GetStats().QuestId = 0;
-                session.GetHabbo().QuestLastCompleted = quest.Id;
+                session.Habbo.GetStats().QuestId = 0;
+                session.Habbo.QuestLastCompleted = quest.Id;
                 session.SendPacket(new QuestCompletedComposer(session, quest));
-                session.GetHabbo().Duckets += quest.Reward;
-                session.SendPacket(new HabboActivityPointNotificationComposer(session.GetHabbo().Duckets, quest.Reward));
+                session.Habbo.Duckets += quest.Reward;
+                session.SendPacket(new HabboActivityPointNotificationComposer(session.Habbo.Duckets, quest.Reward));
                 GetList(session, null);
             }
         }
@@ -206,9 +206,9 @@ namespace Plus.HabboHotel.Quests
 
                 if (quest.Number >= UserQuestGoals[quest.Category])
                 {
-                    int UserProgress = session.GetHabbo().GetQuestProgress(quest.Id);
+                    int UserProgress = session.Habbo.GetQuestProgress(quest.Id);
 
-                    if (session.GetHabbo().GetStats().QuestId != quest.Id && UserProgress >= quest.GoalData)
+                    if (session.Habbo.GetStats().QuestId != quest.Id && UserProgress >= quest.GoalData)
                     {
                         UserQuestGoals[quest.Category] = quest.Number + 1;
                     }

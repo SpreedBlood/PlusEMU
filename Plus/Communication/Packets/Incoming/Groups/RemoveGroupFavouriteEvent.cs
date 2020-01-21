@@ -9,17 +9,17 @@ namespace Plus.Communication.Packets.Incoming.Groups
         public int Header => ClientPacketHeader.RemoveGroupFavouriteMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            session.GetHabbo().GetStats().FavouriteGroupId = 0;
+            session.Habbo.GetStats().FavouriteGroupId = 0;
 
-            if (session.GetHabbo().InRoom)
+            if (session.Habbo.InRoom)
             {
-                RoomUser user = session.GetHabbo().CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(session.GetHabbo().Id);
+                RoomUser user = session.Habbo.CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(session.Habbo.Id);
                 if (user != null)
-                    session.GetHabbo().CurrentRoom.SendPacket(new UpdateFavouriteGroupComposer(null, user.VirtualId));
-                session.GetHabbo().CurrentRoom.SendPacket(new RefreshFavouriteGroupComposer(session.GetHabbo().Id));
+                    session.Habbo.CurrentRoom.SendPacket(new UpdateFavouriteGroupComposer(null, user.VirtualId));
+                session.Habbo.CurrentRoom.SendPacket(new RefreshFavouriteGroupComposer(session.Habbo.Id));
             }
             else
-                session.SendPacket(new RefreshFavouriteGroupComposer(session.GetHabbo().Id));
+                session.SendPacket(new RefreshFavouriteGroupComposer(session.Habbo.Id));
         }
     }
 }

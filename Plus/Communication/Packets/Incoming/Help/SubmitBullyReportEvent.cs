@@ -14,10 +14,10 @@ namespace Plus.Communication.Packets.Incoming.Help
                 return;
 
             int userId = packet.PopInt();
-            if (userId == session.GetHabbo().Id)//Hax
+            if (userId == session.Habbo.Id)//Hax
                 return;
 
-            if (session.GetHabbo().AdvertisingReportedBlocked)
+            if (session.Habbo.AdvertisingReportedBlocked)
             {
                 session.SendPacket(new SubmitBullyReportComposer(1));//This user is blocked from reporting.
                 return;
@@ -30,40 +30,40 @@ namespace Plus.Communication.Packets.Incoming.Help
                 return;
             }
 
-            if (session.GetHabbo().LastAdvertiseReport > PlusEnvironment.GetUnixTimestamp())
+            if (session.Habbo.LastAdvertiseReport > PlusEnvironment.GetUnixTimestamp())
             {
                 session.SendNotification("Reports can only be sent per 5 minutes!");
                 return;
             }
 
-            if (client.GetHabbo().GetPermissions().HasRight("mod_tool"))//Reporting staff, nope!
+            if (client.Habbo.GetPermissions().HasRight("mod_tool"))//Reporting staff, nope!
             {
                 session.SendNotification("Sorry, you cannot report staff members via this tool.");
                 return;
             }
 
             //This user hasn't even said a word, nope!
-            if (!client.GetHabbo().HasSpoken)
+            if (!client.Habbo.HasSpoken)
             {
                 session.SendPacket(new SubmitBullyReportComposer(2));
                 return;
             }
 
             //Already reported, nope.
-            if (client.GetHabbo().AdvertisingReported && session.GetHabbo().Rank < 2)
+            if (client.Habbo.AdvertisingReported && session.Habbo.Rank < 2)
             {
                 session.SendPacket(new SubmitBullyReportComposer(3));
                 return;
             }
 
-            if (session.GetHabbo().Rank <= 1)
-                session.GetHabbo().LastAdvertiseReport = PlusEnvironment.GetUnixTimestamp() + 300;
+            if (session.Habbo.Rank <= 1)
+                session.Habbo.LastAdvertiseReport = PlusEnvironment.GetUnixTimestamp() + 300;
             else
-                session.GetHabbo().LastAdvertiseReport = PlusEnvironment.GetUnixTimestamp();
+                session.Habbo.LastAdvertiseReport = PlusEnvironment.GetUnixTimestamp();
 
-            client.GetHabbo().AdvertisingReported = true;
+            client.Habbo.AdvertisingReported = true;
             session.SendPacket(new SubmitBullyReportComposer(0));
-            //PlusEnvironment.GetGame().GetClientManager().ModAlert("New advertising report! " + Client.GetHabbo().Username + " has been reported for advertising by " + Session.GetHabbo().Username +".");
+            //PlusEnvironment.GetGame().GetClientManager().ModAlert("New advertising report! " + Client.Habbo.Username + " has been reported for advertising by " + Session.Habbo.Username +".");
             PlusEnvironment.GetGame().GetClientManager().DoAdvertisingReport(session, client);
         }
     }

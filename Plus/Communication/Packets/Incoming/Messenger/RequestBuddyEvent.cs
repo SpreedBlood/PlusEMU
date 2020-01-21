@@ -8,10 +8,10 @@ namespace Plus.Communication.Packets.Incoming.Messenger
         public int Header => ClientPacketHeader.RequestBuddyMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || session.GetHabbo().GetMessenger() == null)
+            if (session == null || session.Habbo == null || session.Habbo.GetMessenger() == null)
                 return;
 
-            if (session.GetHabbo().GetMessenger().RequestBuddy(packet.PopString()))
+            if (session.Habbo.GetMessenger().RequestBuddy(packet.PopString()))
                 PlusEnvironment.GetGame().GetQuestManager().ProgressUserQuest(session, QuestType.SocialFriend);
         }
     }

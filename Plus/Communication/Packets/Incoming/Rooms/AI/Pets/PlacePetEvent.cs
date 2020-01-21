@@ -18,10 +18,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
         public int Header => ClientPacketHeader.PlacePetMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
             if (room.AllowPets == 0 && !room.CheckRights(session, true) || !room.CheckRights(session, true))
@@ -36,7 +36,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
                 return;
             }
 
-            if (!session.GetHabbo().GetInventoryComponent().TryGetPet(packet.PopInt(), out Pet pet))
+            if (!session.Habbo.GetInventoryComponent().TryGetPet(packet.PopInt(), out Pet pet))
                 return;
 
             if (pet == null)
@@ -76,13 +76,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
             pet.DBState = PetDatabaseUpdateState.NeedsUpdate;
             room.GetRoomUserManager().UpdatePets();
 
-            if (!session.GetHabbo().GetInventoryComponent().TryRemovePet(pet.PetId, out Pet toRemove))
+            if (!session.Habbo.GetInventoryComponent().TryRemovePet(pet.PetId, out Pet toRemove))
             {
                 Log.Error("Error whilst removing pet: " + toRemove.PetId);
                 return;
             }
 
-            session.SendPacket(new PetInventoryComposer(session.GetHabbo().GetInventoryComponent().GetPets()));
+            session.SendPacket(new PetInventoryComposer(session.Habbo.GetInventoryComponent().GetPets()));
         }
     }
 }

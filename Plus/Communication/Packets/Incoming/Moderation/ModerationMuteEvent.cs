@@ -8,7 +8,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
         public int Header => ClientPacketHeader.ModerationMuteMessageEvent;
         public void Parse(HabboHotel.GameClients.GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || !session.GetHabbo().GetPermissions().HasRight("mod_mute"))
+            if (session == null || session.Habbo == null || !session.Habbo.GetPermissions().HasRight("mod_mute"))
                 return;
 
             int userId = packet.PopInt();
@@ -24,7 +24,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
                 return;
             }
 
-            if (habbo.GetPermissions().HasRight("mod_mute") && !session.GetHabbo().GetPermissions().HasRight("mod_mute_any"))
+            if (habbo.GetPermissions().HasRight("mod_mute") && !session.Habbo.GetPermissions().HasRight("mod_mute_any"))
             {
                 session.SendWhisper("Oops, you cannot mute that user.");
                 return;

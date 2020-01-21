@@ -13,7 +13,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
         public int Header => ClientPacketHeader.ModerateRoomMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().GetPermissions().HasRight("mod_tool"))
+            if (!session.Habbo.GetPermissions().HasRight("mod_tool"))
                 return;
 
             if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(packet.PopInt(), out Room room))
@@ -58,10 +58,10 @@ namespace Plus.Communication.Packets.Incoming.Moderation
                     if (roomUser == null || roomUser.IsBot)
                         continue;
 
-                    if (roomUser.GetClient() == null || roomUser.GetClient().GetHabbo() == null)
+                    if (roomUser.GetClient() == null || roomUser.GetClient().Habbo == null)
                         continue;
 
-                    if (roomUser.GetClient().GetHabbo().Rank >= session.GetHabbo().Rank || roomUser.GetClient().GetHabbo().Id == session.GetHabbo().Id)
+                    if (roomUser.GetClient().Habbo.Rank >= session.Habbo.Rank || roomUser.GetClient().Habbo.Id == session.Habbo.Id)
                         continue;
 
                     room.GetRoomUserManager().RemoveUserFromRoom(roomUser.GetClient(), true);

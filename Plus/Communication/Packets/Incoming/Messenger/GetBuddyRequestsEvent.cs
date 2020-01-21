@@ -12,7 +12,7 @@ namespace Plus.Communication.Packets.Incoming.Messenger
         public int Header => ClientPacketHeader.GetBuddyRequestsMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            ICollection<MessengerRequest> requests = session.GetHabbo().GetMessenger().GetRequests().ToList();
+            ICollection<MessengerRequest> requests = session.Habbo.GetMessenger().GetRequests().ToList();
 
             session.SendPacket(new BuddyRequestsComposer(requests));
         }

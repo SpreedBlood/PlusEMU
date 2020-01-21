@@ -20,8 +20,8 @@ namespace Plus.Communication.Packets.Outgoing.Users
             WriteString(origin.ToString("dd/MM/yyyy"));
             WriteInteger(habbo.GetStats().AchievementPoints);
             WriteInteger(friendCount); // Friend Count
-            WriteBoolean(habbo.Id != session.GetHabbo().Id && session.GetHabbo().GetMessenger().FriendshipExists(habbo.Id)); //  Is friend
-            WriteBoolean(habbo.Id != session.GetHabbo().Id && !session.GetHabbo().GetMessenger().FriendshipExists(habbo.Id) && session.GetHabbo().GetMessenger().RequestExists(habbo.Id)); // Sent friend request
+            WriteBoolean(habbo.Id != session.Habbo.Id && session.Habbo.GetMessenger().FriendshipExists(habbo.Id)); //  Is friend
+            WriteBoolean(habbo.Id != session.Habbo.Id && !session.Habbo.GetMessenger().FriendshipExists(habbo.Id) && session.Habbo.GetMessenger().RequestExists(habbo.Id)); // Sent friend request
             WriteBoolean((PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(habbo.Id)) != null);
 
             WriteInteger(groups.Count);

@@ -22,15 +22,15 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
 
         public void Execute(GameClients.GameClient Session, Room Room, string[] Params)
         {
-            Session.GetHabbo().DisableForcedEffects = !Session.GetHabbo().DisableForcedEffects;
+            Session.Habbo.DisableForcedEffects = !Session.Habbo.DisableForcedEffects;
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("UPDATE `users` SET `disable_forced_effects` = @DisableForcedEffects WHERE `id` = '" + Session.GetHabbo().Id + "' LIMIT 1");
-                dbClient.AddParameter("DisableForcedEffects", (Session.GetHabbo().DisableForcedEffects == true ? 1 : 0).ToString());
+                dbClient.SetQuery("UPDATE `users` SET `disable_forced_effects` = @DisableForcedEffects WHERE `id` = '" + Session.Habbo.Id + "' LIMIT 1");
+                dbClient.AddParameter("DisableForcedEffects", (Session.Habbo.DisableForcedEffects == true ? 1 : 0).ToString());
                 dbClient.RunQuery();
             }
 
-            Session.SendWhisper("Forced FX mode is now " + (Session.GetHabbo().DisableForcedEffects == true ? "disabled!" : "enabled!"));
+            Session.SendWhisper("Forced FX mode is now " + (Session.Habbo.DisableForcedEffects == true ? "disabled!" : "enabled!"));
         }
     }
 }

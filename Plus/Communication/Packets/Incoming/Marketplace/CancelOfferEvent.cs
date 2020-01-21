@@ -15,7 +15,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
         public int Header => ClientPacketHeader.CancelOfferMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null)
+            if (session == null || session.Habbo == null)
                 return;
 
             DataRow row;
@@ -34,7 +34,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
                 return;
             }
 
-            if (Convert.ToInt32(row["user_id"]) != session.GetHabbo().Id)
+            if (Convert.ToInt32(row["user_id"]) != session.Habbo.Id)
             {
                 session.SendPacket(new MarketplaceCancelOfferResultComposer(offerId, false));
                 return;
@@ -48,7 +48,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
 
             //PlusEnvironment.GetGame().GetCatalog().DeliverItems(Session, Item, 1, Convert.ToString(Row["extra_data"]), Convert.ToInt32(Row["limited_number"]), Convert.ToInt32(Row["limited_stack"]), Convert.ToInt32(Row["furni_id"]));
 
-            Item giveItem = ItemFactory.CreateSingleItem(item, session.GetHabbo(), Convert.ToString(row["extra_data"]), Convert.ToString(row["extra_data"]), Convert.ToInt32(row["furni_id"]), Convert.ToInt32(row["limited_number"]), Convert.ToInt32(row["limited_stack"]));
+            Item giveItem = ItemFactory.CreateSingleItem(item, session.Habbo, Convert.ToString(row["extra_data"]), Convert.ToString(row["extra_data"]), Convert.ToInt32(row["furni_id"]), Convert.ToInt32(row["limited_number"]), Convert.ToInt32(row["limited_stack"]));
             session.SendPacket(new FurniListNotificationComposer(giveItem.Id, 1));
             session.SendPacket(new FurniListUpdateComposer());
 
@@ -56,11 +56,11 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
             {
                 dbClient.SetQuery("DELETE FROM `catalog_marketplace_offers` WHERE `offer_id` = @OfferId AND `user_id` = @UserId LIMIT 1");
                 dbClient.AddParameter("OfferId", offerId);
-                dbClient.AddParameter("UserId", session.GetHabbo().Id);
+                dbClient.AddParameter("UserId", session.Habbo.Id);
                 dbClient.RunQuery();
             }
 
-            session.GetHabbo().GetInventoryComponent().UpdateItems(true);
+            session.Habbo.GetInventoryComponent().UpdateItems(true);
             session.SendPacket(new MarketplaceCancelOfferResultComposer(offerId, true));
         }
     }

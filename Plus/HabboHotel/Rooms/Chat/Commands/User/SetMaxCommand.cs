@@ -39,7 +39,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
                     MaxAmount = 10;
                     Session.SendWhisper("visitor amount too low, visitor amount has been set to 10.");
                 }
-                else if (MaxAmount > 200 && !Session.GetHabbo().GetPermissions().HasRight("override_command_setmax_limit"))
+                else if (MaxAmount > 200 && !Session.Habbo.GetPermissions().HasRight("override_command_setmax_limit"))
                 {
                     MaxAmount = 200;
                     Session.SendWhisper("visitor amount too high for your rank, visitor amount has been set to 200.");

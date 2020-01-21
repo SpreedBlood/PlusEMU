@@ -14,12 +14,12 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
         public int Header => ClientPacketHeader.AssignRightsMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null)
+            if (session == null || session.Habbo == null)
                 return;
 
             int userId = packet.PopInt();
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
             if (!room.CheckRights(session, true))
@@ -46,7 +46,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
                 if (roomUser.GetClient() != null)
                     roomUser.GetClient().SendPacket(new YouAreControllerComposer(1));
 
-                session.SendPacket(new FlatControllerAddedComposer(room.RoomId, roomUser.GetClient().GetHabbo().Id, roomUser.GetClient().GetHabbo().Username));
+                session.SendPacket(new FlatControllerAddedComposer(room.RoomId, roomUser.GetClient().Habbo.Id, roomUser.GetClient().Habbo.Username));
             }
             else
             {

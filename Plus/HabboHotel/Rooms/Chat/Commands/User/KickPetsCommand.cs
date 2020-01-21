@@ -66,22 +66,22 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
                         }
                     }
 
-                    if (pet.OwnerId != Session.GetHabbo().Id)
+                    if (pet.OwnerId != Session.Habbo.Id)
                     {
                         GameClient Target = PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(pet.OwnerId);
                         if (Target != null)
                         {
-                            Target.GetHabbo().GetInventoryComponent().TryAddPet(Pet.PetData);
+                            Target.Habbo.GetInventoryComponent().TryAddPet(Pet.PetData);
                             Room.GetRoomUserManager().RemoveBot(Pet.VirtualId, false);
 
-                            Target.SendPacket(new PetInventoryComposer(Target.GetHabbo().GetInventoryComponent().GetPets()));
+                            Target.SendPacket(new PetInventoryComposer(Target.Habbo.GetInventoryComponent().GetPets()));
                             return;
                         }
                     }
 
-                    Session.GetHabbo().GetInventoryComponent().TryAddPet(Pet.PetData);
+                    Session.Habbo.GetInventoryComponent().TryAddPet(Pet.PetData);
                     Room.GetRoomUserManager().RemoveBot(Pet.VirtualId, false);
-                    Session.SendPacket(new PetInventoryComposer(Session.GetHabbo().GetInventoryComponent().GetPets()));
+                    Session.SendPacket(new PetInventoryComposer(Session.Habbo.GetInventoryComponent().GetPets()));
                 }
                 Session.SendWhisper("Success, removed all pets.");
             }

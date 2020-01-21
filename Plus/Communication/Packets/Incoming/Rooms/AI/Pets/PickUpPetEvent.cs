@@ -14,13 +14,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
         public int Header => ClientPacketHeader.PickUpPetMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            if (session.GetHabbo() == null || session.GetHabbo().GetInventoryComponent() == null)
+            if (session.Habbo == null || session.Habbo.GetInventoryComponent() == null)
                 return;
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
             int petId = packet.PopInt();
@@ -32,16 +32,16 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
                     return;
 
                 //Okay so, we've established we have no pets in this room by this virtual Id, let us check out users, maybe they're creeping as a pet?!
-                RoomUser targetUser = session.GetHabbo().CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(petId);
+                RoomUser targetUser = session.Habbo.CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(petId);
                 if (targetUser == null)
                     return;
 
                 //Check some values first, please!
-                if (targetUser.GetClient() == null || targetUser.GetClient().GetHabbo() == null)
+                if (targetUser.GetClient() == null || targetUser.GetClient().Habbo == null)
                     return;
 
                 //Update the targets PetId.
-                targetUser.GetClient().GetHabbo().PetId = 0;
+                targetUser.GetClient().Habbo.PetId = 0;
 
                 //Quickly remove the old user instance.
                 room.SendPacket(new UserRemoveComposer(targetUser.VirtualId));
@@ -51,7 +51,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
                 return;
             }
 
-            if (session.GetHabbo().Id != pet.PetData.OwnerId && !room.CheckRights(session, true))
+            if (session.Habbo.Id != pet.PetData.OwnerId && !room.CheckRights(session, true))
             {
                 session.SendWhisper("You can only pickup your own pets, to kick a pet you must have room rights.");
                 return;
@@ -83,15 +83,15 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
                 }
             }
 
-            if (data.OwnerId != session.GetHabbo().Id)
+            if (data.OwnerId != session.Habbo.Id)
             {
                 GameClient target = PlusEnvironment.GetGame().GetClientManager().GetClientByUserId(data.OwnerId);
                 if (target != null)
                 {
-                    target.GetHabbo().GetInventoryComponent().TryAddPet(pet.PetData);
+                    target.Habbo.GetInventoryComponent().TryAddPet(pet.PetData);
                     room.GetRoomUserManager().RemoveBot(pet.VirtualId, false);
 
-                    target.SendPacket(new PetInventoryComposer(target.GetHabbo().GetInventoryComponent().GetPets()));
+                    target.SendPacket(new PetInventoryComposer(target.Habbo.GetInventoryComponent().GetPets()));
                     return;
                 }
             }

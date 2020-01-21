@@ -21,7 +21,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands
         /// <summary>
         /// Command Prefix only applies to custom commands.
         /// </summary>
-        private string _prefix = ":";
+        private readonly string _prefix = ":";
 
         /// <summary>
         /// Commands registered for use.
@@ -31,9 +31,9 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands
         /// <summary>
         /// The default initializer for the CommandManager
         /// </summary>
-        public CommandManager(string Prefix)
+        public CommandManager(string prefix)
         {
-            _prefix = Prefix;
+            _prefix = prefix;
             _commands = new Dictionary<string, IChatCommand>();
 
             RegisterVIP();
@@ -51,7 +51,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands
         /// <returns>True if parsed or false if not.</returns>
         public bool Parse(GameClient Session, string Message)
         {
-            if (Session == null || Session.GetHabbo() == null || Session.GetHabbo().CurrentRoom == null)
+            if (Session == null || Session.Habbo == null || Session.Habbo.CurrentRoom == null)
                 return false;
 
             if (!Message.StartsWith(_prefix))
@@ -65,7 +65,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands
                 {
                     if (!string.IsNullOrEmpty(CmdList.Value.PermissionRequired))
                     {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand(CmdList.Value.PermissionRequired))
+                        if (!Session.Habbo.GetPermissions().HasCommand(CmdList.Value.PermissionRequired))
                             continue;
                     }
 
@@ -84,20 +84,20 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands
             IChatCommand Cmd = null;
             if (_commands.TryGetValue(Split[0].ToLower(), out Cmd))
             {
-                if (Session.GetHabbo().GetPermissions().HasRight("mod_tool"))
-                    LogCommand(Session.GetHabbo().Id, Message, Session.GetHabbo().MachineId);
+                if (Session.Habbo.GetPermissions().HasRight("mod_tool"))
+                    LogCommand(Session.Habbo.Id, Message, Session.Habbo.MachineId);
 
                 if (!string.IsNullOrEmpty(Cmd.PermissionRequired))
                 {
-                    if (!Session.GetHabbo().GetPermissions().HasCommand(Cmd.PermissionRequired))
+                    if (!Session.Habbo.GetPermissions().HasCommand(Cmd.PermissionRequired))
                         return false;
                 }
 
 
-                Session.GetHabbo().IChatCommand = Cmd;
-                Session.GetHabbo().CurrentRoom.GetWired().TriggerEvent(WiredBoxType.TriggerUserSaysCommand, Session.GetHabbo(), this);
+                Session.Habbo.IChatCommand = Cmd;
+                Session.Habbo.CurrentRoom.GetWired().TriggerEvent(WiredBoxType.TriggerUserSaysCommand, Session.Habbo, this);
 
-                Cmd.Execute(Session, Session.GetHabbo().CurrentRoom, Split);
+                Cmd.Execute(Session, Session.Habbo.CurrentRoom, Split);
                 return true;
             }
             return false;

@@ -16,7 +16,7 @@ namespace Plus.Communication.Packets.Outgoing.GameCenter
             WriteInteger(Achievements.Count);
             foreach (Achievement Ach in Achievements.ToList())
             {
-                UserAchievement UserData = Session.GetHabbo().GetAchievementData(Ach.GroupName);
+                UserAchievement UserData = Session.Habbo.GetAchievementData(Ach.GroupName);
                 int TargetLevel = (UserData != null ? UserData.Level + 1 : 1);
 
                 AchievementLevel TargetLevelData = Ach.Levels[TargetLevel];

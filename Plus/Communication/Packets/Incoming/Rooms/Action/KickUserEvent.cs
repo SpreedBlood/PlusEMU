@@ -16,7 +16,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
         public int Header => ClientPacketHeader.KickUserMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
@@ -32,7 +32,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
                 return;
 
             //Cannot kick owner or moderators.
-            if (room.CheckRights(user.GetClient(), true) || user.GetClient().GetHabbo().GetPermissions().HasRight("mod_tool"))
+            if (room.CheckRights(user.GetClient(), true) || user.GetClient().Habbo.GetPermissions().HasRight("mod_tool"))
                 return;
 
             room.GetRoomUserManager().RemoveUserFromRoom(user.GetClient(), true, true);

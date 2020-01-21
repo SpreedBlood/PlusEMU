@@ -19,30 +19,30 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
         public int Header => ClientPacketHeader.RespectPetMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (session == null || session.GetHabbo() == null || !session.GetHabbo().InRoom || session.GetHabbo().GetStats() == null || session.GetHabbo().GetStats().DailyPetRespectPoints == 0)
+            if (session == null || session.Habbo == null || !session.Habbo.InRoom || session.Habbo.GetStats() == null || session.Habbo.GetStats().DailyPetRespectPoints == 0)
                 return;
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
-            RoomUser thisUser = room.GetRoomUserManager().GetRoomUserByHabbo(session.GetHabbo().Id);
+            RoomUser thisUser = room.GetRoomUserManager().GetRoomUserByHabbo(session.Habbo.Id);
             if (thisUser == null)
                 return;
 
             int petId = packet.PopInt();
 
-            if (!session.GetHabbo().CurrentRoom.GetRoomUserManager().TryGetPet(petId, out RoomUser pet))
+            if (!session.Habbo.CurrentRoom.GetRoomUserManager().TryGetPet(petId, out RoomUser pet))
             {
                 //Okay so, we've established we have no pets in this room by this virtual Id, let us check out users, maybe they're creeping as a pet?!
-                RoomUser targetUser = session.GetHabbo().CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(petId);
+                RoomUser targetUser = session.Habbo.CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(petId);
                 if (targetUser == null)
                     return;
 
                 //Check some values first, please!
-                if (targetUser.GetClient() == null || targetUser.GetClient().GetHabbo() == null)
+                if (targetUser.GetClient() == null || targetUser.GetClient().Habbo == null)
                     return;
 
-                if (targetUser.GetClient().GetHabbo().Id == session.GetHabbo().Id)
+                if (targetUser.GetClient().Habbo.Id == session.Habbo.Id)
                 {
                     session.SendWhisper("Oops, you cannot use this on yourself! (You haven't lost a point, simply reload!)");
                     return;
@@ -54,9 +54,9 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
                 _achievementManager.ProgressAchievement(targetUser.GetClient(), "ACH_RespectEarned", 1);
 
                 //Take away from pet respect points, just in-case users abuse this..
-                session.GetHabbo().GetStats().DailyPetRespectPoints -= 1;
-                session.GetHabbo().GetStats().RespectGiven += 1;
-                targetUser.GetClient().GetHabbo().GetStats().Respect += 1;
+                session.Habbo.GetStats().DailyPetRespectPoints -= 1;
+                session.Habbo.GetStats().RespectGiven += 1;
+                targetUser.GetClient().Habbo.GetStats().Respect += 1;
 
                 //Apply the effect.
                 thisUser.CarryItemId = 999999999;
@@ -64,15 +64,15 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
 
                 //Send the magic out.
                 if (room.RespectNotificationsEnabled)
-                    room.SendPacket(new RespectPetNotificationMessageComposer(targetUser.GetClient().GetHabbo(), targetUser));
+                    room.SendPacket(new RespectPetNotificationMessageComposer(targetUser.GetClient().Habbo, targetUser));
                 room.SendPacket(new CarryObjectComposer(thisUser.VirtualId, thisUser.CarryItemId));
                 return;
             }
 
-            if (pet == null || pet.PetData == null || pet.RoomId != session.GetHabbo().CurrentRoomId)
+            if (pet == null || pet.PetData == null || pet.RoomId != session.Habbo.CurrentRoomId)
                 return;
 
-            session.GetHabbo().GetStats().DailyPetRespectPoints -= 1;
+            session.Habbo.GetStats().DailyPetRespectPoints -= 1;
             _achievementManager.ProgressAchievement(session, "ACH_PetRespectGiver", 1);
 
             thisUser.CarryItemId = 999999999;

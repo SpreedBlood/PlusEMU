@@ -8,8 +8,8 @@ namespace Plus.Communication.Packets.Incoming.Handshake
         public int Header => ClientPacketHeader.InfoRetrieveMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            session.SendPacket(new UserObjectComposer(session.GetHabbo()));
-            session.SendPacket(new UserPerksComposer(session.GetHabbo()));
+            session.SendPacket(new UserObjectComposer(session.Habbo));
+            session.SendPacket(new UserPerksComposer(session.Habbo));
         }
     }
 }

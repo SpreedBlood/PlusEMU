@@ -39,13 +39,13 @@ namespace Plus.Communication.Packets.Incoming.Users
                 return;
             }
 
-            if (!session.GetHabbo().GetPermissions().HasRight("mod_tool") && name.ToLower().Contains("mod") || name.ToLower().Contains("adm") || name.ToLower().Contains("admin") || name.ToLower().Contains("m0d"))
+            if (!session.Habbo.GetPermissions().HasRight("mod_tool") && name.ToLower().Contains("mod") || name.ToLower().Contains("adm") || name.ToLower().Contains("admin") || name.ToLower().Contains("m0d"))
             {
                 session.SendPacket(new NameChangeUpdateComposer(name, 4));
                 return;
             }
 
-            if (!name.ToLower().Contains("mod") && (session.GetHabbo().Rank == 2 || session.GetHabbo().Rank == 3))
+            if (!name.ToLower().Contains("mod") && (session.Habbo.Rank == 2 || session.Habbo.Rank == 3))
             {
                 session.SendPacket(new NameChangeUpdateComposer(name, 4));
                 return;

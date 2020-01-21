@@ -19,10 +19,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
         public int Header => ClientPacketHeader.IgnoreUserMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
@@ -32,15 +32,15 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
             if (player == null || player.GetPermissions().HasRight("mod_tool"))
                 return;
 
-            if (session.GetHabbo().GetIgnores().TryGet(player.Id))
+            if (session.Habbo.GetIgnores().TryGet(player.Id))
                 return;
 
-            if (session.GetHabbo().GetIgnores().TryAdd(player.Id))
+            if (session.Habbo.GetIgnores().TryAdd(player.Id))
             {
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                 {
                     dbClient.SetQuery("INSERT INTO `user_ignores` (`user_id`,`ignore_id`) VALUES(@uid,@ignoreId);");
-                    dbClient.AddParameter("uid", session.GetHabbo().Id);
+                    dbClient.AddParameter("uid", session.Habbo.Id);
                     dbClient.AddParameter("ignoreId", player.Id);
                     dbClient.RunQuery();
                 }

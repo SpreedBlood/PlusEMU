@@ -11,10 +11,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
         public int Header => ClientPacketHeader.UnIgnoreUserMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
@@ -24,15 +24,15 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
             if (player == null)
                 return;
 
-            if (!session.GetHabbo().GetIgnores().TryGet(player.Id))
+            if (!session.Habbo.GetIgnores().TryGet(player.Id))
                 return;
 
-            if (session.GetHabbo().GetIgnores().TryRemove(player.Id))
+            if (session.Habbo.GetIgnores().TryRemove(player.Id))
             {
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                 {
                     dbClient.SetQuery("DELETE FROM `user_ignores` WHERE `user_id` = @uid AND `ignore_id` = @ignoreId");
-                    dbClient.AddParameter("uid", session.GetHabbo().Id);
+                    dbClient.AddParameter("uid", session.Habbo.Id);
                     dbClient.AddParameter("ignoreId", player.Id);
                     dbClient.RunQuery();
                 }

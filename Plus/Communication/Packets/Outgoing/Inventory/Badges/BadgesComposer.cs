@@ -13,8 +13,8 @@ namespace Plus.Communication.Packets.Outgoing.Inventory.Badges
         {
             List<Badge> EquippedBadges = new List<Badge>();
 
-            WriteInteger(Session.GetHabbo().GetBadgeComponent().Count);
-            foreach (Badge Badge in Session.GetHabbo().GetBadgeComponent().GetBadges().ToList())
+            WriteInteger(Session.Habbo.GetBadgeComponent().Count);
+            foreach (Badge Badge in Session.Habbo.GetBadgeComponent().GetBadges().ToList())
             {
                 WriteInteger(1);
                 WriteString(Badge.Code);

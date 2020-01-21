@@ -16,14 +16,14 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
         public int Header => ClientPacketHeader.MuteUserMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
             int userId = packet.PopInt();
             packet.PopInt(); //roomId
             int time = packet.PopInt();
 
-            Room room = session.GetHabbo().CurrentRoom;
+            Room room = session.Habbo.CurrentRoom;
             if (room == null)
                 return;
 
@@ -33,7 +33,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
             RoomUser target = room.GetRoomUserManager().GetRoomUserByHabbo(PlusEnvironment.GetUsernameById(userId));
             if (target == null)
                 return;
-            else if (target.GetClient().GetHabbo().GetPermissions().HasRight("mod_tool"))
+            else if (target.GetClient().Habbo.GetPermissions().HasRight("mod_tool"))
                 return;
 
             if (room.MutedUsers.ContainsKey(userId))

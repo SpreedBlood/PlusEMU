@@ -10,13 +10,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Avatar
         public int Header => ClientPacketHeader.DanceMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!session.GetHabbo().InRoom)
+            if (!session.Habbo.InRoom)
                 return;
 
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out Room room))
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.Habbo.CurrentRoomId, out Room room))
                 return;
 
-            RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(session.GetHabbo().Id);
+            RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(session.Habbo.Id);
             if (user == null)
                 return;
 
@@ -29,7 +29,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Avatar
             if (danceId > 0 && user.CarryItemId > 0)
                 user.CarryItem(0);
 
-            if (session.GetHabbo().Effects().CurrentEffect > 0)
+            if (session.Habbo.Effects().CurrentEffect > 0)
                 room.SendPacket(new AvatarEffectComposer(user.VirtualId, 0));
 
             user.DanceId = danceId;
