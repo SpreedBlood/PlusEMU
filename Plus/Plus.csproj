@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.1" />
+    <PackageReference Include="MySql.Data" Version="8.0.19" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="AStar">
+      <HintPath>Resources\libs\AStar.dll</HintPath>
+    </Reference>
+    <Reference Include="HabboEncryption">
+      <HintPath>Resources\libs\HabboEncryption.dll</HintPath>
+    </Reference>
+    <Reference Include="MoreLinq">
+      <HintPath>Resources\libs\MoreLinq.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
