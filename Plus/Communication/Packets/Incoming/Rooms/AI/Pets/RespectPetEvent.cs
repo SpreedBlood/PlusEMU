@@ -3,11 +3,19 @@ using Plus.HabboHotel.Quests;
 using Plus.Communication.Packets.Outgoing.Pets;
 using Plus.Communication.Packets.Outgoing.Rooms.Avatar;
 using Plus.HabboHotel.GameClients;
+using Plus.HabboHotel.Achievements;
 
 namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
 {
     class RespectPetEvent : IPacketEvent
     {
+        private readonly AchievementManager _achievementManager;
+
+        public RespectPetEvent(AchievementManager achievementManager)
+        {
+            _achievementManager = achievementManager;
+        }
+
         public int Header => ClientPacketHeader.RespectPetMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
@@ -42,8 +50,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
 
                 //And boom! Let us send some respect points.
                 PlusEnvironment.GetGame().GetQuestManager().ProgressUserQuest(session, QuestType.SocialRespect);
-                PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_RespectGiven", 1);
-                PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(targetUser.GetClient(), "ACH_RespectEarned", 1);
+                _achievementManager.ProgressAchievement(session, "ACH_RespectGiven", 1);
+                _achievementManager.ProgressAchievement(targetUser.GetClient(), "ACH_RespectEarned", 1);
 
                 //Take away from pet respect points, just in-case users abuse this..
                 session.GetHabbo().GetStats().DailyPetRespectPoints -= 1;
@@ -65,7 +73,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
                 return;
 
             session.GetHabbo().GetStats().DailyPetRespectPoints -= 1;
-            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_PetRespectGiver", 1);
+            _achievementManager.ProgressAchievement(session, "ACH_PetRespectGiver", 1);
 
             thisUser.CarryItemId = 999999999;
             thisUser.CarryTimer = 5;

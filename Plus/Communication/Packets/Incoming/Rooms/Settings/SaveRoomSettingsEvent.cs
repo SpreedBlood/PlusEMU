@@ -8,12 +8,19 @@ using Plus.Communication.Packets.Outgoing.Rooms.Engine;
 using Plus.Communication.Packets.Outgoing.Rooms.Settings;
 using Plus.Database.Interfaces;
 using Plus.HabboHotel.GameClients;
-
+using Plus.HabboHotel.Achievements;
 
 namespace Plus.Communication.Packets.Incoming.Rooms.Settings
 {
     class SaveRoomSettingsEvent : IPacketEvent
     {
+        private readonly AchievementManager _achievementManager;
+
+        public SaveRoomSettingsEvent(AchievementManager achievementManager)
+        {
+            _achievementManager = achievementManager;
+        }
+
         public int Header => ClientPacketHeader.SaveRoomSettingsMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
@@ -220,11 +227,11 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
                 room.SendPacket(new RoomVisualizationSettingsComposer(room.WallThickness, room.FloorThickness, PlusEnvironment.EnumToBool(room.Hidewall.ToString())));
             }
 
-            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_SelfModDoorModeSeen", 1);
-            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_SelfModWalkthroughSeen", 1);
-            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_SelfModChatScrollSpeedSeen", 1);
-            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_SelfModChatFloodFilterSeen", 1);
-            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_SelfModChatHearRangeSeen", 1);
+            _achievementManager.ProgressAchievement(session, "ACH_SelfModDoorModeSeen", 1);
+            _achievementManager.ProgressAchievement(session, "ACH_SelfModWalkthroughSeen", 1);
+            _achievementManager.ProgressAchievement(session, "ACH_SelfModChatScrollSpeedSeen", 1);
+            _achievementManager.ProgressAchievement(session, "ACH_SelfModChatFloodFilterSeen", 1);
+            _achievementManager.ProgressAchievement(session, "ACH_SelfModChatHearRangeSeen", 1);
         }
     }
 }

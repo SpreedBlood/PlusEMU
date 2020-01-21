@@ -7,11 +7,19 @@ using Plus.Communication.Packets.Outgoing.Rooms.Notifications;
 using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Items.Data.Moodlight;
 using Plus.HabboHotel.Items.Data.Toner;
+using Plus.HabboHotel.Achievements;
 
 namespace Plus.Communication.Packets.Incoming.Rooms.Engine
 {
     class PlaceObjectEvent : IPacketEvent
     {
+        private readonly AchievementManager _achievementManager;
+
+        public PlaceObjectEvent(AchievementManager achievementManager)
+        {
+            _achievementManager = achievementManager;
+        }
+
         public int Header => ClientPacketHeader.PlaceObjectMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
@@ -109,7 +117,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
                     session.GetHabbo().GetInventoryComponent().RemoveItem(itemId);
 
                     if (session.GetHabbo().Id == room.OwnerId)
-                        PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_RoomDecoFurniCount", 1);
+                        _achievementManager.ProgressAchievement(session, "ACH_RoomDecoFurniCount", 1);
 
                     if (roomItem.IsWired)
                     {
@@ -141,7 +149,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
                         {
                             session.GetHabbo().GetInventoryComponent().RemoveItem(itemId);
                             if (session.GetHabbo().Id == room.OwnerId)
-                                PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_RoomDecoFurniCount", 1);
+                                _achievementManager.ProgressAchievement(session, "ACH_RoomDecoFurniCount", 1);
                         }
                     }
                     catch

@@ -21,11 +21,19 @@ using Plus.Communication.Packets.Outgoing.Moderation;
 using Plus.HabboHotel.Catalog.Utilities;
 using Plus.HabboHotel.Badges;
 using Plus.HabboHotel.Badges.Models;
+using Plus.HabboHotel.Achievements;
 
 namespace Plus.Communication.Packets.Incoming.Catalog
 {
     public class PurchaseFromCatalogEvent : IPacketEvent
     {
+        private readonly AchievementManager _achievementManager;
+
+        public PurchaseFromCatalogEvent(AchievementManager achievementManager)
+        {
+            _achievementManager = achievementManager;
+        }
+
         public int Header => ClientPacketHeader.PurchaseFromCatalogMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
@@ -103,7 +111,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                         if (color.Length != 6)
                             return;
 
-                        PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_PetLover", 1);
+                        _achievementManager.ProgressAchievement(session, "ACH_PetLover", 1);
                     }
                     catch (Exception e)
                     {

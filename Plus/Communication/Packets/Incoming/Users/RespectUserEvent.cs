@@ -3,11 +3,19 @@ using Plus.HabboHotel.Quests;
 using Plus.Communication.Packets.Outgoing.Rooms.Avatar;
 using Plus.Communication.Packets.Outgoing.Users;
 using Plus.HabboHotel.GameClients;
+using Plus.HabboHotel.Achievements;
 
 namespace Plus.Communication.Packets.Incoming.Users
 {
     class RespectUserEvent : IPacketEvent
     {
+        private readonly AchievementManager _achievementManager;
+
+        public RespectUserEvent(AchievementManager achievementManager)
+        {
+            _achievementManager = achievementManager;
+        }
+
         public int Header => ClientPacketHeader.RespectUserMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
@@ -29,8 +37,8 @@ namespace Plus.Communication.Packets.Incoming.Users
                 return;
 
             PlusEnvironment.GetGame().GetQuestManager().ProgressUserQuest(session, QuestType.SocialRespect);
-            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_RespectGiven", 1);
-            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(user.GetClient(), "ACH_RespectEarned", 1);
+            _achievementManager.ProgressAchievement(session, "ACH_RespectGiven", 1);
+            _achievementManager.ProgressAchievement(user.GetClient(), "ACH_RespectEarned", 1);
 
             session.GetHabbo().GetStats().DailyRespectPoints -= 1;
             session.GetHabbo().GetStats().RespectGiven += 1;

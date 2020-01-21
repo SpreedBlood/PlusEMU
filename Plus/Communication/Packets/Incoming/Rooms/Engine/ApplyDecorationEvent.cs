@@ -5,12 +5,19 @@ using Plus.Communication.Packets.Outgoing.Rooms.Engine;
 
 using Plus.Database.Interfaces;
 using Plus.HabboHotel.GameClients;
-
+using Plus.HabboHotel.Achievements;
 
 namespace Plus.Communication.Packets.Incoming.Rooms.Engine
 {
     class ApplyDecorationEvent : IPacketEvent
     {
+        private readonly AchievementManager _achievementManager;
+
+        public ApplyDecorationEvent(AchievementManager achievementManager)
+        {
+            _achievementManager = achievementManager;
+        }
+
         public int Header => ClientPacketHeader.ApplyDecorationMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
@@ -52,20 +59,20 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
                     room.Floor = item.ExtraData;
 
                     PlusEnvironment.GetGame().GetQuestManager().ProgressUserQuest(session, QuestType.FurniDecoFloor);
-                    PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_RoomDecoFloor", 1);
+                    _achievementManager.ProgressAchievement(session, "ACH_RoomDecoFloor", 1);
                     break;
 
                 case "wallpaper":
                     room.Wallpaper = item.ExtraData;
 
                     PlusEnvironment.GetGame().GetQuestManager().ProgressUserQuest(session, QuestType.FurniDecoWall);
-                    PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_RoomDecoWallpaper", 1);
+                    _achievementManager.ProgressAchievement(session, "ACH_RoomDecoWallpaper", 1);
                     break;
 
                 case "landscape":
                     room.Landscape = item.ExtraData;
 
-                    PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_RoomDecoLandscape", 1);
+                    _achievementManager.ProgressAchievement(session, "ACH_RoomDecoLandscape", 1);
                     break;
             }
 

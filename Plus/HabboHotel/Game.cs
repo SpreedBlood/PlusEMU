@@ -59,7 +59,9 @@ namespace Plus.HabboHotel
         private int _cycleSleepTime = 25;
 
         //TODO: Get rid of this completely!
-        public Game(PacketManager packetManager)
+        public Game(
+            PacketManager packetManager,
+            AchievementManager achievementManager)
         {
             _packetManager = packetManager;
             _clientManager = new GameClientManager();
@@ -90,7 +92,7 @@ namespace Plus.HabboHotel
             _questManager = new QuestManager();
             _questManager.Init();
 
-            _achievementManager = new AchievementManager(new AchievementDao());
+            _achievementManager = achievementManager;
             _achievementManager.Init();
 
             _talentTrackManager = new TalentTrackManager();

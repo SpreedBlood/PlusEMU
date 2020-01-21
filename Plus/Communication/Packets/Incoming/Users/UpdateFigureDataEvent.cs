@@ -9,11 +9,19 @@ using Plus.Database.Interfaces;
 using Plus.Communication.Packets.Outgoing.Moderation;
 using Plus.Communication.Packets.Outgoing.Rooms.Avatar;
 using Plus.HabboHotel.GameClients;
+using Plus.HabboHotel.Achievements;
 
 namespace Plus.Communication.Packets.Incoming.Users
 {
     class UpdateFigureDataEvent : IPacketEvent
     {
+        private readonly AchievementManager _achievementManager;
+
+        public UpdateFigureDataEvent(AchievementManager achievementManager)
+        {
+            _achievementManager = achievementManager;
+        }
+
         public int Header => ClientPacketHeader.UpdateFigureDataMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
@@ -59,7 +67,7 @@ namespace Plus.Communication.Packets.Incoming.Users
                 dbClient.RunQuery();
             }
 
-            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_AvatarLooks", 1);
+            _achievementManager.ProgressAchievement(session, "ACH_AvatarLooks", 1);
             session.SendPacket(new AvatarAspectUpdateComposer(look, gender));
             if (session.GetHabbo().Look.Contains("ha-1006"))
                 PlusEnvironment.GetGame().GetQuestManager().ProgressUserQuest(session, QuestType.WearHat);

@@ -1,4 +1,5 @@
 using System;
+using Plus.HabboHotel.Achievements;
 using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Rooms;
 
@@ -6,6 +7,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
 {
     class BanUserEvent : IPacketEvent
     {
+        private readonly AchievementManager _achievementManager;
+
+        public BanUserEvent(AchievementManager achievementManager)
+        {
+            _achievementManager = achievementManager;
+        }
+
         public int Header => ClientPacketHeader.BanUserMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
@@ -40,7 +48,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
 
             room.GetBans().Ban(user, time);
 
-            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_SelfModBanSeen", 1);
+            _achievementManager.ProgressAchievement(session, "ACH_SelfModBanSeen", 1);
         }
     }
 }

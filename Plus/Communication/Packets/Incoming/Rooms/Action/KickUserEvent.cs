@@ -1,3 +1,4 @@
+using Plus.HabboHotel.Achievements;
 using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Rooms;
 
@@ -5,6 +6,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
 {
     class KickUserEvent : IPacketEvent
     {
+        private readonly AchievementManager _achievementManager;
+
+        public KickUserEvent(AchievementManager achievementManager)
+        {
+            _achievementManager = achievementManager;
+        }
+
         public int Header => ClientPacketHeader.KickUserMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
@@ -28,7 +36,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
                 return;
 
             room.GetRoomUserManager().RemoveUserFromRoom(user.GetClient(), true, true);
-            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_SelfModKickSeen", 1);
+            _achievementManager.ProgressAchievement(session, "ACH_SelfModKickSeen", 1);
         }
     }
 }

@@ -9,11 +9,19 @@ using Plus.Communication.Packets.Outgoing.Rooms.Engine;
 using Plus.Database.Interfaces;
 using Plus.Communication.Packets.Outgoing.Rooms.Session;
 using Plus.HabboHotel.GameClients;
+using Plus.HabboHotel.Achievements;
 
 namespace Plus.Communication.Packets.Incoming.Users
 {
     class ChangeNameEvent : IPacketEvent
     {
+        private readonly AchievementManager _achievementManager;
+
+        public ChangeNameEvent(AchievementManager achievementManager)
+        {
+            _achievementManager = achievementManager;
+        }
+
         public int Header => ClientPacketHeader.ChangeNameMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
@@ -107,7 +115,7 @@ namespace Plus.Communication.Packets.Incoming.Users
                 ownRooms.SendPacket(new RoomInfoUpdatedComposer(ownRooms.Id));
             }
 
-            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_Name", 1);
+            _achievementManager.ProgressAchievement(session, "ACH_Name", 1);
 
             session.SendPacket(new RoomForwardComposer(room.Id));
         }

@@ -6,12 +6,19 @@ using Plus.HabboHotel.GameClients;
 using Plus.Communication.Packets.Outgoing.Rooms.Engine;
 
 using Plus.Database.Interfaces;
-
+using Plus.HabboHotel.Achievements;
 
 namespace Plus.Communication.Packets.Incoming.Rooms.Avatar
 {
     class ChangeMottoEvent : IPacketEvent
     {
+        private readonly AchievementManager _achievementManager;
+
+        public ChangeMottoEvent(AchievementManager achievementManager)
+        {
+            _achievementManager = achievementManager;
+        }
+
         public int Header => ClientPacketHeader.ChangeMottoMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
@@ -56,7 +63,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Avatar
             }
 
             PlusEnvironment.GetGame().GetQuestManager().ProgressUserQuest(session, QuestType.ProfileChangeMotto);
-            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_Motto", 1);
+            _achievementManager.ProgressAchievement(session, "ACH_Motto", 1);
 
             if (session.GetHabbo().InRoom)
             {

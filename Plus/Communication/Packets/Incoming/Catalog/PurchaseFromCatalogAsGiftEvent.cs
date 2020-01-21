@@ -12,11 +12,19 @@ using Plus.Database.Interfaces;
 using Plus.HabboHotel.Quests;
 using Plus.HabboHotel.Catalog.Utilities;
 using Plus.Communication.Packets.Outgoing.Moderation;
+using Plus.HabboHotel.Achievements;
 
 namespace Plus.Communication.Packets.Incoming.Catalog
 {
     public class PurchaseFromCatalogAsGiftEvent : IPacketEvent
     {
+        private readonly AchievementManager _achievementManager;
+
+        public PurchaseFromCatalogAsGiftEvent(AchievementManager achievementManager)
+        {
+            _achievementManager = achievementManager;
+        }
+
         public int Header => ClientPacketHeader.PurchaseFromCatalogAsGiftMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
@@ -138,7 +146,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                             if (color.Length != 6)
                                 return;
 
-                            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_PetLover", 1);
+                            _achievementManager.ProgressAchievement(session, "ACH_PetLover", 1);
                         }
                         catch
                         {
@@ -226,9 +234,9 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
                 if (habbo.Id != session.GetHabbo().Id && !string.IsNullOrWhiteSpace(giftMessage))
                 {
-                    PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_GiftGiver", 1);
+                    _achievementManager.ProgressAchievement(session, "ACH_GiftGiver", 1);
                     if (receiver != null)
-                        PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(receiver, "ACH_GiftReceiver", 1);
+                        _achievementManager.ProgressAchievement(receiver, "ACH_GiftReceiver", 1);
                     PlusEnvironment.GetGame().GetQuestManager().ProgressUserQuest(session, QuestType.GiftOthers);
                 }
             }

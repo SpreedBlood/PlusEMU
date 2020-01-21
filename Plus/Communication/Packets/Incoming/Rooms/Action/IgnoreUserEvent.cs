@@ -3,11 +3,19 @@ using Plus.HabboHotel.Users;
 using Plus.Communication.Packets.Outgoing.Rooms.Action;
 using Plus.Database.Interfaces;
 using Plus.HabboHotel.GameClients;
+using Plus.HabboHotel.Achievements;
 
 namespace Plus.Communication.Packets.Incoming.Rooms.Action
 {
     class IgnoreUserEvent : IPacketEvent
     {
+        private readonly AchievementManager _achievementManager;
+
+        public IgnoreUserEvent(AchievementManager achievementManager)
+        {
+            _achievementManager = achievementManager;
+        }
+
         public int Header => ClientPacketHeader.IgnoreUserMessageEvent;
         public void Parse(GameClient session, ClientPacket packet)
         {
@@ -39,7 +47,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
 
                 session.SendPacket(new IgnoreStatusComposer(1, player.Username));
 
-                PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_SelfModIgnoreSeen", 1);
+                _achievementManager.ProgressAchievement(session, "ACH_SelfModIgnoreSeen", 1);
             }
         }
     }
